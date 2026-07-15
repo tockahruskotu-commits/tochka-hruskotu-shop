@@ -10,213 +10,204 @@
 
   <meta
     name="description"
-    content="Точка Хрускоту — крафтове печиво ручної роботи з соусами."
+    content="Точка Хрускоту — крафтове печиво ручної роботи з соусами та доставкою по Україні."
   >
 
   <title>Точка Хрускоту — онлайн-магазин</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      font-family: Arial, sans-serif;
-      color: #ffffff;
-      background:
-        radial-gradient(
-          circle at top,
-          #426c3b 0%,
-          #243428 45%,
-          #171917 100%
-        );
-    }
-
-    .page {
-      width: 100%;
-      max-width: 720px;
-      padding: 42px 28px;
-      text-align: center;
-      background: rgba(25, 28, 25, 0.92);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 24px;
-      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.35);
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 112px;
-      height: 112px;
-      margin-bottom: 24px;
-      padding: 15px;
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 1.1;
-      color: #243428;
-      background: #ffffff;
-      border-radius: 50%;
-    }
-
-    h1 {
-      margin: 0 0 14px;
-      font-size: clamp(34px, 8vw, 58px);
-      line-height: 1;
-    }
-
-    .subtitle {
-      max-width: 530px;
-      margin: 0 auto 28px;
-      font-size: 19px;
-      line-height: 1.55;
-      color: #d8ded7;
-    }
-
-    .status {
-      display: inline-block;
-      margin-bottom: 28px;
-      padding: 10px 18px;
-      font-weight: 700;
-      color: #1e321e;
-      background: #d9edbd;
-      border-radius: 999px;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin: 0 0 30px;
-    }
-
-    .feature {
-      padding: 18px 10px;
-      font-size: 14px;
-      line-height: 1.4;
-      color: #edf1ec;
-      background: rgba(255, 255, 255, 0.07);
-      border-radius: 14px;
-    }
-
-    .contacts {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .button {
-      display: inline-block;
-      padding: 13px 20px;
-      font-weight: 700;
-      color: #ffffff;
-      text-decoration: none;
-      background: #497a41;
-      border-radius: 12px;
-      transition: transform 0.2s ease;
-    }
-
-    .button:hover {
-      transform: translateY(-2px);
-    }
-
-    .button-secondary {
-      color: #243428;
-      background: #ffffff;
-    }
-
-    .note {
-      margin: 28px 0 0;
-      font-size: 13px;
-      color: #aeb7ad;
-    }
-
-    @media (max-width: 580px) {
-      .page {
-        padding: 34px 18px;
-      }
-
-      .features {
-        grid-template-columns: 1fr;
-      }
-
-      .button {
-        width: 100%;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <main class="page">
-    <div class="brand">
-      ТОЧКА<br>ХРУСКОТУ
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand-link" href="#top">
+        <span class="brand-mark">
+          ТОЧКА<br>ХРУСКОТУ
+        </span>
+
+        <span class="brand-name">
+          Точка Хрускоту
+        </span>
+      </a>
+
+      <button
+        class="cart-button"
+        id="cartButton"
+        type="button"
+      >
+        Кошик
+
+        <span class="cart-count" id="cartCount">
+          0
+        </span>
+      </button>
     </div>
+  </header>
 
-    <h1>Точка Хрускоту</h1>
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">
+            Крафтове печиво ручної роботи
+          </p>
 
-    <p class="subtitle">
-      Крафтове печиво ручної роботи у незвичних форматах.
-      Обирай смак, додавай соус і створюй власну точку хрускоту.
-    </p>
+          <h1>
+            Знайди свою точку хрускоту
+          </h1>
 
-    <div class="status">
-      Онлайн-магазин готується до відкриття
-    </div>
+          <p class="hero-text">
+            Солодке печиво у незвичних форматах.
+            Обирай смак, додавай улюблений соус
+            та замовляй доставку по Україні.
+          </p>
 
-    <section class="features">
-      <div class="feature">
-        Ручна робота
-      </div>
+          <a class="primary-link" href="#catalogue">
+            Переглянути смаки
+          </a>
+        </div>
 
-      <div class="feature">
-        Натуральні інгредієнти
-      </div>
+        <div class="hero-card">
+          <div>
+            <strong>
+              Візьми. Вмочи. Хрусни.
+            </strong>
 
-      <div class="feature">
-        Доставка по Україні
+            <span>
+              Маленький десерт, який перетворюється
+              на окрему смачну емоцію.
+            </span>
+          </div>
+        </div>
       </div>
     </section>
 
-    <nav class="contacts">
-      <a
-        class="button"
-        href="https://t.me/tockahruskotu"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Telegram
-      </a>
+    <section class="features">
+      <div class="container features-grid">
+        <div class="feature">
+          <strong>Ручна робота</strong>
+          <span>Готуємо невеликими партіями</span>
+        </div>
 
-      <a
-        class="button button-secondary"
-        href="https://www.facebook.com/tockahruskotu/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Facebook
-      </a>
+        <div class="feature">
+          <strong>Натуральні інгредієнти</strong>
+          <span>Зрозумілий склад продукту</span>
+        </div>
 
-      <a
-        class="button button-secondary"
-        href="https://instagram.com/tockahruskotu"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Instagram
-      </a>
-    </nav>
+        <div class="feature">
+          <strong>Доставка по Україні</strong>
+          <span>Відправлення Новою поштою</span>
+        </div>
+      </div>
+    </section>
 
-    <p class="note">
-      Незабаром тут з’являться каталог, кошик та оформлення замовлення.
-    </p>
+    <section class="catalogue" id="catalogue">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Кранч-Фрі</h2>
+
+          <p>
+            Оберіть смак печива та соус до нього.
+          </p>
+        </div>
+
+        <div
+          class="product-grid"
+          id="productGrid"
+        ></div>
+      </div>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <p class="footer-title">
+          Точка Хрускоту
+        </p>
+
+        <p class="footer-text">
+          Крафтове печиво з доставкою по Україні
+        </p>
+      </div>
+
+      <nav class="footer-links">
+        <a
+          href="https://t.me/tockahruskotu"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Telegram
+        </a>
+
+        <a
+          href="https://www.facebook.com/tockahruskotu/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Facebook
+        </a>
+
+        <a
+          href="https://instagram.com/tockahruskotu"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Instagram
+        </a>
+      </nav>
+    </div>
+  </footer>
+
+  <div
+    class="cart-overlay"
+    id="cartOverlay"
+  ></div>
+
+  <aside
+    class="cart-panel"
+    id="cartPanel"
+    aria-hidden="true"
+  >
+    <div class="cart-header">
+      <h2>Ваш кошик</h2>
+
+      <button
+        class="close-cart"
+        id="closeCartButton"
+        type="button"
+        aria-label="Закрити кошик"
+      >
+        ×
+      </button>
+    </div>
+
+    <div class="cart-items" id="cartItems"></div>
+
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>Разом</span>
+        <span id="cartTotal">0 грн</span>
+      </div>
+
+      <button
+        class="checkout-button"
+        id="checkoutButton"
+        type="button"
+        disabled
+      >
+        Оформити замовлення
+      </button>
+
+      <p class="cart-note">
+        Вартість доставки оплачується окремо
+        за тарифами перевізника.
+      </p>
+    </div>
+  </aside>
+
+  <script src="products.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
