@@ -881,3 +881,31 @@ body.checkout-open {
     font-size: 16px;
   }
 }
+.form-field input[readonly] {
+  color: var(--green-dark);
+  background: var(--green-light);
+  font-weight: 700;
+  cursor: default;
+}
+
+.terms-checkbox {
+  margin-top: 18px;
+  padding: 15px;
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  color: var(--muted);
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.terms-checkbox input {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 auto;
+  margin: 1px 0 0;
+  accent-color: var(--green);
+}
