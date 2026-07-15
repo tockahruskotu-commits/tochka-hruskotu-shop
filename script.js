@@ -492,8 +492,8 @@ function createOrderPayload() {
       phone:
         formData.get("customerPhone"),
 
-      social:
-        formData.get("customerSocial"),
+      surname:
+  formData.get("customerSurname"),
 
       region:
         formData.get("customerRegion"),
