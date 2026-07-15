@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Точка Хрускоту — крафтове печиво ручної роботи з соусами."
+  >
+
+  <title>Точка Хрускоту — онлайн-магазин</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      font-family: Arial, sans-serif;
+      color: #ffffff;
+      background:
+        radial-gradient(
+          circle at top,
+          #426c3b 0%,
+          #243428 45%,
+          #171917 100%
+        );
+    }
+
+    .page {
+      width: 100%;
+      max-width: 720px;
+      padding: 42px 28px;
+      text-align: center;
+      background: rgba(25, 28, 25, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 24px;
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.35);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 112px;
+      height: 112px;
+      margin-bottom: 24px;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: #243428;
+      background: #ffffff;
+      border-radius: 50%;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(34px, 8vw, 58px);
+      line-height: 1;
+    }
+
+    .subtitle {
+      max-width: 530px;
+      margin: 0 auto 28px;
+      font-size: 19px;
+      line-height: 1.55;
+      color: #d8ded7;
+    }
+
+    .status {
+      display: inline-block;
+      margin-bottom: 28px;
+      padding: 10px 18px;
+      font-weight: 700;
+      color: #1e321e;
+      background: #d9edbd;
+      border-radius: 999px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 0 0 30px;
+    }
+
+    .feature {
+      padding: 18px 10px;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #edf1ec;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 14px;
+    }
+
+    .contacts {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 13px 20px;
+      font-weight: 700;
+      color: #ffffff;
+      text-decoration: none;
+      background: #497a41;
+      border-radius: 12px;
+      transition: transform 0.2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-secondary {
+      color: #243428;
+      background: #ffffff;
+    }
+
+    .note {
+      margin: 28px 0 0;
+      font-size: 13px;
+      color: #aeb7ad;
+    }
+
+    @media (max-width: 580px) {
+      .page {
+        padding: 34px 18px;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <div class="brand">
+      ТОЧКА<br>ХРУСКОТУ
+    </div>
+
+    <h1>Точка Хрускоту</h1>
+
+    <p class="subtitle">
+      Крафтове печиво ручної роботи у незвичних форматах.
+      Обирай смак, додавай соус і створюй власну точку хрускоту.
+    </p>
+
+    <div class="status">
+      Онлайн-магазин готується до відкриття
+    </div>
+
+    <section class="features">
+      <div class="feature">
+        Ручна робота
+      </div>
+
+      <div class="feature">
+        Натуральні інгредієнти
+      </div>
+
+      <div class="feature">
+        Доставка по Україні
+      </div>
+    </section>
+
+    <nav class="contacts">
+      <a
+        class="button"
+        href="https://t.me/tockahruskotu"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Telegram
+      </a>
+
+      <a
+        class="button button-secondary"
+        href="https://www.facebook.com/tockahruskotu/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Facebook
+      </a>
+
+      <a
+        class="button button-secondary"
+        href="https://instagram.com/tockahruskotu"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Instagram
+      </a>
+    </nav>
+
+    <p class="note">
+      Незабаром тут з’являться каталог, кошик та оформлення замовлення.
+    </p>
+  </main>
+</body>
+</html>
