@@ -206,7 +206,223 @@
       </p>
     </div>
   </aside>
+<div
+  class="checkout-overlay"
+  id="checkoutOverlay"
+></div>
 
+<section
+  class="checkout-modal"
+  id="checkoutModal"
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="checkoutTitle"
+>
+  <div class="checkout-card">
+    <div class="checkout-header">
+      <div>
+        <p class="checkout-kicker">
+          Оформлення
+        </p>
+
+        <h2 id="checkoutTitle">
+          Ваше замовлення
+        </h2>
+      </div>
+
+      <button
+        class="close-checkout"
+        id="closeCheckoutButton"
+        type="button"
+        aria-label="Закрити форму"
+      >
+        ×
+      </button>
+    </div>
+
+    <form id="checkoutForm" novalidate>
+      <div class="checkout-summary">
+        <span>Сума товарів</span>
+
+        <strong id="checkoutSummaryTotal">
+          0 грн
+        </strong>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="customerName">
+            Ім’я клієнта *
+          </label>
+
+          <input
+            id="customerName"
+            name="customerName"
+            type="text"
+            maxlength="100"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="customerPhone">
+            Телефон *
+          </label>
+
+          <input
+            id="customerPhone"
+            name="customerPhone"
+            type="tel"
+            maxlength="20"
+            inputmode="tel"
+            autocomplete="tel"
+            placeholder="+380XXXXXXXXX"
+            required
+          >
+        </div>
+
+        <div class="form-field form-field-full">
+          <label for="customerSocial">
+            Telegram або Instagram
+          </label>
+
+          <input
+            id="customerSocial"
+            name="customerSocial"
+            type="text"
+            maxlength="150"
+            placeholder="@ім’я або посилання"
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="customerRegion">
+            Область
+          </label>
+
+          <input
+            id="customerRegion"
+            name="customerRegion"
+            type="text"
+            maxlength="100"
+            autocomplete="address-level1"
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="customerCity">
+            Місто / населений пункт *
+          </label>
+
+          <input
+            id="customerCity"
+            name="customerCity"
+            type="text"
+            maxlength="100"
+            autocomplete="address-level2"
+            required
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="deliveryMethod">
+            Спосіб доставки *
+          </label>
+
+          <select
+            id="deliveryMethod"
+            name="deliveryMethod"
+            required
+          >
+            <option value="Нова пошта">
+              Нова пошта
+            </option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="deliveryBranch">
+            Відділення або поштомат *
+          </label>
+
+          <input
+            id="deliveryBranch"
+            name="deliveryBranch"
+            type="text"
+            maxlength="150"
+            placeholder="Наприклад: відділення №1"
+            required
+          >
+        </div>
+
+        <div class="form-field form-field-full">
+          <label for="paymentMethod">
+            Спосіб оплати *
+          </label>
+
+          <select
+            id="paymentMethod"
+            name="paymentMethod"
+            required
+          >
+            <option value="">
+              Оберіть спосіб оплати
+            </option>
+
+            <option value="Післяплата">
+              Післяплата
+            </option>
+
+            <option value="Оплата за реквізитами">
+              Оплата за реквізитами
+            </option>
+
+            <option value="Уточнити з продавцем">
+              Уточнити з продавцем
+            </option>
+          </select>
+        </div>
+
+        <div class="form-field form-field-full">
+          <label for="customerComment">
+            Коментар до замовлення
+          </label>
+
+          <textarea
+            id="customerComment"
+            name="customerComment"
+            rows="4"
+            maxlength="1000"
+            placeholder="Побажання щодо замовлення або доставки"
+          ></textarea>
+        </div>
+      </div>
+
+      <p class="required-note">
+        Поля, позначені *, обов’язкові.
+        Вартість доставки сплачується окремо
+        за тарифами перевізника.
+      </p>
+
+      <div
+        class="order-status"
+        id="orderStatus"
+        aria-live="polite"
+      ></div>
+
+      <button
+        class="submit-order-button"
+        id="submitOrderButton"
+        type="submit"
+      >
+        Підтвердити замовлення
+      </button>
+    </form>
+  </div>
+</section>
+  
   <script src="products.js"></script>
   <script src="script.js"></script>
 </body>
