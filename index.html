@@ -357,34 +357,19 @@
           >
         </div>
 
-        <div class="form-field form-field-full">
-          <label for="paymentMethod">
-            Спосіб оплати *
-          </label>
+       <div class="form-field form-field-full">
+  <label for="paymentMethod">
+    Оплата
+  </label>
 
-          <select
-            id="paymentMethod"
-            name="paymentMethod"
-            required
-          >
-            <option value="">
-              Оберіть спосіб оплати
-            </option>
-
-            <option value="Післяплата">
-              Післяплата
-            </option>
-
-            <option value="Оплата за реквізитами">
-              Оплата за реквізитами
-            </option>
-
-            <option value="Уточнити з продавцем">
-              Уточнити з продавцем
-            </option>
-          </select>
-        </div>
-
+  <input
+    id="paymentMethod"
+    name="paymentMethod"
+    type="text"
+    value="100% передоплата на рахунок ФОП після підтвердження замовлення"
+    readonly
+  >
+</div>
         <div class="form-field form-field-full">
           <label for="customerComment">
             Коментар до замовлення
@@ -400,11 +385,32 @@
         </div>
       </div>
 
-      <p class="required-note">
-        Поля, позначені *, обов’язкові.
-        Вартість доставки сплачується окремо
-        за тарифами перевізника.
-      </p>
+    <p class="required-note">
+  Поля, позначені *, обов’язкові.
+  Після перевірки замовлення продавець надішле
+  реквізити рахунку ФОП. Замовлення передається
+  у виробництво після надходження 100% передоплати.
+  Вартість доставки сплачується окремо
+  за тарифами перевізника.
+</p>
+
+<label class="terms-checkbox">
+  <input
+    id="termsAccepted"
+    name="termsAccepted"
+    type="checkbox"
+    required
+  >
+
+  <span>
+    Погоджуюся з умовами замовлення: харчові продукти
+    належної якості не підлягають обміну та поверненню.
+    У разі неотримання посилки повторне відправлення
+    здійснюється після оплати витрат на повернення
+    та повторну доставку. Це не обмежує права покупця
+    у разі неналежної якості або помилки продавця.
+  </span>
+</label>
 
       <div
         class="order-status"
