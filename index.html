@@ -2,45 +2,45 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta
     name="description"
-    content="Точка Хрускоту — крафтове печиво ручної роботи з соусами та доставкою по Україні."
+    content="Точка Хрускоту — крафтові десерти ручної роботи з доставкою по Україні."
   >
-
+  <meta name="theme-color" content="#fff8ee">
   <title>Точка Хрускоту — онлайн-магазин</title>
-
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <div class="page-loader" id="pageLoader">
+    <div class="loader-brand">Точка Хрускоту</div>
+    <div class="loader-line"></div>
+    <p>Завантажуємо смаки...</p>
+  </div>
+
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand-link" href="#top">
-        <span class="brand-mark">
-          ТОЧКА<br>ХРУСКОТУ
-        </span>
-
-        <span class="brand-name">
-          Точка Хрускоту
-        </span>
+      <a class="brand-link" href="#top" aria-label="На головну">
+        <img
+          class="brand-logo"
+          id="headerLogo"
+          src="images/brand/logo.webp"
+          alt="Логотип Точка Хрускоту"
+        >
+        <span class="brand-name" id="headerStoreName">Точка Хрускоту</span>
       </a>
 
-      <button
-        class="cart-button"
-        id="cartButton"
-        type="button"
-      >
-        Кошик
+      <nav class="desktop-nav" aria-label="Головна навігація">
+        <a href="#categories">Категорії</a>
+        <a href="#catalogue">Каталог</a>
+        <a href="#delivery">Доставка й оплата</a>
+        <a href="#reviews">Відгуки</a>
+      </nav>
 
-        <span class="cart-count" id="cartCount">
-          0
-        </span>
+      <button class="cart-button" id="cartButton" type="button">
+        <span>Кошик</span>
+        <span class="cart-count" id="cartCount">0</span>
       </button>
     </div>
   </header>
@@ -48,388 +48,411 @@
   <main id="top">
     <section class="hero">
       <div class="container hero-grid">
-        <div>
-          <p class="eyebrow">
-            Крафтове печиво ручної роботи
-          </p>
-
-          <h1>
-            Знайди свою точку хрускоту
-          </h1>
-
+        <div class="hero-copy">
+          <p class="eyebrow">Крафтові десерти ручної роботи</p>
+          <h1 id="heroTitle">Знайди свою точку хрускоту</h1>
           <p class="hero-text">
-            Солодке печиво у незвичних форматах.
-            Обирай смак, додавай улюблений соус
-            та замовляй доставку по Україні.
+            Незвичні солодкі формати, фірмові соуси та смачні емоції
+            з доставкою по Україні.
           </p>
 
-          <a class="primary-link" href="#catalogue">
-            Переглянути смаки
-          </a>
-        </div>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#categories">
+              Обрати категорію
+            </a>
+            <a class="button button-secondary" href="#catalogue">
+              Дивитися все
+            </a>
+          </div>
 
-        <div class="hero-card">
-          <div>
-            <strong>
-              Візьми. Вмочи. Хрусни.
-            </strong>
-
-            <span>
-              Маленький десерт, який перетворюється
-              на окрему смачну емоцію.
-            </span>
+          <div class="hero-facts">
+            <span>Ручна робота</span>
+            <span>Невеликі партії</span>
+            <span>До 3 робочих днів</span>
           </div>
         </div>
+
+        <div class="hero-image-wrap">
+          <img
+            class="hero-image"
+            id="heroImage"
+            src="images/hero/main-cover.webp"
+            alt="Асортимент Точка Хрускоту"
+          >
+        </div>
       </div>
     </section>
 
-    <section class="features">
-      <div class="container features-grid">
-        <div class="feature">
-          <strong>Ручна робота</strong>
-          <span>Готуємо невеликими партіями</span>
-        </div>
-
-        <div class="feature">
-          <strong>Натуральні інгредієнти</strong>
-          <span>Зрозумілий склад продукту</span>
-        </div>
-
-        <div class="feature">
+    <section class="trust-strip">
+      <div class="container trust-grid">
+        <article>
+          <strong>Візьми. Вмочи. Хрусни.</strong>
+          <span>Десерт, що перетворюється на маленьку подію</span>
+        </article>
+        <article>
           <strong>Доставка по Україні</strong>
-          <span>Відправлення Новою поштою</span>
-        </div>
+          <span>Нова пошта та Укрпошта — Пріоритетний</span>
+        </article>
+        <article>
+          <strong>Готуємо під замовлення</strong>
+          <span>Якщо товар є в наявності — відправимо раніше</span>
+        </article>
       </div>
     </section>
 
-    <section class="catalogue" id="catalogue">
+    <section class="categories-section" id="categories">
       <div class="container">
         <div class="section-heading">
-          <h2>Кранч-Фрі</h2>
-
+          <p class="section-kicker">Навігація за смаками</p>
+          <h2>Оберіть категорію</h2>
           <p>
-            Оберіть смак печива та соус до нього.
+            Натисніть на картку або просто гортайте нижче —
+            весь асортимент зібраний на одній сторінці.
           </p>
         </div>
 
-        <div
-          class="product-grid"
-          id="productGrid"
-        ></div>
+        <div class="category-grid" id="categoryGrid"></div>
+      </div>
+    </section>
+
+    <section class="catalogue-section" id="catalogue">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-kicker">Каталог</p>
+          <h2>Весь асортимент</h2>
+          <p id="catalogueIntro">
+            Обирайте смак, соус і додавайте у кошик.
+          </p>
+        </div>
+
+        <div id="catalogueSections"></div>
+
+        <div class="store-error" id="storeError" hidden>
+          <h3>Каталог тимчасово не завантажився</h3>
+          <p>
+            Оновіть сторінку або напишіть нам у Telegram.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="delivery-section" id="delivery">
+      <div class="container delivery-grid">
+        <div class="delivery-card">
+          <p class="section-kicker">Доставка</p>
+          <h2>По всій Україні</h2>
+          <p id="deliverySummary">
+            Відправляємо Новою поштою та Укрпоштою.
+          </p>
+          <div class="delivery-list" id="deliveryList"></div>
+        </div>
+
+        <div class="delivery-card accent-card">
+          <p class="section-kicker">Оплата</p>
+          <h2>Зручно для покупця</h2>
+          <p>
+            Для поштових відправлень замовлення готуємо після повної оплати.
+            Реквізити надсилаємо після підтвердження замовлення.
+          </p>
+          <div class="payment-list" id="paymentList"></div>
+          <button class="text-button" id="openTermsButton" type="button">
+            Переглянути умови замовлення і доставки
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="reviews-section" id="reviews">
+      <div class="container reviews-card">
+        <div>
+          <p class="section-kicker">Google-відгуки</p>
+          <h2>Поділіться своїм хрускотом</h2>
+          <p>
+            Ваші враження допомагають іншим покупцям обрати смак
+            і підтримують розвиток нашого бренду.
+          </p>
+        </div>
+
+        <div class="review-actions">
+          <a
+            class="button button-primary"
+            id="googleReviewLink"
+            href="https://g.page/r/CbrEqPmOVWsOEAI/review"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Залишити відгук
+          </a>
+          <a
+            class="button button-secondary"
+            id="googleProfileLink"
+            href="https://share.google/Fc4vC6bW6pVCzwFYW"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Переглянути в Google
+          </a>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-inner">
-      <div>
-        <p class="footer-title">
-          Точка Хрускоту
-        </p>
-
-        <p class="footer-text">
-          Крафтове печиво з доставкою по Україні
-        </p>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img
+          class="footer-logo"
+          id="footerLogo"
+          src="images/brand/logo.webp"
+          alt=""
+        >
+        <div>
+          <strong id="footerStoreName">Точка Хрускоту</strong>
+          <p>Крафтові десерти з доставкою по Україні</p>
+        </div>
       </div>
 
-      <nav class="footer-links">
-        <a
-          href="https://t.me/tockahruskotu"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Telegram
-        </a>
+      <nav class="social-links" id="socialLinks" aria-label="Соціальні мережі"></nav>
 
-        <a
-          href="https://www.facebook.com/tockahruskotu/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Facebook
-        </a>
-
-        <a
-          href="https://instagram.com/tockahruskotu"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Instagram
-        </a>
-      </nav>
+      <div class="footer-links">
+        <button type="button" id="footerTermsButton">Умови замовлення</button>
+        <a id="footerPhone" href="tel:+380638330860">+380638330860</a>
+      </div>
     </div>
   </footer>
 
-  <div
-    class="cart-overlay"
-    id="cartOverlay"
-  ></div>
-
-  <aside
-    class="cart-panel"
-    id="cartPanel"
-    aria-hidden="true"
-  >
-    <div class="cart-header">
-      <h2>Ваш кошик</h2>
-
-      <button
-        class="close-cart"
-        id="closeCartButton"
-        type="button"
-        aria-label="Закрити кошик"
-      >
+  <div class="overlay" id="cartOverlay"></div>
+  <aside class="cart-panel" id="cartPanel" aria-hidden="true">
+    <header class="panel-header">
+      <div>
+        <p class="panel-kicker">Ваш вибір</p>
+        <h2>Кошик</h2>
+      </div>
+      <button class="icon-button" id="closeCartButton" type="button" aria-label="Закрити">
         ×
       </button>
-    </div>
+    </header>
 
     <div class="cart-items" id="cartItems"></div>
 
-    <div class="cart-footer">
+    <footer class="cart-footer">
       <div class="cart-total-row">
-        <span>Разом</span>
-        <span id="cartTotal">0 грн</span>
+        <span>Сума товарів</span>
+        <strong id="cartTotal">0 грн</strong>
       </div>
-
-      <button
-        class="checkout-button"
-        id="checkoutButton"
-        type="button"
-        disabled
-      >
+      <button class="checkout-button" id="checkoutButton" type="button" disabled>
         Оформити замовлення
       </button>
-
-      <p class="cart-note">
-        Вартість доставки оплачується окремо
-        за тарифами перевізника.
-      </p>
-    </div>
+      <p>Доставка оплачується окремо за тарифами перевізника.</p>
+    </footer>
   </aside>
-<div
-  class="checkout-overlay"
-  id="checkoutOverlay"
-></div>
 
-<section
-  class="checkout-modal"
-  id="checkoutModal"
-  aria-hidden="true"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="checkoutTitle"
->
-  <div class="checkout-card">
-    <div class="checkout-header">
-      <div>
-        <p class="checkout-kicker">
-          Оформлення
-        </p>
-
-        <h2 id="checkoutTitle">
-          Ваше замовлення
-        </h2>
-      </div>
-
+  <div class="modal-overlay" id="productOverlay"></div>
+  <section
+    class="modal product-modal"
+    id="productModal"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="productModalTitle"
+  >
+    <div class="modal-card product-modal-card">
       <button
-        class="close-checkout"
-        id="closeCheckoutButton"
+        class="modal-close"
+        id="closeProductButton"
         type="button"
-        aria-label="Закрити форму"
+        aria-label="Закрити"
       >
         ×
       </button>
+      <div id="productModalContent"></div>
     </div>
+  </section>
 
-    <form id="checkoutForm" novalidate>
-      <div class="checkout-summary">
-        <span>Сума товарів</span>
-
-        <strong id="checkoutSummaryTotal">
-          0 грн
-        </strong>
-      </div>
-
-      <div class="form-grid">
-        <div class="form-field">
-          <label for="customerName">
-            Ім’я клієнта *
-          </label>
-
-          <input
-            id="customerName"
-            name="customerName"
-            type="text"
-            maxlength="100"
-            autocomplete="name"
-            required
-          >
-        </div>
-
-        <div class="form-field">
-          <label for="customerPhone">
-            Телефон *
-          </label>
-
-          <input
-            id="customerPhone"
-            name="customerPhone"
-            type="tel"
-            maxlength="20"
-            inputmode="tel"
-            autocomplete="tel"
-            placeholder="+380XXXXXXXXX"
-            required
-          >
-        </div>
-
-       <div class="form-field">
-  <label for="customerSurname">
-    Прізвище *
-  </label>
-
-  <input
-    id="customerSurname"
-    name="customerSurname"
-    type="text"
-    maxlength="100"
-    autocomplete="family-name"
-    required
+  <div class="modal-overlay" id="checkoutOverlay"></div>
+  <section
+    class="modal checkout-modal"
+    id="checkoutModal"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="checkoutTitle"
   >
-</div>
-        <div class="form-field">
-          <label for="customerRegion">
-            Область
-          </label>
+    <div class="modal-card checkout-card">
+      <header class="checkout-header">
+        <div>
+          <p class="panel-kicker">Оформлення</p>
+          <h2 id="checkoutTitle">Ваше замовлення</h2>
+        </div>
+        <button
+          class="icon-button"
+          id="closeCheckoutButton"
+          type="button"
+          aria-label="Закрити"
+        >
+          ×
+        </button>
+      </header>
 
-          <input
-            id="customerRegion"
-            name="customerRegion"
-            type="text"
-            maxlength="100"
-            autocomplete="address-level1"
-          >
+      <form id="checkoutForm" novalidate>
+        <div class="checkout-summary">
+          <span>Сума товарів</span>
+          <strong id="checkoutSummaryTotal">0 грн</strong>
         </div>
 
-        <div class="form-field">
-          <label for="customerCity">
-            Місто / населений пункт *
-          </label>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="customerName">Ім’я *</label>
+            <input
+              id="customerName"
+              name="customerName"
+              type="text"
+              maxlength="100"
+              autocomplete="given-name"
+              required
+            >
+          </div>
 
-          <input
-            id="customerCity"
-            name="customerCity"
-            type="text"
-            maxlength="100"
-            autocomplete="address-level2"
-            required
-          >
+          <div class="form-field">
+            <label for="customerSurname">Прізвище *</label>
+            <input
+              id="customerSurname"
+              name="customerSurname"
+              type="text"
+              maxlength="100"
+              autocomplete="family-name"
+              required
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="customerPhone">Телефон *</label>
+            <input
+              id="customerPhone"
+              name="customerPhone"
+              type="tel"
+              maxlength="20"
+              inputmode="tel"
+              autocomplete="tel"
+              placeholder="+380XXXXXXXXX"
+              required
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="customerRegion">Область *</label>
+            <input
+              id="customerRegion"
+              name="customerRegion"
+              type="text"
+              maxlength="100"
+              autocomplete="address-level1"
+              required
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="customerCity">Місто / населений пункт *</label>
+            <input
+              id="customerCity"
+              name="customerCity"
+              type="text"
+              maxlength="100"
+              autocomplete="address-level2"
+              required
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="deliveryMethod">Спосіб доставки *</label>
+            <select id="deliveryMethod" name="deliveryMethod" required></select>
+          </div>
+
+          <div class="form-field form-field-full">
+            <label id="deliveryBranchLabel" for="deliveryBranch">
+              Відділення або поштомат *
+            </label>
+            <input
+              id="deliveryBranch"
+              name="deliveryBranch"
+              type="text"
+              maxlength="150"
+              required
+            >
+            <small id="deliveryNote"></small>
+          </div>
+
+          <div class="form-field form-field-full">
+            <label for="paymentMethod">Спосіб оплати *</label>
+            <select id="paymentMethod" name="paymentMethod" required></select>
+            <small id="paymentNote"></small>
+          </div>
+
+          <div class="form-field form-field-full">
+            <label for="customerComment">Коментар до замовлення</label>
+            <textarea
+              id="customerComment"
+              name="customerComment"
+              rows="4"
+              maxlength="1000"
+              placeholder="Побажання щодо замовлення або доставки"
+            ></textarea>
+          </div>
         </div>
 
-        <div class="form-field">
-          <label for="deliveryMethod">
-            Спосіб доставки *
-          </label>
+        <p class="friendly-payment-note">
+          Для відправлення Новою поштою та Укрпоштою замовлення
+          готуємо після повної оплати. Інший спосіб оплати або отримання
+          можна узгодити з продавцем.
+        </p>
 
-          <select
-            id="deliveryMethod"
-            name="deliveryMethod"
-            required
-          >
-            <option value="Нова пошта">
-              Нова пошта
-            </option>
-          </select>
-        </div>
+        <label class="terms-checkbox">
+          <input id="termsAccepted" name="termsAccepted" type="checkbox" required>
+          <span>
+            Я ознайомився(-лася) та погоджуюся з
+            <button class="inline-link" id="checkoutTermsButton" type="button">
+              умовами замовлення і доставки
+            </button>.
+          </span>
+        </label>
 
-        <div class="form-field">
-          <label for="deliveryBranch">
-            Відділення або поштомат *
-          </label>
+        <div class="order-status" id="orderStatus" aria-live="polite"></div>
 
-          <input
-            id="deliveryBranch"
-            name="deliveryBranch"
-            type="text"
-            maxlength="150"
-            placeholder="Наприклад: відділення №1"
-            required
-          >
-        </div>
+        <button class="submit-order-button" id="submitOrderButton" type="submit">
+          Підтвердити замовлення
+        </button>
+      </form>
+    </div>
+  </section>
 
-       <div class="form-field form-field-full">
-  <label for="paymentMethod">
-    Оплата
-  </label>
-
-  <input
-    id="paymentMethod"
-    name="paymentMethod"
-    type="text"
-    value="100% передоплата на рахунок ФОП після підтвердження замовлення"
-    readonly
+  <div class="modal-overlay" id="termsOverlay"></div>
+  <section
+    class="modal terms-modal"
+    id="termsModal"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="termsTitle"
   >
-</div>
-        <div class="form-field form-field-full">
-          <label for="customerComment">
-            Коментар до замовлення
-          </label>
-
-          <textarea
-            id="customerComment"
-            name="customerComment"
-            rows="4"
-            maxlength="1000"
-            placeholder="Побажання щодо замовлення або доставки"
-          ></textarea>
+    <div class="modal-card terms-card">
+      <header class="checkout-header">
+        <div>
+          <p class="panel-kicker">Важлива інформація</p>
+          <h2 id="termsTitle">Умови замовлення і доставки</h2>
         </div>
-      </div>
+        <button
+          class="icon-button"
+          id="closeTermsButton"
+          type="button"
+          aria-label="Закрити"
+        >
+          ×
+        </button>
+      </header>
+      <div class="terms-content" id="termsContent"></div>
+    </div>
+  </section>
 
-    <p class="required-note">
-  Поля, позначені *, обов’язкові.
-  Після перевірки замовлення продавець надішле
-  реквізити рахунку ФОП. Замовлення передається
-  у виробництво після надходження 100% передоплати.
-  Вартість доставки сплачується окремо
-  за тарифами перевізника.
-</p>
-
-<label class="terms-checkbox">
-  <input
-    id="termsAccepted"
-    name="termsAccepted"
-    type="checkbox"
-    required
-  >
-
-  <span>
-    Погоджуюся з умовами замовлення: харчові продукти
-    належної якості не підлягають обміну та поверненню.
-    У разі неотримання посилки повторне відправлення
-    здійснюється після оплати витрат на повернення
-    та повторну доставку. Це не обмежує права покупця
-    у разі неналежної якості або помилки продавця.
-  </span>
-</label>
-
-      <div
-        class="order-status"
-        id="orderStatus"
-        aria-live="polite"
-      ></div>
-
-      <button
-        class="submit-order-button"
-        id="submitOrderButton"
-        type="submit"
-      >
-        Підтвердити замовлення
-      </button>
-    </form>
-  </div>
-</section>
-  
-  <script src="products.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
