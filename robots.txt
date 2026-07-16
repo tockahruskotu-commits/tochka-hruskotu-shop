@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/sitemap.xml

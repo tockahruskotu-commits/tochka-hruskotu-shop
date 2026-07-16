@@ -1,0 +1,19 @@
+{
+  "name": "Точка Хрускоту",
+  "short_name": "Точка",
+  "description": "Крафтові десерти ручної роботи: Кранч-Фрі, Кранч-Попс, Кекс-Попс, бокси та фірмові соуси. Замовлення онлайн і доставка по Україні.",
+  "start_url": "/tochka-hruskotu-shop/",
+  "scope": "/tochka-hruskotu-shop/",
+  "display": "standalone",
+  "background_color": "#fff8ee",
+  "theme_color": "#fff8ee",
+  "lang": "uk-UA",
+  "icons": [
+    {
+      "src": "images/brand/logo.webp",
+      "sizes": "any",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    }
+  ]
+}
