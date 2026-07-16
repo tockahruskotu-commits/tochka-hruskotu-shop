@@ -1,13 +1,14 @@
 const STORE_API_URL =
   "https://script.google.com/macros/s/AKfycbzCgvAMAmqrsK-KsGcPMfx60kvQbZVJII91WVZKIn-KF7bFIA3HKdKe0JmaBu4RZtX31Q/exec";
 
-const CART_STORAGE_KEY = "tochka_hruskotu_cart_v2";
+const CART_STORAGE_KEY = "tochka_hruskotu_cart_v3";
 const REQUEST_ID_STORAGE_KEY = "tochka_hruskotu_request_id_v2";
 
 let store = null;
 let cart = loadCart();
 let selectedProduct = null;
 let selectedPhotoIndex = 0;
+let selectedVariantValue = "";
 let isSubmittingOrder = false;
 let returnToCheckoutAfterTerms = false;
 
@@ -300,13 +301,16 @@ function renderProductCard(product) {
     product.badge ? `<span class="badge">${escapeHtml(product.badge)}</span>` : ""
   ].join("");
 
-  const price = product.saleActive
-    ? `
-      <span class="price-current price-sale">${formatMoney(product.effectivePrice)}</span>
-      <span class="price-old">${formatMoney(product.regularPrice)}</span>
-      <span class="sale-until">Акція до ${escapeHtml(formatDateUk(product.saleUntil))}</span>
-    `
-    : `<span class="price-current">${formatMoney(product.effectivePrice)}</span>`;
+  const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
+  const price = hasVariants
+    ? `<span class="price-current">від ${formatMoney(product.effectivePrice)}</span>`
+    : product.saleActive
+      ? `
+        <span class="price-current price-sale">${formatMoney(product.effectivePrice)}</span>
+        <span class="price-old">${formatMoney(product.regularPrice)}</span>
+        <span class="sale-until">Акція до ${escapeHtml(formatDateUk(product.saleUntil))}</span>
+      `
+      : `<span class="price-current">${formatMoney(product.effectivePrice)}</span>`;
 
   return `
     <article class="product-card">
@@ -424,6 +428,7 @@ function openProduct(code) {
 
   selectedProduct = product;
   selectedPhotoIndex = 0;
+  selectedVariantValue = product.variants?.[0]?.value || "";
   renderProductModal();
 
   openModal(elements.productModal, elements.productOverlay);
@@ -437,13 +442,25 @@ function renderProductModal() {
     ? product.photos
     : ["images/hero/main-cover.webp"];
 
-  const price = product.saleActive
-    ? `
-      <span class="price-current price-sale">${formatMoney(product.effectivePrice)}</span>
-      <span class="price-old">${formatMoney(product.regularPrice)}</span>
-      <span class="sale-until">Акція до ${escapeHtml(formatDateUk(product.saleUntil))}</span>
-    `
-    : `<span class="price-current">${formatMoney(product.effectivePrice)}</span>`;
+  const selectedVariant = product.variants?.find(
+    variant => variant.value === selectedVariantValue
+  ) || product.variants?.[0] || null;
+
+  const price = selectedVariant
+    ? selectedVariant.saleActive
+      ? `
+        <span class="price-current price-sale">${formatMoney(selectedVariant.effectivePrice)}</span>
+        <span class="price-old">${formatMoney(selectedVariant.regularPrice)}</span>
+        <span class="sale-until">Акція до ${escapeHtml(formatDateUk(selectedVariant.saleUntil))}</span>
+      `
+      : `<span class="price-current">${formatMoney(selectedVariant.effectivePrice)}</span>`
+    : product.saleActive
+      ? `
+        <span class="price-current price-sale">${formatMoney(product.effectivePrice)}</span>
+        <span class="price-old">${formatMoney(product.regularPrice)}</span>
+        <span class="sale-until">Акція до ${escapeHtml(formatDateUk(product.saleUntil))}</span>
+      `
+      : `<span class="price-current">${formatMoney(product.effectivePrice)}</span>`;
 
   const thumbs = photos
     .map((photo, index) => `
@@ -456,6 +473,26 @@ function renderProductModal() {
       </button>
     `)
     .join("");
+
+  const variantField = product.variants?.length
+    ? `
+      <div class="sauce-fields">
+        <div class="sauce-field">
+          <label for="modalVariant">${escapeHtml(product.variantType || "Варіант")}</label>
+          <select id="modalVariant" data-modal-variant>
+            ${product.variants.map(variant => `
+              <option
+                value="${escapeHtml(variant.value)}"
+                ${variant.value === selectedVariant?.value ? "selected" : ""}
+              >
+                ${escapeHtml(variant.value)} — ${formatMoney(variant.effectivePrice)}
+              </option>
+            `).join("")}
+          </select>
+        </div>
+      </div>
+    `
+    : "";
 
   const sauceFields = product.sauceCount > 0
     ? `
@@ -497,6 +534,8 @@ function renderProductModal() {
         <p class="product-weight">${escapeHtml(product.weight || "")}</p>
         <div class="price-row">${price}</div>
 
+        ${variantField}
+
         <div class="detail-info">
           ${product.ingredients ? `<p><strong>Склад:</strong> ${escapeHtml(product.ingredients)}</p>` : ""}
           ${product.allergens ? `<p><strong>Алергени:</strong> ${escapeHtml(product.allergens)}</p>` : ""}
@@ -527,7 +566,7 @@ function quickAdd(code) {
   const product = findProduct(code);
   if (!product || !product.available) return;
 
-  if (product.sauceCount > 0) {
+  if (product.sauceCount > 0 || product.variants?.length) {
     openProduct(code);
     return;
   }
@@ -535,9 +574,11 @@ function quickAdd(code) {
   addToCart(product, []);
 }
 
-function addToCart(product, sauces) {
+function addToCart(product, sauces, variant = null) {
   const normalizedSauces = [...sauces];
-  const cartItemId = `${product.code}__${normalizedSauces.join("|")}`;
+  const variantValue = variant?.value || "";
+  const unitPrice = variant?.effectivePrice ?? product.effectivePrice;
+  const cartItemId = `${product.code}__${variantValue}__${normalizedSauces.join("|")}`;
 
   const existing = cart.find(item => item.cartItemId === cartItemId);
 
@@ -548,7 +589,9 @@ function addToCart(product, sauces) {
       cartItemId,
       code: product.code,
       name: product.name,
-      price: product.effectivePrice,
+      price: unitPrice,
+      variantType: variant?.type || "",
+      variantValue,
       sauces: normalizedSauces,
       quantity: 1
     });
@@ -586,6 +629,10 @@ function renderCart() {
     .map(item => `
       <article class="cart-item">
         <p class="cart-item-title">${escapeHtml(item.name)}</p>
+        ${item.variantValue
+          ? `<p class="cart-item-sauces">${escapeHtml(item.variantType || "Варіант")}: ${escapeHtml(item.variantValue)}</p>`
+          : ""
+        }
         ${item.sauces.length
           ? `<p class="cart-item-sauces">Соус: ${item.sauces.map(escapeHtml).join(", ")}</p>`
           : ""
@@ -806,6 +853,7 @@ function createOrderPayload() {
     items: cart.map(item => ({
       code: item.code,
       quantity: item.quantity,
+      variantValue: item.variantValue || "",
       sauces: item.sauces
     }))
   };
@@ -935,8 +983,20 @@ elements.productModalContent.addEventListener("click", event => {
       return;
     }
 
-    addToCart(selectedProduct, sauces);
+    const variant = selectedProduct.variants?.find(
+      item => item.value === selectedVariantValue
+    ) || null;
+
+    addToCart(selectedProduct, sauces, variant);
   }
+});
+
+elements.productModalContent.addEventListener("change", event => {
+  const variantSelect = event.target.closest("[data-modal-variant]");
+  if (!variantSelect || !selectedProduct) return;
+
+  selectedVariantValue = variantSelect.value;
+  renderProductModal();
 });
 
 elements.cartItems.addEventListener("click", event => {

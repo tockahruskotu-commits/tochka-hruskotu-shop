@@ -1531,3 +1531,15 @@ a {
     grid-column: auto;
   }
 }
+
+.weight-note {
+  margin: 12px 0 0;
+  padding: 10px 13px;
+  display: inline-block;
+  color: var(--chocolate-soft);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.45;
+}
