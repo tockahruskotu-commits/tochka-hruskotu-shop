@@ -3,6 +3,9 @@ const STORE_API_URL =
 
 const CART_STORAGE_KEY = "tochka_hruskotu_cart_v3";
 const REQUEST_ID_STORAGE_KEY = "tochka_hruskotu_request_id_v2";
+const STORE_CACHE_KEY = "tochka_hruskotu_store_cache_v1";
+const STORE_REQUEST_TIMEOUT_MS = 10000;
+const PAGE_LOADER_MAX_MS = 800;
 
 let store = null;
 let cart = loadCart();
@@ -120,13 +123,69 @@ function saveCart() {
   localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
 }
 
-async function loadStore() {
+function readCachedStore() {
+  try {
+    const raw = localStorage.getItem(STORE_CACHE_KEY);
+    if (!raw) return null;
+
+    const cached = JSON.parse(raw);
+    if (!cached || typeof cached !== "object" || !cached.data) {
+      return null;
+    }
+
+    return cached;
+  } catch (error) {
+    console.warn("Не вдалося прочитати кеш магазину:", error);
+    return null;
+  }
+}
+
+function saveCachedStore(data) {
+  try {
+    localStorage.setItem(
+      STORE_CACHE_KEY,
+      JSON.stringify({
+        savedAt: Date.now(),
+        data
+      })
+    );
+  } catch (error) {
+    console.warn("Не вдалося зберегти кеш магазину:", error);
+  }
+}
+
+function renderStore(data) {
+  store = data;
+  elements.storeError.hidden = true;
+  applySettings();
+  renderCategories();
+  renderCatalogue();
+  renderDeliveryAndPayment();
+  renderTerms();
+  renderCart();
+}
+
+function hidePageLoader() {
+  elements.pageLoader.classList.add("is-hidden");
+}
+
+async function fetchStoreFromServer() {
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(
+    () => controller.abort(),
+    STORE_REQUEST_TIMEOUT_MS
+  );
+
   try {
     const response = await fetch(`${STORE_API_URL}?action=store`, {
       method: "GET",
       redirect: "follow",
-      cache: "no-store"
+      signal: controller.signal
     });
+
+    if (!response.ok) {
+      throw new Error(`Помилка сервера: ${response.status}`);
+    }
 
     const text = await response.text();
     let result;
@@ -141,19 +200,42 @@ async function loadStore() {
       throw new Error(result.error || "Не вдалося завантажити магазин.");
     }
 
-    store = result;
-    applySettings();
-    renderCategories();
-    renderCatalogue();
-    renderDeliveryAndPayment();
-    renderTerms();
-    renderCart();
+    return result;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+}
+
+async function loadStore() {
+  window.setTimeout(hidePageLoader, PAGE_LOADER_MAX_MS);
+
+  const cached = readCachedStore();
+  const hasCachedStore = Boolean(cached?.data?.success);
+
+  if (hasCachedStore) {
+    renderStore(cached.data);
+    hidePageLoader();
+  } else {
+    elements.catalogueSections.innerHTML = `
+      <div class="catalogue-loading" role="status">
+        Завантажуємо каталог…
+      </div>
+    `;
+  }
+
+  try {
+    const freshStore = await fetchStoreFromServer();
+    renderStore(freshStore);
+    saveCachedStore(freshStore);
   } catch (error) {
     console.error(error);
-    elements.storeError.hidden = false;
-    elements.catalogueSections.innerHTML = "";
+
+    if (!hasCachedStore) {
+      elements.storeError.hidden = false;
+      elements.catalogueSections.innerHTML = "";
+    }
   } finally {
-    elements.pageLoader.classList.add("is-hidden");
+    hidePageLoader();
   }
 }
 
@@ -235,7 +317,7 @@ function renderCategories() {
     .map(category => {
       const count = productsForCategory(category.code).length;
       const image = category.cover
-        ? `<img src="${escapeHtml(category.cover)}" alt="${escapeHtml(category.name)}" loading="lazy">`
+        ? `<img src="${escapeHtml(category.cover)}" alt="${escapeHtml(category.name)}" loading="lazy" decoding="async">`
         : "";
 
       return `
@@ -321,7 +403,7 @@ function renderProductCard(product) {
         aria-label="Переглянути ${escapeHtml(product.name)}"
       >
         <span class="product-badges">${badges}</span>
-        <img src="${escapeHtml(firstPhoto)}" alt="${escapeHtml(product.name)}" loading="lazy">
+        <img src="${escapeHtml(firstPhoto)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async">
       </button>
 
       <div class="product-content">
@@ -469,7 +551,7 @@ function renderProductModal() {
         type="button"
         data-photo-index="${index}"
       >
-        <img src="${escapeHtml(photo)}" alt="" loading="lazy">
+        <img src="${escapeHtml(photo)}" alt="" loading="lazy" decoding="async">
       </button>
     `)
     .join("");
