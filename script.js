@@ -6,6 +6,7 @@ const REQUEST_ID_STORAGE_KEY = "tochka_hruskotu_request_id_v2";
 const STORE_CACHE_KEY = "tochka_hruskotu_store_cache_v1";
 const STORE_REQUEST_TIMEOUT_MS = 10000;
 const PAGE_LOADER_MAX_MS = 800;
+const FREE_DELIVERY_THRESHOLD = 2000;
 
 let store = null;
 let cart = loadCart();
@@ -14,6 +15,9 @@ let selectedPhotoIndex = 0;
 let selectedVariantValue = "";
 let isSubmittingOrder = false;
 let returnToCheckoutAfterTerms = false;
+let catalogueSortMode = "default";
+let suppressProductOpenUntil = 0;
+let cardGalleryTouch = null;
 
 const $ = selector => document.querySelector(selector);
 
@@ -275,9 +279,11 @@ function applySettings() {
   }
 
   elements.deliverySummary.textContent =
-    `Доставка по Україні. Термін виготовлення — до ${
+    `Доставка по Україні. При сумі товарів від ${formatMoney(FREE_DELIVERY_THRESHOLD)} — доставка до відділення або поштомату безкоштовна. Термін виготовлення — до ${
       settings.productionDays || 3
     } робочих днів. Якщо продукція є в наявності, відправимо раніше.`;
+
+  updateFreeDeliveryUi();
 
   const socialItems = [
     ["Telegram", settings.telegram],
@@ -312,6 +318,295 @@ function productsForCategory(code) {
   return products.filter(product => product.categoryCode === code);
 }
 
+
+function sortProducts(products) {
+  const items = [...products];
+
+  switch (catalogueSortMode) {
+    case "price-asc":
+      return items.sort(
+        (a, b) => (Number(a.effectivePrice) || 0) - (Number(b.effectivePrice) || 0)
+      );
+
+    case "price-desc":
+      return items.sort(
+        (a, b) => (Number(b.effectivePrice) || 0) - (Number(a.effectivePrice) || 0)
+      );
+
+    case "name-asc":
+      return items.sort((a, b) =>
+        String(a.name || "").localeCompare(String(b.name || ""), "uk-UA", {
+          sensitivity: "base"
+        })
+      );
+
+    case "name-desc":
+      return items.sort((a, b) =>
+        String(b.name || "").localeCompare(String(a.name || ""), "uk-UA", {
+          sensitivity: "base"
+        })
+      );
+
+    case "new-first":
+      return items.sort((a, b) => Number(Boolean(b.isNew)) - Number(Boolean(a.isNew)));
+
+    default:
+      return items;
+  }
+}
+
+function ensureCatalogueEnhancements() {
+  if (!document.querySelector("#catalogueEnhancementsStyles")) {
+    const style = document.createElement("style");
+    style.id = "catalogueEnhancementsStyles";
+    style.textContent = `
+      .catalogue-toolbar {
+        margin: -6px 0 18px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .catalogue-sort-control {
+        min-width: min(100%, 310px);
+        display: grid;
+        gap: 6px;
+      }
+
+      .free-delivery-note {
+        margin: 8px 0 18px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: rgba(166, 112, 44, 0.08);
+        font-size: 0.94rem;
+        line-height: 1.4;
+      }
+
+      .catalogue-sort-control label {
+        color: var(--chocolate-soft);
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .catalogue-sort-control select {
+        width: 100%;
+        min-height: 44px;
+        padding: 10px 38px 10px 12px;
+        color: var(--chocolate);
+        background: var(--white);
+        border: 1px solid var(--line);
+        border-radius: 11px;
+        font: inherit;
+        font-weight: 800;
+      }
+
+      .product-image-gallery {
+        position: relative;
+        min-height: 265px;
+        overflow: hidden;
+        background: var(--cream-deep);
+        touch-action: pan-y;
+      }
+
+      .product-image-gallery .product-image-button {
+        min-height: 265px;
+      }
+
+      .product-card-image {
+        transition: transform 0.25s ease, opacity 0.18s ease;
+      }
+
+      .card-gallery-arrow {
+        position: absolute;
+        z-index: 6;
+        top: 50%;
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        color: var(--chocolate);
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(90, 61, 44, 0.14);
+        border-radius: 999px;
+        box-shadow: 0 5px 18px rgba(44, 27, 21, 0.18);
+        font-size: 25px;
+        line-height: 1;
+        opacity: 0;
+        transform: translateY(-50%);
+        transition: opacity 0.18s ease, background 0.18s ease;
+      }
+
+      .card-gallery-arrow:hover {
+        background: var(--white);
+      }
+
+      .card-gallery-prev { left: 10px; }
+      .card-gallery-next { right: 10px; }
+
+      .product-image-gallery:hover .card-gallery-arrow,
+      .product-image-gallery:focus-within .card-gallery-arrow {
+        opacity: 1;
+      }
+
+      .card-gallery-dots {
+        position: absolute;
+        z-index: 7;
+        left: 50%;
+        bottom: 10px;
+        display: flex;
+        gap: 6px;
+        padding: 6px 8px;
+        background: rgba(44, 27, 21, 0.35);
+        border-radius: 999px;
+        transform: translateX(-50%);
+        backdrop-filter: blur(4px);
+      }
+
+      .card-gallery-dot {
+        width: 8px;
+        height: 8px;
+        padding: 0;
+        background: rgba(255, 255, 255, 0.58);
+        border: 0;
+        border-radius: 999px;
+        transition: width 0.18s ease, background 0.18s ease;
+      }
+
+      .card-gallery-dot.is-active {
+        width: 20px;
+        background: var(--white);
+      }
+
+      .product-badges { z-index: 8; }
+
+      @media (hover: none), (pointer: coarse) {
+        .card-gallery-arrow { opacity: 0.92; }
+      }
+
+      @media (max-width: 620px) {
+        .catalogue-toolbar {
+          justify-content: stretch;
+          margin-top: 0;
+        }
+
+        .catalogue-sort-control {
+          width: 100%;
+          min-width: 0;
+        }
+
+        .product-image-gallery,
+        .product-image-gallery .product-image-button,
+        .product-image-gallery .product-image-button img {
+          height: 285px;
+          min-height: 285px;
+        }
+
+        .card-gallery-arrow {
+          width: 36px;
+          height: 36px;
+          font-size: 23px;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  if (!document.querySelector("#catalogueSort")) {
+    const toolbar = document.createElement("div");
+    toolbar.className = "catalogue-toolbar";
+    toolbar.innerHTML = `
+      <div class="catalogue-sort-control">
+        <label for="catalogueSort">Сортувати товари</label>
+        <select id="catalogueSort" aria-label="Сортувати товари">
+          <option value="default">За замовчуванням</option>
+          <option value="price-asc">Ціна: від меншої до більшої</option>
+          <option value="price-desc">Ціна: від більшої до меншої</option>
+          <option value="name-asc">Назва: А–Я</option>
+          <option value="name-desc">Назва: Я–А</option>
+          <option value="new-first">Новинки спочатку</option>
+        </select>
+      </div>
+    `;
+
+    elements.catalogueSections.parentElement.insertBefore(
+      toolbar,
+      elements.catalogueSections
+    );
+
+    const sortSelect = toolbar.querySelector("#catalogueSort");
+    sortSelect.value = catalogueSortMode;
+    sortSelect.addEventListener("change", event => {
+      catalogueSortMode = event.target.value;
+      renderCatalogue();
+    });
+  }
+}
+
+function getCardGalleryPhotos(code) {
+  const product = findProduct(code);
+  return product?.photos?.length
+    ? product.photos
+    : ["images/hero/main-cover.webp"];
+}
+
+function setCardGalleryPhoto(gallery, index) {
+  if (!gallery) return;
+
+  const code = gallery.dataset.cardGallery;
+  const photos = getCardGalleryPhotos(code);
+  if (!photos.length) return;
+
+  const safeIndex = ((index % photos.length) + photos.length) % photos.length;
+  const image = gallery.querySelector(".product-card-image");
+
+  gallery.dataset.photoIndex = String(safeIndex);
+  gallery.dataset.hoverPreview = "0";
+
+  if (image) {
+    image.src = photos[safeIndex];
+  }
+
+  gallery.querySelectorAll("[data-card-gallery-dot]").forEach(dot => {
+    const isActive = Number(dot.dataset.cardGalleryDot) === safeIndex;
+    dot.classList.toggle("is-active", isActive);
+    dot.setAttribute("aria-current", isActive ? "true" : "false");
+  });
+}
+
+function stepCardGallery(gallery, direction) {
+  const currentIndex = Number(gallery?.dataset.photoIndex) || 0;
+  setCardGalleryPhoto(gallery, currentIndex + direction);
+}
+
+function previewSecondCardPhoto(gallery) {
+  if (!gallery || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    return;
+  }
+
+  const currentIndex = Number(gallery.dataset.photoIndex) || 0;
+  const photos = getCardGalleryPhotos(gallery.dataset.cardGallery);
+  if (currentIndex !== 0 || photos.length < 2) return;
+
+  const image = gallery.querySelector(".product-card-image");
+  if (!image) return;
+
+  gallery.dataset.hoverPreview = "1";
+  image.src = photos[1];
+}
+
+function restoreCardPhotoAfterHover(gallery) {
+  if (!gallery || gallery.dataset.hoverPreview !== "1") return;
+
+  const photos = getCardGalleryPhotos(gallery.dataset.cardGallery);
+  const currentIndex = Number(gallery.dataset.photoIndex) || 0;
+  const image = gallery.querySelector(".product-card-image");
+
+  gallery.dataset.hoverPreview = "0";
+  if (image && photos[currentIndex]) {
+    image.src = photos[currentIndex];
+  }
+}
+
 function renderCategories() {
   elements.categoryGrid.innerHTML = (store.categories || [])
     .map(category => {
@@ -338,12 +633,14 @@ function renderCategories() {
 }
 
 function renderCatalogue() {
+  ensureCatalogueEnhancements();
+
   const categories = store.categories || [];
 
   const sections = categories
     .filter(category => category.code !== "ALL")
     .map(category => {
-      const products = productsForCategory(category.code);
+      const products = sortProducts(productsForCategory(category.code));
 
       const productMarkup = products.length
         ? `<div class="product-grid">${products.map(renderProductCard).join("")}</div>`
@@ -372,7 +669,10 @@ function renderCatalogue() {
 }
 
 function renderProductCard(product) {
-  const firstPhoto = product.photos?.[0] || "images/hero/main-cover.webp";
+  const photos = product.photos?.length
+    ? product.photos
+    : ["images/hero/main-cover.webp"];
+  const firstPhoto = photos[0];
   const category = (store.categories || []).find(
     item => item.code === product.categoryCode
   );
@@ -394,17 +694,62 @@ function renderProductCard(product) {
       `
       : `<span class="price-current">${formatMoney(product.effectivePrice)}</span>`;
 
+  const galleryControls = photos.length > 1
+    ? `
+      <button
+        class="card-gallery-arrow card-gallery-prev"
+        type="button"
+        data-card-gallery-step="-1"
+        data-gallery-product="${escapeHtml(product.code)}"
+        aria-label="Попереднє фото ${escapeHtml(product.name)}"
+      >‹</button>
+      <button
+        class="card-gallery-arrow card-gallery-next"
+        type="button"
+        data-card-gallery-step="1"
+        data-gallery-product="${escapeHtml(product.code)}"
+        aria-label="Наступне фото ${escapeHtml(product.name)}"
+      >›</button>
+      <div class="card-gallery-dots" aria-label="Фото товару">
+        ${photos.map((_, index) => `
+          <button
+            class="card-gallery-dot ${index === 0 ? "is-active" : ""}"
+            type="button"
+            data-card-gallery-dot="${index}"
+            data-gallery-product="${escapeHtml(product.code)}"
+            aria-label="Фото ${index + 1}"
+            aria-current="${index === 0 ? "true" : "false"}"
+          ></button>
+        `).join("")}
+      </div>
+    `
+    : "";
+
   return `
     <article class="product-card">
-      <button
-        class="product-image-button"
-        type="button"
-        data-open-product="${escapeHtml(product.code)}"
-        aria-label="Переглянути ${escapeHtml(product.name)}"
+      <div
+        class="product-image-gallery"
+        data-card-gallery="${escapeHtml(product.code)}"
+        data-photo-index="0"
+        data-hover-preview="0"
       >
-        <span class="product-badges">${badges}</span>
-        <img src="${escapeHtml(firstPhoto)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async">
-      </button>
+        <button
+          class="product-image-button"
+          type="button"
+          data-open-product="${escapeHtml(product.code)}"
+          aria-label="Переглянути ${escapeHtml(product.name)}"
+        >
+          <span class="product-badges">${badges}</span>
+          <img
+            class="product-card-image"
+            src="${escapeHtml(firstPhoto)}"
+            alt="${escapeHtml(product.name)}"
+            loading="lazy"
+            decoding="async"
+          >
+        </button>
+        ${galleryControls}
+      </div>
 
       <div class="product-content">
         <p class="product-category">${escapeHtml(category?.name || "")}</p>
@@ -693,6 +1038,66 @@ function calculateCartTotal() {
   return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 }
 
+function qualifiesForFreeDelivery(total = calculateCartTotal()) {
+  return total >= FREE_DELIVERY_THRESHOLD;
+}
+
+function getSelectedDeliveryMethod() {
+  return (store?.deliveryMethods || []).find(
+    item => item.code === elements.deliveryMethod?.value
+  ) || null;
+}
+
+function selectedDeliverySupportsFreeDelivery() {
+  const method = getSelectedDeliveryMethod();
+  return Boolean(method?.requireBranch);
+}
+
+function getFreeDeliveryCartMessage(total = calculateCartTotal()) {
+  if (qualifiesForFreeDelivery(total)) {
+    return `Безкоштовна доставка активована — до відділення або поштомату.`;
+  }
+
+  const remaining = Math.max(0, FREE_DELIVERY_THRESHOLD - total);
+  return `До безкоштовної доставки залишилося ${formatMoney(remaining)}. Безкоштовно — до відділення або поштомату при сумі товарів від ${formatMoney(FREE_DELIVERY_THRESHOLD)}.`;
+}
+
+function updateFreeDeliveryUi() {
+  const total = calculateCartTotal();
+  const cartFooterNote = document.querySelector(".cart-footer > p");
+
+  if (cartFooterNote) {
+    cartFooterNote.textContent = cart.length
+      ? getFreeDeliveryCartMessage(total)
+      : `Безкоштовна доставка до відділення або поштомату при замовленні від ${formatMoney(FREE_DELIVERY_THRESHOLD)}.`;
+  }
+
+  const trustDeliveryText = document.querySelector(".trust-strip article:nth-child(2) span");
+  if (trustDeliveryText) {
+    trustDeliveryText.textContent = `Нова пошта та Укрпошта. Від ${formatMoney(FREE_DELIVERY_THRESHOLD)} — доставка до відділення або поштомату безкоштовна.`;
+  }
+
+  let checkoutNote = document.querySelector("#checkoutFreeDeliveryNote");
+  const checkoutSummary = document.querySelector(".checkout-summary");
+  if (!checkoutNote && checkoutSummary) {
+    checkoutSummary.insertAdjacentHTML(
+      "afterend",
+      '<p id="checkoutFreeDeliveryNote" class="free-delivery-note"></p>'
+    );
+    checkoutNote = document.querySelector("#checkoutFreeDeliveryNote");
+  }
+
+  if (checkoutNote) {
+    if (qualifiesForFreeDelivery(total)) {
+      checkoutNote.textContent = selectedDeliverySupportsFreeDelivery()
+        ? `Доставка до вибраного відділення або поштомату — безкоштовна.`
+        : `Для замовлення діє безкоштовна доставка до відділення або поштомату. Оберіть відповідний спосіб доставки.`;
+    } else {
+      checkoutNote.textContent = getFreeDeliveryCartMessage(total);
+    }
+  }
+}
+
 function renderCart() {
   elements.cartCount.textContent = calculateCartCount();
 
@@ -704,6 +1109,7 @@ function renderCart() {
     `;
     elements.cartTotal.textContent = formatMoney(0);
     elements.checkoutButton.disabled = true;
+    updateFreeDeliveryUi();
     return;
   }
 
@@ -754,6 +1160,7 @@ function renderCart() {
 
   elements.cartTotal.textContent = formatMoney(calculateCartTotal());
   elements.checkoutButton.disabled = false;
+  updateFreeDeliveryUi();
 }
 
 function changeCartQuantity(cartItemId, change) {
@@ -825,6 +1232,7 @@ function openCheckout() {
   closeCart();
   clearOrderStatus();
   elements.checkoutSummaryTotal.textContent = formatMoney(calculateCartTotal());
+  updateFreeDeliveryUi();
   elements.submitOrderButton.disabled = false;
   elements.submitOrderButton.textContent = "Підтвердити замовлення";
   openModal(elements.checkoutModal, elements.checkoutOverlay);
@@ -866,10 +1274,19 @@ function updateDeliveryFields() {
 
   elements.deliveryBranch.placeholder = method.branchPlaceholder || "";
   elements.deliveryBranch.required = Boolean(method.requireBranch);
-  elements.deliveryNote.textContent = method.note || "";
+
+  const baseDeliveryNote = method.note || "";
+  const freeDeliveryNote = method.requireBranch
+    ? qualifiesForFreeDelivery()
+      ? ` Безкоштовна доставка для цього замовлення.`
+      : ` Безкоштовна доставка від ${formatMoney(FREE_DELIVERY_THRESHOLD)}.`
+    : "";
+
+  elements.deliveryNote.textContent = `${baseDeliveryNote}${freeDeliveryNote}`.trim();
 
   $("#customerRegion").required = Boolean(method.requireRegion);
   $("#customerCity").required = Boolean(method.requireCity);
+  updateFreeDeliveryUi();
 }
 
 function updatePaymentNote() {
@@ -927,7 +1344,9 @@ function createOrderPayload() {
     },
     delivery: {
       code: formData.get("deliveryMethod"),
-      branch: formData.get("deliveryBranch")
+      branch: formData.get("deliveryBranch"),
+      freeDelivery: qualifiesForFreeDelivery() && selectedDeliverySupportsFreeDelivery(),
+      deliveryCost: qualifiesForFreeDelivery() && selectedDeliverySupportsFreeDelivery() ? 0 : null
     },
     paymentCode: formData.get("paymentMethod"),
     comment: formData.get("customerComment"),
@@ -1031,8 +1450,27 @@ elements.categoryGrid.addEventListener("click", event => {
 });
 
 elements.catalogueSections.addEventListener("click", event => {
+  const galleryStepButton = event.target.closest("[data-card-gallery-step]");
+  if (galleryStepButton) {
+    const gallery = galleryStepButton.closest("[data-card-gallery]");
+    stepCardGallery(gallery, Number(galleryStepButton.dataset.cardGalleryStep) || 0);
+    return;
+  }
+
+  const galleryDot = event.target.closest("[data-card-gallery-dot]");
+  if (galleryDot) {
+    const gallery = galleryDot.closest("[data-card-gallery]");
+    setCardGalleryPhoto(gallery, Number(galleryDot.dataset.cardGalleryDot) || 0);
+    return;
+  }
+
   const openButton = event.target.closest("[data-open-product]");
   if (openButton) {
+    if (Date.now() < suppressProductOpenUntil) {
+      event.preventDefault();
+      return;
+    }
+
     openProduct(openButton.dataset.openProduct);
     return;
   }
@@ -1047,6 +1485,60 @@ elements.catalogueSections.addEventListener("click", event => {
     document.querySelector("#catalogue").scrollIntoView({ behavior: "smooth" });
   }
 });
+
+elements.catalogueSections.addEventListener("mouseover", event => {
+  const gallery = event.target.closest("[data-card-gallery]");
+  if (!gallery || gallery.contains(event.relatedTarget)) return;
+  previewSecondCardPhoto(gallery);
+});
+
+elements.catalogueSections.addEventListener("mouseout", event => {
+  const gallery = event.target.closest("[data-card-gallery]");
+  if (!gallery || gallery.contains(event.relatedTarget)) return;
+  restoreCardPhotoAfterHover(gallery);
+});
+
+elements.catalogueSections.addEventListener(
+  "touchstart",
+  event => {
+    const gallery = event.target.closest("[data-card-gallery]");
+    const touch = event.touches?.[0];
+    if (!gallery || !touch) return;
+
+    cardGalleryTouch = {
+      gallery,
+      startX: touch.clientX,
+      startY: touch.clientY
+    };
+  },
+  { passive: true }
+);
+
+elements.catalogueSections.addEventListener(
+  "touchend",
+  event => {
+    if (!cardGalleryTouch) return;
+
+    const touch = event.changedTouches?.[0];
+    if (!touch) {
+      cardGalleryTouch = null;
+      return;
+    }
+
+    const deltaX = touch.clientX - cardGalleryTouch.startX;
+    const deltaY = touch.clientY - cardGalleryTouch.startY;
+    const gallery = cardGalleryTouch.gallery;
+    cardGalleryTouch = null;
+
+    if (Math.abs(deltaX) < 45 || Math.abs(deltaX) <= Math.abs(deltaY)) {
+      return;
+    }
+
+    suppressProductOpenUntil = Date.now() + 450;
+    stepCardGallery(gallery, deltaX < 0 ? 1 : -1);
+  },
+  { passive: true }
+);
 
 elements.productModalContent.addEventListener("click", event => {
   const thumb = event.target.closest("[data-photo-index]");
