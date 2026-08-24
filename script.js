@@ -1,83 +1,166 @@
 const STORE_API_URL =
   "https://script.google.com/macros/s/AKfycbzCgvAMAmqrsK-KsGcPMfx60kvQbZVJII91WVZKIn-KF7bFIA3HKdKe0JmaBu4RZtX31Q/exec";
 
-const CART_STORAGE_KEY = "tochka_hruskotu_cart_v3";
-const REQUEST_ID_STORAGE_KEY = "tochka_hruskotu_request_id_v2";
-const STORE_CACHE_KEY = "tochka_hruskotu_store_cache_v1";
-const STORE_REQUEST_TIMEOUT_MS = 10000;
-const PAGE_LOADER_MAX_MS = 800;
-const FREE_DELIVERY_THRESHOLD = 2000;
+const CART_STORAGE_KEY = "tochka_hruskotu_cart_v4";
+const CUSTOMER_STORAGE_KEY = "tochka_hruskotu_customer_v1";
+const STORE_CACHE_KEY = "tochka_hruskotu_store_cache_v2";
+const REQUEST_ID_STORAGE_KEY = "tochka_hruskotu_request_id_v3";
+const STORE_REQUEST_TIMEOUT_MS = 12000;
 
 let store = null;
-let cart = loadCart();
+let cart = loadJson(CART_STORAGE_KEY, []);
+let activeFilter = "ALL";
+let searchQuery = "";
+let sortMode = "default";
 let selectedProduct = null;
 let selectedPhotoIndex = 0;
 let selectedVariantValue = "";
+let selectedSauces = [];
+let modalQuantity = 1;
 let isSubmittingOrder = false;
-let returnToCheckoutAfterTerms = false;
-let catalogueSortMode = "default";
-let suppressProductOpenUntil = 0;
-let cardGalleryTouch = null;
+let toastTimer = null;
 
 const $ = selector => document.querySelector(selector);
+const $$ = selector => [...document.querySelectorAll(selector)];
 
-const elements = {
+const els = {
   pageLoader: $("#pageLoader"),
   headerLogo: $("#headerLogo"),
   footerLogo: $("#footerLogo"),
   headerStoreName: $("#headerStoreName"),
   footerStoreName: $("#footerStoreName"),
   heroTitle: $("#heroTitle"),
+  heroText: $("#heroText"),
+  heroButton: $("#heroButton"),
+  heroGiftButton: $("#heroGiftButton"),
   heroImage: $("#heroImage"),
-  categoryGrid: $("#categoryGrid"),
-  catalogueSections: $("#catalogueSections"),
-  catalogueIntro: $("#catalogueIntro"),
+  seasonalNote: $("#seasonalNote"),
+  searchTitle: $("#searchTitle"),
+  catalogSearch: $("#catalogSearch"),
+  clearSearch: $("#clearSearch"),
+  sortSelect: $("#sortSelect"),
+  categoryFilters: $("#categoryFilters"),
+  catalogueResultText: $("#catalogueResultText"),
+  productGrid: $("#productGrid"),
+  catalogueEmpty: $("#catalogueEmpty"),
+  resetCatalogue: $("#resetCatalogue"),
   storeError: $("#storeError"),
-  deliverySummary: $("#deliverySummary"),
+  certificateGrid: $("#certificateGrid"),
   deliveryList: $("#deliveryList"),
   paymentList: $("#paymentList"),
+  aboutTitle: $("#aboutTitle"),
+  aboutText: $("#aboutText"),
+  reviewGrid: $("#reviewGrid"),
+  reviewsEmpty: $("#reviewsEmpty"),
+  faqList: $("#faqList"),
+  contactText: $("#contactText"),
+  contactActions: $("#contactActions"),
+  socialLinks: $("#socialLinks"),
   googleReviewLink: $("#googleReviewLink"),
   googleProfileLink: $("#googleProfileLink"),
-  socialLinks: $("#socialLinks"),
   footerPhone: $("#footerPhone"),
-
+  mobileMenuButton: $("#mobileMenuButton"),
+  mobileMenu: $("#mobileMenu"),
+  mobileMenuOverlay: $("#mobileMenuOverlay"),
+  closeMobileMenu: $("#closeMobileMenu"),
+  headerSearchButton: $("#headerSearchButton"),
+  mobileSearchButton: $("#mobileSearchButton"),
   cartButton: $("#cartButton"),
+  mobileCartButton: $("#mobileCartButton"),
   cartCount: $("#cartCount"),
+  mobileCartCount: $("#mobileCartCount"),
+  cartHeaderTotal: $("#cartHeaderTotal"),
   cartOverlay: $("#cartOverlay"),
   cartPanel: $("#cartPanel"),
   closeCartButton: $("#closeCartButton"),
   cartItems: $("#cartItems"),
+  cartSuggestions: $("#cartSuggestions"),
+  cartProgress: $("#cartProgress"),
   cartTotal: $("#cartTotal"),
   checkoutButton: $("#checkoutButton"),
-
   productOverlay: $("#productOverlay"),
   productModal: $("#productModal"),
   closeProductButton: $("#closeProductButton"),
   productModalContent: $("#productModalContent"),
-
   checkoutOverlay: $("#checkoutOverlay"),
   checkoutModal: $("#checkoutModal"),
   closeCheckoutButton: $("#closeCheckoutButton"),
   checkoutForm: $("#checkoutForm"),
   checkoutSummaryTotal: $("#checkoutSummaryTotal"),
+  checkoutDeliveryProgress: $("#checkoutDeliveryProgress"),
+  customerName: $("#customerName"),
+  customerSurname: $("#customerSurname"),
+  customerPhone: $("#customerPhone"),
+  rememberCustomer: $("#rememberCustomer"),
   deliveryMethod: $("#deliveryMethod"),
+  regionField: $("#regionField"),
+  cityField: $("#cityField"),
+  branchField: $("#branchField"),
+  customerRegion: $("#customerRegion"),
+  customerCity: $("#customerCity"),
   deliveryBranch: $("#deliveryBranch"),
   deliveryBranchLabel: $("#deliveryBranchLabel"),
   deliveryNote: $("#deliveryNote"),
+  desiredDate: $("#desiredDate"),
+  isGift: $("#isGift"),
+  giftFields: $("#giftFields"),
+  recipientName: $("#recipientName"),
+  recipientPhone: $("#recipientPhone"),
+  isSurprise: $("#isSurprise"),
+  hidePrice: $("#hidePrice"),
+  giftWrapping: $("#giftWrapping"),
+  giftWrappingNote: $("#giftWrappingNote"),
+  cardEnabled: $("#cardEnabled"),
+  cardFields: $("#cardFields"),
+  cardStyle: $("#cardStyle"),
+  cardText: $("#cardText"),
+  helpWithCardText: $("#helpWithCardText"),
+  congratulationsTo: $("#congratulationsTo"),
+  occasion: $("#occasion"),
+  giftFrom: $("#giftFrom"),
+  signatureMode: $("#signatureMode"),
+  recipientHintField: $("#recipientHintField"),
+  recipientHint: $("#recipientHint"),
+  courageScenarioField: $("#courageScenarioField"),
+  courageScenario: $("#courageScenario"),
   paymentMethod: $("#paymentMethod"),
   paymentNote: $("#paymentNote"),
+  hasCertificate: $("#hasCertificate"),
+  certificateCodeField: $("#certificateCodeField"),
+  certificateCode: $("#certificateCode"),
+  customerComment: $("#customerComment"),
+  termsAccepted: $("#termsAccepted"),
   orderStatus: $("#orderStatus"),
   submitOrderButton: $("#submitOrderButton"),
-
   termsOverlay: $("#termsOverlay"),
   termsModal: $("#termsModal"),
   closeTermsButton: $("#closeTermsButton"),
   termsContent: $("#termsContent"),
-  termsTitle: $("#termsTitle"),
   openTermsButton: $("#openTermsButton"),
   footerTermsButton: $("#footerTermsButton"),
-  checkoutTermsButton: $("#checkoutTermsButton")
+  checkoutTermsButton: $("#checkoutTermsButton"),
+  contactOverlay: $("#contactOverlay"),
+  contactModal: $("#contactModal"),
+  closeContactButton: $("#closeContactButton"),
+  contactChoiceGrid: $("#contactChoiceGrid"),
+  toast: $("#toast")
 };
+
+function loadJson(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    return JSON.parse(raw);
+  } catch (error) {
+    console.warn(`Не вдалося прочитати ${key}`, error);
+    return fallback;
+  }
+}
+
+function saveJson(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); }
+  catch (error) { console.warn(`Не вдалося зберегти ${key}`, error); }
+}
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -88,1534 +171,748 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function escapeAttr(value) { return escapeHtml(value); }
 function formatMoney(value) {
-  const currency = store?.settings?.currency || "грн";
-  return new Intl.NumberFormat("uk-UA", {
-    maximumFractionDigits: 2
-  }).format(Number(value) || 0) + " " + currency;
+  const amount = Number(value || 0);
+  return new Intl.NumberFormat("uk-UA", { maximumFractionDigits: 2 }).format(amount) + " грн";
 }
-
 function formatDateUk(value) {
   if (!value) return "";
-  const date = new Date(value + "T00:00:00");
+  const date = new Date(`${value}T12:00:00`);
   if (Number.isNaN(date.getTime())) return value;
-
-  return new Intl.DateTimeFormat("uk-UA", {
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  }).format(date);
+  return new Intl.DateTimeFormat("uk-UA", { day: "numeric", month: "long", year: "numeric" }).format(date);
+}
+function normalizeText(value) {
+  return String(value || "").toLowerCase().replace(/[’']/g, "'").trim();
+}
+function safeUrl(url) {
+  const value = String(url || "").trim();
+  return /^(https?:|tel:|viber:)/i.test(value) ? value : "#";
+}
+function showToast(message) {
+  if (!els.toast) return;
+  els.toast.textContent = message;
+  els.toast.classList.add("is-visible");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => els.toast.classList.remove("is-visible"), 2600);
+}
+function lockBodyIfNeeded() {
+  const open = $$(".modal.is-open, .cart-panel.is-open, .mobile-menu.is-open").length > 0;
+  document.body.classList.toggle("no-scroll", open);
 }
 
-function categoryAnchor(code) {
-  return "category-" + String(code).toLowerCase().replace(/[^a-z0-9-]/g, "-");
+function saveCart() { saveJson(CART_STORAGE_KEY, cart); }
+function findProduct(code) { return (store?.products || []).find(p => p.code === code) || null; }
+function findCategory(code) { return (store?.categories || []).find(c => c.code === code) || null; }
+function getFreeDeliveryThreshold() { return Number(store?.settings?.freeDeliveryFrom || 2000); }
+function cartCount() { return cart.reduce((sum, item) => sum + Number(item.quantity || 0), 0); }
+function cartTotal() { return cart.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 0), 0); }
+function productMinPrice(product) {
+  const variants = product?.variants || [];
+  if (variants.length) return Math.min(...variants.map(v => Number(v.effectivePrice || 0)).filter(v => v > 0));
+  return Number(product?.effectivePrice || 0);
 }
-
-function loadCart() {
-  try {
-    const raw = localStorage.getItem(CART_STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (error) {
-    console.error("Помилка читання кошика:", error);
-    return [];
-  }
+function productRegularMinPrice(product) {
+  const variants = product?.variants || [];
+  if (variants.length) return Math.min(...variants.map(v => Number(v.regularPrice || 0)).filter(v => v > 0));
+  return Number(product?.regularPrice || 0);
 }
-
-function saveCart() {
-  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+function productHasSale(product) {
+  if (product?.saleActive) return true;
+  return (product?.variants || []).some(v => v.saleActive && Number(v.salePrice || 0) > 0);
 }
-
-function readCachedStore() {
-  try {
-    const raw = localStorage.getItem(STORE_CACHE_KEY);
-    if (!raw) return null;
-
-    const cached = JSON.parse(raw);
-    if (!cached || typeof cached !== "object" || !cached.data) {
-      return null;
-    }
-
-    return cached;
-  } catch (error) {
-    console.warn("Не вдалося прочитати кеш магазину:", error);
-    return null;
-  }
+function productSaleUntil(product) {
+  if (product?.saleActive && product.saleUntil) return product.saleUntil;
+  return (product?.variants || []).find(v => v.saleActive && v.saleUntil)?.saleUntil || "";
 }
-
-function saveCachedStore(data) {
-  try {
-    localStorage.setItem(
-      STORE_CACHE_KEY,
-      JSON.stringify({
-        savedAt: Date.now(),
-        data
-      })
-    );
-  } catch (error) {
-    console.warn("Не вдалося зберегти кеш магазину:", error);
-  }
+function productPhotos(product) {
+  const photos = (product?.photos || []).filter(Boolean);
+  return photos.length ? photos : [store?.settings?.logo || "images/brand/logo.webp"];
 }
+function isCertificateFilter(code) { return code === "CERTIFICATES"; }
 
-function renderStore(data) {
-  store = data;
-  elements.storeError.hidden = true;
-  applySettings();
-  renderCategories();
-  renderCatalogue();
-  renderDeliveryAndPayment();
-  renderTerms();
-  renderCart();
-}
-
-function hidePageLoader() {
-  elements.pageLoader.classList.add("is-hidden");
-}
-
-async function fetchStoreFromServer() {
+async function fetchStore() {
   const controller = new AbortController();
-  const timeoutId = window.setTimeout(
-    () => controller.abort(),
-    STORE_REQUEST_TIMEOUT_MS
-  );
-
+  const timer = setTimeout(() => controller.abort(), STORE_REQUEST_TIMEOUT_MS);
   try {
-    const response = await fetch(`${STORE_API_URL}?action=store`, {
-      method: "GET",
-      redirect: "follow",
-      signal: controller.signal
-    });
-
-    if (!response.ok) {
-      throw new Error(`Помилка сервера: ${response.status}`);
-    }
-
-    const text = await response.text();
-    let result;
-
-    try {
-      result = JSON.parse(text);
-    } catch {
-      throw new Error("Сервер повернув некоректну відповідь.");
-    }
-
-    if (!result.success) {
-      throw new Error(result.error || "Не вдалося завантажити магазин.");
-    }
-
+    const response = await fetch(`${STORE_API_URL}?action=store&_=${Date.now()}`, { method: "GET", redirect: "follow", signal: controller.signal });
+    if (!response.ok) throw new Error(`Помилка сервера ${response.status}`);
+    const result = await response.json();
+    if (!result?.success) throw new Error(result?.error || "Не вдалося завантажити каталог.");
     return result;
-  } finally {
-    window.clearTimeout(timeoutId);
-  }
+  } finally { clearTimeout(timer); }
 }
 
 async function loadStore() {
-  window.setTimeout(hidePageLoader, PAGE_LOADER_MAX_MS);
-
-  const cached = readCachedStore();
-  const hasCachedStore = Boolean(cached?.data?.success);
-
-  if (hasCachedStore) {
+  const cached = loadJson(STORE_CACHE_KEY, null);
+  if (cached?.data?.success) {
     renderStore(cached.data);
-    hidePageLoader();
-  } else {
-    elements.catalogueSections.innerHTML = `
-      <div class="catalogue-loading" role="status">
-        Завантажуємо каталог…
-      </div>
-    `;
+    hideLoader();
   }
-
   try {
-    const freshStore = await fetchStoreFromServer();
-    renderStore(freshStore);
-    saveCachedStore(freshStore);
+    const fresh = await fetchStore();
+    saveJson(STORE_CACHE_KEY, { savedAt: Date.now(), data: fresh });
+    renderStore(fresh);
   } catch (error) {
     console.error(error);
-
-    if (!hasCachedStore) {
-      elements.storeError.hidden = false;
-      elements.catalogueSections.innerHTML = "";
+    if (!cached?.data?.success) {
+      els.storeError.hidden = false;
+      els.productGrid.innerHTML = "";
     }
-  } finally {
-    hidePageLoader();
-  }
+  } finally { hideLoader(); }
+}
+
+function hideLoader() { els.pageLoader?.classList.add("is-hidden"); }
+
+function renderStore(data) {
+  store = data;
+  els.storeError.hidden = true;
+  applySettings();
+  renderFilters();
+  renderCatalogue();
+  renderCertificates();
+  renderDeliveryPayment();
+  renderAbout();
+  renderReviews();
+  renderFaq();
+  renderContacts();
+  renderTerms();
+  populateCheckoutOptions();
+  renderCart();
 }
 
 function applySettings() {
-  const settings = store.settings || {};
-
-  document.title = `${settings.storeName || "Точка Хрускоту"} — онлайн-магазин`;
-
-  elements.headerStoreName.textContent = settings.storeName || "Точка Хрускоту";
-  elements.footerStoreName.textContent = settings.storeName || "Точка Хрускоту";
-  elements.heroTitle.textContent = "Знайди свою точку хрускоту";
-
-  if (settings.logo) {
-    elements.headerLogo.src = settings.logo;
-    elements.footerLogo.src = settings.logo;
+  const s = store?.settings || {};
+  document.title = `${s.storeName || "Точка Хрускоту"} — крафтові десерти та подарунки`;
+  els.headerStoreName.textContent = s.storeName || "Точка Хрускоту";
+  els.footerStoreName.textContent = s.storeName || "Точка Хрускоту";
+  els.heroTitle.textContent = s.heroTitle || "Трохи хрускоту. Трохи дитинства. Багато тепла.";
+  els.heroText.textContent = s.heroText || "Солодощі, які хочеться смакувати самим, ділити з близькими й дарувати тим, кого любиш.";
+  els.heroButton.textContent = s.heroButton || "Обрати щось смачненьке";
+  els.heroGiftButton.textContent = s.giftButton || "Знайти подарунок";
+  els.searchTitle.textContent = s.searchTitle || "Що сьогодні хочеться похрумтіти?";
+  els.catalogSearch.placeholder = s.searchPlaceholder || "Пошук: донати, карамель, подарунок, соус...";
+  els.contactText.textContent = s.contactText || "«Точка Хрускоту» — м. Дубно, Рівненська область.";
+  if (s.logo) { els.headerLogo.src = s.logo; els.footerLogo.src = s.logo; }
+  if (s.heroImage) els.heroImage.src = s.heroImage;
+  if (s.googleReview) els.googleReviewLink.href = s.googleReview;
+  if (s.googleProfile) els.googleProfileLink.href = s.googleProfile;
+  if (s.phone) {
+    els.footerPhone.href = `tel:${s.phone.replace(/[^\d+]/g, "")}`;
+    els.footerPhone.textContent = s.phone;
   }
-
-  if (settings.heroImage) {
-    elements.heroImage.src = settings.heroImage;
-  }
-
-  if (settings.googleReview) {
-    elements.googleReviewLink.href = settings.googleReview;
-  }
-
-  if (settings.googleProfile) {
-    elements.googleProfileLink.href = settings.googleProfile;
-  }
-
-  if (settings.phone) {
-    const normalized = settings.phone.startsWith("+")
-      ? settings.phone
-      : `+${settings.phone}`;
-
-    elements.footerPhone.href = `tel:${normalized.replace(/[^\d+]/g, "")}`;
-    elements.footerPhone.textContent = normalized;
-  }
-
-  elements.deliverySummary.textContent =
-    `Доставка по Україні. При сумі товарів від ${formatMoney(FREE_DELIVERY_THRESHOLD)} — доставка до відділення або поштомату безкоштовна. Термін виготовлення — до ${
-      settings.productionDays || 3
-    } робочих днів. Якщо продукція є в наявності, відправимо раніше.`;
-
-  updateFreeDeliveryUi();
-
-  const socialItems = [
-    ["Telegram", settings.telegram],
-    ["Instagram", settings.instagram],
-    ["Facebook", settings.facebook],
-    ["TikTok", settings.tiktok],
-    ["YouTube", settings.youtube]
-  ].filter(([, url]) => Boolean(url));
-
-  elements.socialLinks.innerHTML = socialItems
-    .map(([name, url]) => `
-      <a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">
-        ${escapeHtml(name)}
-      </a>
-    `)
-    .join("");
-}
-
-function getRealCategories() {
-  return (store.categories || []).filter(
-    category => !["ALL", "NEW", "SALE"].includes(category.code)
-  );
-}
-
-function productsForCategory(code) {
-  const products = store.products || [];
-
-  if (code === "ALL") return products;
-  if (code === "NEW") return products.filter(product => product.isNew);
-  if (code === "SALE") return products.filter(product => product.saleActive);
-
-  return products.filter(product => product.categoryCode === code);
-}
-
-
-function sortProducts(products) {
-  const items = [...products];
-
-  switch (catalogueSortMode) {
-    case "price-asc":
-      return items.sort(
-        (a, b) => (Number(a.effectivePrice) || 0) - (Number(b.effectivePrice) || 0)
-      );
-
-    case "price-desc":
-      return items.sort(
-        (a, b) => (Number(b.effectivePrice) || 0) - (Number(a.effectivePrice) || 0)
-      );
-
-    case "name-asc":
-      return items.sort((a, b) =>
-        String(a.name || "").localeCompare(String(b.name || ""), "uk-UA", {
-          sensitivity: "base"
-        })
-      );
-
-    case "name-desc":
-      return items.sort((a, b) =>
-        String(b.name || "").localeCompare(String(a.name || ""), "uk-UA", {
-          sensitivity: "base"
-        })
-      );
-
-    case "new-first":
-      return items.sort((a, b) => Number(Boolean(b.isNew)) - Number(Boolean(a.isNew)));
-
-    default:
-      return items;
+  const banner = (store?.banners || [])[0];
+  if (banner?.text) {
+    els.seasonalNote.hidden = false;
+    els.seasonalNote.textContent = banner.text;
+  } else {
+    els.seasonalNote.hidden = true;
   }
 }
 
-function ensureCatalogueEnhancements() {
-  if (!document.querySelector("#catalogueEnhancementsStyles")) {
-    const style = document.createElement("style");
-    style.id = "catalogueEnhancementsStyles";
-    style.textContent = `
-      .catalogue-toolbar {
-        margin: -6px 0 18px;
-        display: flex;
-        justify-content: flex-end;
-      }
-
-      .catalogue-sort-control {
-        min-width: min(100%, 310px);
-        display: grid;
-        gap: 6px;
-      }
-
-      .free-delivery-note {
-        margin: 8px 0 18px;
-        padding: 10px 12px;
-        border-radius: 12px;
-        background: rgba(166, 112, 44, 0.08);
-        font-size: 0.94rem;
-        line-height: 1.4;
-      }
-
-      .catalogue-sort-control label {
-        color: var(--chocolate-soft);
-        font-size: 13px;
-        font-weight: 900;
-      }
-
-      .catalogue-sort-control select {
-        width: 100%;
-        min-height: 44px;
-        padding: 10px 38px 10px 12px;
-        color: var(--chocolate);
-        background: var(--white);
-        border: 1px solid var(--line);
-        border-radius: 11px;
-        font: inherit;
-        font-weight: 800;
-      }
-
-      .product-image-gallery {
-        position: relative;
-        min-height: 265px;
-        overflow: hidden;
-        background: var(--cream-deep);
-        touch-action: pan-y;
-      }
-
-      .product-image-gallery .product-image-button {
-        min-height: 265px;
-      }
-
-      .product-card-image {
-        transition: transform 0.25s ease, opacity 0.18s ease;
-      }
-
-      .card-gallery-arrow {
-        position: absolute;
-        z-index: 6;
-        top: 50%;
-        width: 38px;
-        height: 38px;
-        display: grid;
-        place-items: center;
-        padding: 0;
-        color: var(--chocolate);
-        background: rgba(255, 255, 255, 0.92);
-        border: 1px solid rgba(90, 61, 44, 0.14);
-        border-radius: 999px;
-        box-shadow: 0 5px 18px rgba(44, 27, 21, 0.18);
-        font-size: 25px;
-        line-height: 1;
-        opacity: 0;
-        transform: translateY(-50%);
-        transition: opacity 0.18s ease, background 0.18s ease;
-      }
-
-      .card-gallery-arrow:hover {
-        background: var(--white);
-      }
-
-      .card-gallery-prev { left: 10px; }
-      .card-gallery-next { right: 10px; }
-
-      .product-image-gallery:hover .card-gallery-arrow,
-      .product-image-gallery:focus-within .card-gallery-arrow {
-        opacity: 1;
-      }
-
-      .card-gallery-dots {
-        position: absolute;
-        z-index: 7;
-        left: 50%;
-        bottom: 10px;
-        display: flex;
-        gap: 6px;
-        padding: 6px 8px;
-        background: rgba(44, 27, 21, 0.35);
-        border-radius: 999px;
-        transform: translateX(-50%);
-        backdrop-filter: blur(4px);
-      }
-
-      .card-gallery-dot {
-        width: 8px;
-        height: 8px;
-        padding: 0;
-        background: rgba(255, 255, 255, 0.58);
-        border: 0;
-        border-radius: 999px;
-        transition: width 0.18s ease, background 0.18s ease;
-      }
-
-      .card-gallery-dot.is-active {
-        width: 20px;
-        background: var(--white);
-      }
-
-      .product-badges { z-index: 8; }
-
-      @media (hover: none), (pointer: coarse) {
-        .card-gallery-arrow { opacity: 0.92; }
-      }
-
-      @media (max-width: 620px) {
-        .catalogue-toolbar {
-          justify-content: stretch;
-          margin-top: 0;
-        }
-
-        .catalogue-sort-control {
-          width: 100%;
-          min-width: 0;
-        }
-
-        .product-image-gallery,
-        .product-image-gallery .product-image-button,
-        .product-image-gallery .product-image-button img {
-          height: 285px;
-          min-height: 285px;
-        }
-
-        .card-gallery-arrow {
-          width: 36px;
-          height: 36px;
-          font-size: 23px;
-        }
-      }
-    `;
-    document.head.appendChild(style);
+function publicFilterCategories() {
+  const categories = store?.categories || [];
+  const wanted = categories.filter(c => c.active && c.code !== "CERTIFICATES");
+  if (store?.settings?.features?.certificates !== false) {
+    const cert = categories.find(c => c.code === "CERTIFICATES");
+    if (cert) wanted.push(cert);
   }
+  return wanted.sort((a,b) => Number(a.order || 9999) - Number(b.order || 9999));
+}
 
-  if (!document.querySelector("#catalogueSort")) {
-    const toolbar = document.createElement("div");
-    toolbar.className = "catalogue-toolbar";
-    toolbar.innerHTML = `
-      <div class="catalogue-sort-control">
-        <label for="catalogueSort">Сортувати товари</label>
-        <select id="catalogueSort" aria-label="Сортувати товари">
-          <option value="default">За замовчуванням</option>
-          <option value="price-asc">Ціна: від меншої до більшої</option>
-          <option value="price-desc">Ціна: від більшої до меншої</option>
-          <option value="name-asc">Назва: А–Я</option>
-          <option value="name-desc">Назва: Я–А</option>
-          <option value="new-first">Новинки спочатку</option>
-        </select>
-      </div>
-    `;
+function renderFilters() {
+  els.categoryFilters.innerHTML = publicFilterCategories().map(category => `
+    <button class="filter-chip ${category.code === activeFilter ? "is-active" : ""}" type="button" data-filter="${escapeAttr(category.code)}">
+      ${escapeHtml(category.name)}
+    </button>
+  `).join("");
+}
 
-    elements.catalogueSections.parentElement.insertBefore(
-      toolbar,
-      elements.catalogueSections
-    );
+function filteredProducts() {
+  let products = [...(store?.products || [])];
+  if (activeFilter === "NEW") products = products.filter(p => p.isNew);
+  else if (activeFilter === "SALE") products = products.filter(productHasSale);
+  else if (!["ALL", "CERTIFICATES"].includes(activeFilter)) products = products.filter(p => p.categoryCode === activeFilter);
+  else if (activeFilter === "CERTIFICATES") return [];
 
-    const sortSelect = toolbar.querySelector("#catalogueSort");
-    sortSelect.value = catalogueSortMode;
-    sortSelect.addEventListener("change", event => {
-      catalogueSortMode = event.target.value;
-      renderCatalogue();
+  if (searchQuery) {
+    const q = normalizeText(searchQuery);
+    products = products.filter(product => {
+      const hay = [
+        product.name, product.shortDescription, product.fullDescription, product.categoryCode,
+        ...(product.searchKeywords || []), ...(product.sauces || []), ...(product.variants || []).map(v => v.value)
+      ].join(" ").toLowerCase();
+      return hay.includes(q);
     });
   }
-}
 
-function getCardGalleryPhotos(code) {
-  const product = findProduct(code);
-  return product?.photos?.length
-    ? product.photos
-    : ["images/hero/main-cover.webp"];
-}
-
-function setCardGalleryPhoto(gallery, index) {
-  if (!gallery) return;
-
-  const code = gallery.dataset.cardGallery;
-  const photos = getCardGalleryPhotos(code);
-  if (!photos.length) return;
-
-  const safeIndex = ((index % photos.length) + photos.length) % photos.length;
-  const image = gallery.querySelector(".product-card-image");
-
-  gallery.dataset.photoIndex = String(safeIndex);
-  gallery.dataset.hoverPreview = "0";
-
-  if (image) {
-    image.src = photos[safeIndex];
-  }
-
-  gallery.querySelectorAll("[data-card-gallery-dot]").forEach(dot => {
-    const isActive = Number(dot.dataset.cardGalleryDot) === safeIndex;
-    dot.classList.toggle("is-active", isActive);
-    dot.setAttribute("aria-current", isActive ? "true" : "false");
-  });
-}
-
-function stepCardGallery(gallery, direction) {
-  const currentIndex = Number(gallery?.dataset.photoIndex) || 0;
-  setCardGalleryPhoto(gallery, currentIndex + direction);
-}
-
-function previewSecondCardPhoto(gallery) {
-  if (!gallery || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-    return;
-  }
-
-  const currentIndex = Number(gallery.dataset.photoIndex) || 0;
-  const photos = getCardGalleryPhotos(gallery.dataset.cardGallery);
-  if (currentIndex !== 0 || photos.length < 2) return;
-
-  const image = gallery.querySelector(".product-card-image");
-  if (!image) return;
-
-  gallery.dataset.hoverPreview = "1";
-  image.src = photos[1];
-}
-
-function restoreCardPhotoAfterHover(gallery) {
-  if (!gallery || gallery.dataset.hoverPreview !== "1") return;
-
-  const photos = getCardGalleryPhotos(gallery.dataset.cardGallery);
-  const currentIndex = Number(gallery.dataset.photoIndex) || 0;
-  const image = gallery.querySelector(".product-card-image");
-
-  gallery.dataset.hoverPreview = "0";
-  if (image && photos[currentIndex]) {
-    image.src = photos[currentIndex];
+  switch (sortMode) {
+    case "price-asc": return products.sort((a,b) => productMinPrice(a) - productMinPrice(b));
+    case "price-desc": return products.sort((a,b) => productMinPrice(b) - productMinPrice(a));
+    case "name-asc": return products.sort((a,b) => a.name.localeCompare(b.name, "uk"));
+    case "name-desc": return products.sort((a,b) => b.name.localeCompare(a.name, "uk"));
+    case "newest": return products.sort((a,b) => Number(Boolean(b.isNew)) - Number(Boolean(a.isNew)) || Number(a.order||9999)-Number(b.order||9999));
+    default: return products.sort((a,b) => Number(a.order||9999)-Number(b.order||9999));
   }
 }
 
-function renderCategories() {
-  elements.categoryGrid.innerHTML = (store.categories || [])
-    .map(category => {
-      const count = productsForCategory(category.code).length;
-      const image = category.cover
-        ? `<img src="${escapeHtml(category.cover)}" alt="${escapeHtml(category.name)}" loading="lazy" decoding="async">`
-        : "";
+function productBadges(product) {
+  const badges = [];
+  if (product.isNew) badges.push(["Новинка", "new"]);
+  if (product.isHit) badges.push(["Хіт", "hit"]);
+  if (productHasSale(product)) badges.push(["Акція", "sale"]);
+  // Значення "Подарунок" у старому полі Badge не показуємо, якщо реальна gift-акція вимкнена.
+  const custom = String(product.badge || "").trim();
+  if (custom && !["Новинка","Хіт","Акція","Подарунок"].includes(custom)) badges.push([custom, ""]);
+  return badges.slice(0, 3);
+}
 
-      return `
-        <button
-          class="category-card ${category.cover ? "" : "no-image"}"
-          type="button"
-          data-category-jump="${escapeHtml(category.code)}"
-        >
-          ${image}
-          <span class="category-card-copy">
-            <strong>${escapeHtml(category.name)}</strong>
-            <span>${count ? `${count} позицій` : "Незабаром"}</span>
-          </span>
+function productPriceHtml(product) {
+  const current = productMinPrice(product);
+  const regular = productRegularMinPrice(product);
+  const prefix = (product.variants || []).length ? '<span class="price-prefix">від</span>' : "";
+  const hasSale = productHasSale(product) && regular > current;
+  return `${prefix}<span class="price-current">${formatMoney(current)}</span>${hasSale ? `<span class="price-old">${formatMoney(regular)}</span>` : ""}`;
+}
+
+function productCardHtml(product) {
+  const photos = productPhotos(product).slice(0, 3);
+  const status = product.status || "Під замовлення";
+  const production = product.productionTime || "1–3 робочі дні";
+  return `
+    <article class="product-card" data-product-card="${escapeAttr(product.code)}">
+      <div class="product-media" data-card-gallery data-code="${escapeAttr(product.code)}" data-index="0">
+        <button class="product-media-button" type="button" data-open-product="${escapeAttr(product.code)}" aria-label="Детальніше про ${escapeAttr(product.name)}">
+          <img class="product-photo" src="${escapeAttr(photos[0])}" data-card-photo alt="${escapeAttr(product.name)}" loading="lazy" decoding="async">
         </button>
-      `;
-    })
-    .join("");
+        <div class="badge-stack">${productBadges(product).map(([name, cls]) => `<span class="product-badge ${cls}">${escapeHtml(name)}</span>`).join("")}</div>
+        ${photos.length > 1 ? `<div class="card-gallery-nav"><button type="button" data-card-prev aria-label="Попереднє фото">‹</button><button type="button" data-card-next aria-label="Наступне фото">›</button></div><div class="card-dots">${photos.map((_, i) => `<i class="${i===0?"active":""}"></i>`).join("")}</div>` : ""}
+      </div>
+      <div class="product-card-body">
+        <h3>${escapeHtml(product.name)}</h3>
+        <p class="product-short">${escapeHtml(product.shortDescription || "")}</p>
+        <div class="product-meta">
+          ${product.weight ? `<span>${escapeHtml(product.weight)}</span>` : ""}
+          <span>${escapeHtml(status)}</span>
+          <span>${escapeHtml(production)}</span>
+        </div>
+        <div class="price-row">${productPriceHtml(product)}</div>
+        <div class="product-actions">
+          <button class="add-cart-button" type="button" data-quick-add="${escapeAttr(product.code)}" ${product.available ? "" : "disabled"}>${product.available ? "У кошик" : "Недоступно"}</button>
+          <button class="details-button" type="button" data-open-product="${escapeAttr(product.code)}">Деталі</button>
+        </div>
+      </div>
+    </article>`;
 }
 
 function renderCatalogue() {
-  ensureCatalogueEnhancements();
+  renderFilters();
+  const isCert = isCertificateFilter(activeFilter);
+  const products = filteredProducts();
+  els.productGrid.hidden = isCert;
+  els.catalogueEmpty.hidden = true;
+  document.querySelector("#certificates")?.classList.toggle("is-highlighted", isCert);
 
-  const categories = store.categories || [];
+  if (isCert) {
+    els.productGrid.innerHTML = "";
+    els.catalogueResultText.textContent = "Подарункові сертифікати — нижче на сторінці.";
+    document.querySelector("#certificates")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
 
-  const sections = categories
-    .filter(category => category.code !== "ALL")
-    .map(category => {
-      const products = sortProducts(productsForCategory(category.code));
-
-      const productMarkup = products.length
-        ? `<div class="product-grid">${products.map(renderProductCard).join("")}</div>`
-        : `<div class="empty-category">У цій категорії скоро з’являться нові позиції.</div>`;
-
-      return `
-        <section
-          class="category-section"
-          id="${categoryAnchor(category.code)}"
-          data-category-section="${escapeHtml(category.code)}"
-        >
-          <header class="category-section-header">
-            <div>
-              <h3>${escapeHtml(category.name)}</h3>
-              <p>${escapeHtml(category.description || "")}</p>
-            </div>
-            <button type="button" data-scroll-all>Дивитися весь асортимент</button>
-          </header>
-          ${productMarkup}
-        </section>
-      `;
-    })
-    .join("");
-
-  elements.catalogueSections.innerHTML = sections;
+  els.productGrid.hidden = false;
+  els.productGrid.innerHTML = products.map(productCardHtml).join("");
+  const categoryName = findCategory(activeFilter)?.name || "Весь асортимент";
+  els.catalogueResultText.textContent = `${categoryName}: ${products.length} ${plural(products.length, "позиція", "позиції", "позицій")}`;
+  els.catalogueEmpty.hidden = products.length > 0;
 }
 
-function renderProductCard(product) {
-  const photos = product.photos?.length
-    ? product.photos
-    : ["images/hero/main-cover.webp"];
-  const firstPhoto = photos[0];
-  const category = (store.categories || []).find(
-    item => item.code === product.categoryCode
-  );
-
-  const badges = [
-    product.saleActive ? `<span class="badge badge-sale">Акція</span>` : "",
-    product.isNew ? `<span class="badge badge-new">Новинка</span>` : "",
-    product.badge ? `<span class="badge">${escapeHtml(product.badge)}</span>` : ""
-  ].join("");
-
-  const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
-  const price = hasVariants
-    ? `<span class="price-current">від ${formatMoney(product.effectivePrice)}</span>`
-    : product.saleActive
-      ? `
-        <span class="price-current price-sale">${formatMoney(product.effectivePrice)}</span>
-        <span class="price-old">${formatMoney(product.regularPrice)}</span>
-        <span class="sale-until">Акція до ${escapeHtml(formatDateUk(product.saleUntil))}</span>
-      `
-      : `<span class="price-current">${formatMoney(product.effectivePrice)}</span>`;
-
-  const galleryControls = photos.length > 1
-    ? `
-      <button
-        class="card-gallery-arrow card-gallery-prev"
-        type="button"
-        data-card-gallery-step="-1"
-        data-gallery-product="${escapeHtml(product.code)}"
-        aria-label="Попереднє фото ${escapeHtml(product.name)}"
-      >‹</button>
-      <button
-        class="card-gallery-arrow card-gallery-next"
-        type="button"
-        data-card-gallery-step="1"
-        data-gallery-product="${escapeHtml(product.code)}"
-        aria-label="Наступне фото ${escapeHtml(product.name)}"
-      >›</button>
-      <div class="card-gallery-dots" aria-label="Фото товару">
-        ${photos.map((_, index) => `
-          <button
-            class="card-gallery-dot ${index === 0 ? "is-active" : ""}"
-            type="button"
-            data-card-gallery-dot="${index}"
-            data-gallery-product="${escapeHtml(product.code)}"
-            aria-label="Фото ${index + 1}"
-            aria-current="${index === 0 ? "true" : "false"}"
-          ></button>
-        `).join("")}
-      </div>
-    `
-    : "";
-
-  return `
-    <article class="product-card">
-      <div
-        class="product-image-gallery"
-        data-card-gallery="${escapeHtml(product.code)}"
-        data-photo-index="0"
-        data-hover-preview="0"
-      >
-        <button
-          class="product-image-button"
-          type="button"
-          data-open-product="${escapeHtml(product.code)}"
-          aria-label="Переглянути ${escapeHtml(product.name)}"
-        >
-          <span class="product-badges">${badges}</span>
-          <img
-            class="product-card-image"
-            src="${escapeHtml(firstPhoto)}"
-            alt="${escapeHtml(product.name)}"
-            loading="lazy"
-            decoding="async"
-          >
-        </button>
-        ${galleryControls}
-      </div>
-
-      <div class="product-content">
-        <p class="product-category">${escapeHtml(category?.name || "")}</p>
-        <h4 class="product-title">${escapeHtml(product.name)}</h4>
-        <p class="product-description">${escapeHtml(product.shortDescription || "")}</p>
-        <p class="product-weight">${escapeHtml(product.weight || "")}</p>
-
-        <div class="price-row">${price}</div>
-
-        <div class="product-actions">
-          <button
-            class="details-button"
-            type="button"
-            data-open-product="${escapeHtml(product.code)}"
-          >
-            Детальніше
-          </button>
-          <button
-            class="quick-add-button"
-            type="button"
-            data-quick-add="${escapeHtml(product.code)}"
-            ${product.available ? "" : "disabled"}
-          >
-            ${product.available ? "До кошика" : "Немає в наявності"}
-          </button>
-        </div>
-      </div>
-    </article>
-  `;
+function plural(n, one, few, many) {
+  const mod10 = n % 10, mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return one;
+  if ([2,3,4].includes(mod10) && ![12,13,14].includes(mod100)) return few;
+  return many;
 }
 
-function renderDeliveryAndPayment() {
-  const deliveryMethods = store.deliveryMethods || [];
-  const paymentMethods = store.paymentMethods || [];
+function renderCertificates() {
+  const options = store?.certificateOptions || [];
+  els.certificateGrid.innerHTML = options.map(item => `
+    <article class="certificate-card">
+      <span class="section-kicker">Точка Хрускоту</span>
+      <strong>${item.amount ? formatMoney(item.amount) : "Інша сума"}</strong>
+      <p>${escapeHtml(item.note || "Безстроковий; одноразове використання.")}</p>
+      <button type="button" data-certificate-contact="${escapeAttr(item.name)}">Замовити</button>
+    </article>`).join("");
+}
 
-  elements.deliveryList.innerHTML = deliveryMethods
-    .map(method => `
-      <div class="info-option">
-        <strong>${escapeHtml(method.name)}</strong>
-        <span>${escapeHtml(method.note || "")}</span>
-      </div>
-    `)
-    .join("");
+function renderDeliveryPayment() {
+  els.deliveryList.innerHTML = (store?.deliveryMethods || []).map(item => `
+    <div class="stack-item"><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.note || "")}${item.freeDeliveryFrom > 0 ? ` · безкоштовно від ${formatMoney(item.freeDeliveryFrom)}` : ""}</span></div>
+  `).join("");
+  els.paymentList.innerHTML = (store?.paymentMethods || []).map(item => `
+    <div class="stack-item"><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.note || "")}</span></div>
+  `).join("");
+}
 
-  elements.paymentList.innerHTML = paymentMethods
-    .map(method => `
-      <div class="info-option">
-        <strong>${escapeHtml(method.name)}</strong>
-        <span>${escapeHtml(method.note || "")}</span>
-      </div>
-    `)
-    .join("");
+function renderAbout() {
+  const about = store?.about;
+  if (!about?.active) return;
+  els.aboutTitle.textContent = about.title || "Тут усе починається з турботи";
+  els.aboutText.textContent = about.text || "";
+}
 
-  elements.deliveryMethod.innerHTML = deliveryMethods
-    .map(method => `
-      <option value="${escapeHtml(method.code)}">${escapeHtml(method.name)}</option>
-    `)
-    .join("");
+function renderReviews() {
+  const reviews = store?.reviews || [];
+  els.reviewsEmpty.hidden = reviews.length > 0;
+  els.reviewGrid.innerHTML = reviews.slice(0, 6).map(review => `
+    <article class="review-card">
+      <div class="review-card-head"><strong>${escapeHtml(review.name || "Покупець")}</strong>${review.rating ? `<span>${"★".repeat(Math.max(1, Math.min(5, Number(review.rating))))}</span>` : ""}</div>
+      ${review.verifiedPurchase ? '<span class="verified-badge">Підтверджена покупка</span>' : ""}
+      <p>${escapeHtml(review.text || "")}</p>
+      ${review.reply ? `<small><strong>Точка Хрускоту:</strong> ${escapeHtml(review.reply)}</small>` : ""}
+    </article>`).join("");
+}
 
-  elements.paymentMethod.innerHTML =
-    `<option value="">Оберіть спосіб оплати</option>` +
-    paymentMethods
-      .map(method => `
-        <option value="${escapeHtml(method.code)}">${escapeHtml(method.name)}</option>
-      `)
-      .join("");
+function renderFaq() {
+  els.faqList.innerHTML = (store?.faq || []).map((item, i) => `
+    <article class="faq-item ${i===0?"is-open":""}">
+      <button class="faq-question" type="button"><span>${escapeHtml(item.question)}</span><span>+</span></button>
+      <div class="faq-answer">${escapeHtml(item.answer)}</div>
+    </article>`).join("");
+}
 
-  updateDeliveryFields();
-  updatePaymentNote();
+function contactItems() {
+  const s = store?.settings || {};
+  const phone = s.phone ? `tel:${s.phone.replace(/[^\d+]/g, "")}` : "";
+  return [
+    ["Telegram", s.telegram],
+    ["Viber", s.viber],
+    ["Instagram", s.instagram],
+    ["Зателефонувати", phone]
+  ].filter(([,url]) => Boolean(url));
+}
+
+function renderContacts() {
+  const items = contactItems();
+  els.contactActions.innerHTML = items.map(([name,url]) => `<a class="contact-pill" href="${escapeAttr(safeUrl(url))}" ${String(url).startsWith("http") ? 'target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(name)}</a>`).join("");
+  els.contactChoiceGrid.innerHTML = items.map(([name,url]) => `<a class="contact-choice" href="${escapeAttr(safeUrl(url))}" ${String(url).startsWith("http") ? 'target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(name)}</a>`).join("");
+  const s = store?.settings || {};
+  els.socialLinks.innerHTML = [["Telegram",s.telegram],["Instagram",s.instagram],["Facebook",s.facebook],["TikTok",s.tiktok],["YouTube",s.youtube]].filter(([,u])=>u).map(([n,u])=>`<a href="${escapeAttr(safeUrl(u))}" target="_blank" rel="noopener noreferrer">${escapeHtml(n)}</a>`).join("");
 }
 
 function renderTerms() {
-  const terms = store.terms || {};
-  elements.termsTitle.textContent = terms.title || "Умови замовлення і доставки";
-
-  const items = [
-    ["Термін виготовлення", terms.productionTime],
-    ["Доставка", terms.delivery],
-    ["Оплата", terms.payment],
-    ["Вартість доставки", terms.deliveryCost],
-    ["Неотримана посилка", terms.unclaimedParcel],
-    ["Повернення", terms.returns],
-    ["Проблема із замовленням", terms.orderProblem]
-  ].filter(([, value]) => Boolean(value));
-
-  elements.termsContent.innerHTML = items
-    .map(([title, value]) => `
-      <article class="term-item">
-        <h3>${escapeHtml(title)}</h3>
-        <p>${escapeHtml(value)}</p>
-      </article>
-    `)
-    .join("");
+  const t = store?.terms || {};
+  const entries = [
+    ["Термін виготовлення", t.productionTime], ["Доставка", t.delivery], ["Оплата", t.payment],
+    ["Вартість доставки", t.deliveryCost], ["Неотримана посилка", t.unclaimedParcel],
+    ["Повернення", t.returns], ["Якщо є проблема із замовленням", t.orderProblem]
+  ].filter(([,v]) => v);
+  els.termsContent.innerHTML = entries.map(([k,v]) => `<article><h3>${escapeHtml(k)}</h3><p>${escapeHtml(v)}</p></article>`).join("");
 }
 
-function findProduct(code) {
-  return (store.products || []).find(product => product.code === code);
+function populateCheckoutOptions() {
+  const deliveries = store?.deliveryMethods || [];
+  els.deliveryMethod.innerHTML = `<option value="">Оберіть спосіб доставки</option>` + deliveries.map(i => `<option value="${escapeAttr(i.code)}">${escapeHtml(i.name)}</option>`).join("");
+  const wrap = (store?.giftOptions || []).filter(i => i.type === "Пакування");
+  els.giftWrapping.innerHTML = wrap.map(i => `<option value="${escapeAttr(i.name)}" data-note="${escapeAttr(i.description || "")}">${escapeHtml(i.name)}${i.priceType && i.priceType !== "Фіксована" ? ` — ${escapeHtml(i.priceType)}` : ""}</option>`).join("");
+  const cards = store?.cardCategories || [];
+  els.cardStyle.innerHTML = `<option value="">Оберіть стиль</option>` + cards.map(i => `<option value="${escapeAttr(i.name)}">${escapeHtml(i.name)}</option>`).join("");
+  restoreCustomer();
+  updateDeliveryFields();
+  updateGiftWrappingNote();
+}
+
+function updatePaymentOptions() {
+  const delivery = (store?.deliveryMethods || []).find(i => i.code === els.deliveryMethod.value);
+  const isPickup = delivery?.code === "PICKUP";
+  const allowed = (store?.paymentMethods || []).filter(p => isPickup ? p.forPickup : p.forPostalDelivery);
+  els.paymentMethod.innerHTML = `<option value="">Оберіть спосіб оплати</option>` + allowed.map(i => `<option value="${escapeAttr(i.code)}" data-note="${escapeAttr(i.note || "")}">${escapeHtml(i.name)}</option>`).join("");
+  updatePaymentNote();
+}
+
+function updateDeliveryFields() {
+  const method = (store?.deliveryMethods || []).find(i => i.code === els.deliveryMethod.value) || null;
+  const reqRegion = Boolean(method?.requireRegion);
+  const reqCity = Boolean(method?.requireCity);
+  const reqBranch = Boolean(method?.requireBranch);
+  els.regionField.hidden = !reqRegion;
+  els.cityField.hidden = !reqCity;
+  els.branchField.hidden = !reqBranch;
+  els.customerRegion.required = reqRegion;
+  els.customerCity.required = reqCity;
+  els.deliveryBranch.required = reqBranch;
+  if (method) {
+    els.deliveryBranchLabel.textContent = method.branchLabel + (reqBranch ? " *" : "");
+    els.deliveryBranch.placeholder = method.branchPlaceholder || "";
+    els.deliveryNote.textContent = method.note || "";
+  }
+  updatePaymentOptions();
+}
+
+function updatePaymentNote() {
+  const option = els.paymentMethod.selectedOptions?.[0];
+  els.paymentNote.textContent = option?.dataset?.note || "";
+}
+function updateGiftWrappingNote() {
+  const option = els.giftWrapping.selectedOptions?.[0];
+  els.giftWrappingNote.textContent = option?.dataset?.note || "";
+}
+
+function setFilter(code, scroll = true) {
+  activeFilter = code || "ALL";
+  renderCatalogue();
+  if (scroll) document.querySelector("#catalogue")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  closeMobileMenu();
+}
+
+function cardGalleryStep(gallery, delta) {
+  const product = findProduct(gallery.dataset.code);
+  if (!product) return;
+  const photos = productPhotos(product).slice(0,3);
+  let index = Number(gallery.dataset.index || 0);
+  index = (index + delta + photos.length) % photos.length;
+  gallery.dataset.index = String(index);
+  gallery.querySelector("[data-card-photo]").src = photos[index];
+  [...gallery.querySelectorAll(".card-dots i")].forEach((dot,i) => dot.classList.toggle("active", i===index));
+}
+
+function quickAdd(code) {
+  const product = findProduct(code);
+  if (!product?.available) return;
+  if ((product.variants || []).length || product.sauceCount > 0) return openProduct(code);
+  addCartItem(product, null, [], 1);
+}
+
+function addCartItem(product, variant, sauces, quantity) {
+  const variantValue = variant?.value || "";
+  const price = Number(variant?.effectivePrice ?? product.effectivePrice ?? productMinPrice(product));
+  const id = `${product.code}__${variantValue}__${sauces.join("|")}`;
+  const existing = cart.find(i => i.cartItemId === id);
+  if (existing) existing.quantity = Math.min(20, existing.quantity + quantity);
+  else cart.push({ cartItemId:id, code:product.code, name:product.name, photo:productPhotos(product)[0], price, variantType:variant?.type||"", variantValue, sauces:[...sauces], quantity });
+  saveCart();
+  renderCart();
+  closeProduct();
+  showToast(store?.settings?.messages?.cartAdded || "Готово — ще трішки радості вже в кошику.");
 }
 
 function openProduct(code) {
   const product = findProduct(code);
   if (!product) return;
-
   selectedProduct = product;
   selectedPhotoIndex = 0;
   selectedVariantValue = product.variants?.[0]?.value || "";
+  selectedSauces = Array.from({length: Number(product.sauceCount || 0)}, () => product.sauces?.[0] || "");
+  modalQuantity = 1;
   renderProductModal();
+  openModal(els.productModal, els.productOverlay);
+}
 
-  openModal(elements.productModal, elements.productOverlay);
+function selectedVariant() {
+  return selectedProduct?.variants?.find(v => v.value === selectedVariantValue) || null;
 }
 
 function renderProductModal() {
-  if (!selectedProduct) return;
+  const p = selectedProduct;
+  if (!p) return;
+  const photos = productPhotos(p);
+  const variant = selectedVariant();
+  const current = Number(variant?.effectivePrice ?? p.effectivePrice ?? productMinPrice(p));
+  const regular = Number(variant?.regularPrice ?? p.regularPrice ?? productRegularMinPrice(p));
+  const sale = Boolean(variant?.saleActive || p.saleActive) && regular > current;
+  const related = (p.relatedProductCodes || []).map(findProduct).filter(Boolean).slice(0,3);
+  const productReviews = (store?.reviews || []).filter(r => !r.productCode || r.productCode === p.code);
+  const categoryName = findCategory(p.categoryCode)?.name || "";
 
-  const product = selectedProduct;
-  const photos = product.photos?.length
-    ? product.photos
-    : ["images/hero/main-cover.webp"];
-
-  const selectedVariant = product.variants?.find(
-    variant => variant.value === selectedVariantValue
-  ) || product.variants?.[0] || null;
-
-  const price = selectedVariant
-    ? selectedVariant.saleActive
-      ? `
-        <span class="price-current price-sale">${formatMoney(selectedVariant.effectivePrice)}</span>
-        <span class="price-old">${formatMoney(selectedVariant.regularPrice)}</span>
-        <span class="sale-until">Акція до ${escapeHtml(formatDateUk(selectedVariant.saleUntil))}</span>
-      `
-      : `<span class="price-current">${formatMoney(selectedVariant.effectivePrice)}</span>`
-    : product.saleActive
-      ? `
-        <span class="price-current price-sale">${formatMoney(product.effectivePrice)}</span>
-        <span class="price-old">${formatMoney(product.regularPrice)}</span>
-        <span class="sale-until">Акція до ${escapeHtml(formatDateUk(product.saleUntil))}</span>
-      `
-      : `<span class="price-current">${formatMoney(product.effectivePrice)}</span>`;
-
-  const thumbs = photos
-    .map((photo, index) => `
-      <button
-        class="thumbnail-button ${index === selectedPhotoIndex ? "is-active" : ""}"
-        type="button"
-        data-photo-index="${index}"
-      >
-        <img src="${escapeHtml(photo)}" alt="" loading="lazy" decoding="async">
-      </button>
-    `)
-    .join("");
-
-  const variantField = product.variants?.length
-    ? `
-      <div class="sauce-fields">
-        <div class="sauce-field">
-          <label for="modalVariant">${escapeHtml(product.variantType || "Варіант")}</label>
-          <select id="modalVariant" data-modal-variant>
-            ${product.variants.map(variant => `
-              <option
-                value="${escapeHtml(variant.value)}"
-                ${variant.value === selectedVariant?.value ? "selected" : ""}
-              >
-                ${escapeHtml(variant.value)} — ${formatMoney(variant.effectivePrice)}
-              </option>
-            `).join("")}
-          </select>
+  els.productModalContent.innerHTML = `
+    <div class="product-modal-layout">
+      <div class="product-gallery">
+        <div class="product-gallery-main">
+          <img id="modalMainImage" src="${escapeAttr(photos[selectedPhotoIndex])}" alt="${escapeAttr(p.name)}">
+          ${photos.length > 1 ? `<button class="gallery-arrow prev" type="button" data-modal-photo-step="-1">‹</button><button class="gallery-arrow next" type="button" data-modal-photo-step="1">›</button>` : ""}
         </div>
+        <div class="gallery-thumbs">${photos.map((photo,i)=>`<button class="gallery-thumb ${i===selectedPhotoIndex?"is-active":""}" type="button" data-modal-photo="${i}"><img src="${escapeAttr(photo)}" alt="" loading="lazy"></button>`).join("")}</div>
       </div>
-    `
-    : "";
+      <div class="product-detail">
+        <p class="section-kicker">${escapeHtml(categoryName)}</p>
+        <h2 id="productModalTitle">${escapeHtml(p.name)}</h2>
+        <p class="product-detail-copy">${escapeHtml(p.fullDescription || p.shortDescription || "")}</p>
+        <div class="product-meta">${p.weight?`<span>${escapeHtml(p.weight)}</span>`:""}<span>${escapeHtml(p.status || "Під замовлення")}</span><span>${escapeHtml(p.productionTime || "1–3 робочі дні")}</span></div>
+        <div class="price-row"><span class="price-current">${formatMoney(current)}</span>${sale?`<span class="price-old">${formatMoney(regular)}</span>`:""}${productSaleUntil(p)?`<span class="price-prefix">до ${escapeHtml(formatDateUk(productSaleUntil(p)))}</span>`:""}</div>
 
-  const sauceFields = product.sauceCount > 0
-    ? `
-      <div class="sauce-fields">
-        ${Array.from({ length: product.sauceCount }, (_, index) => `
-          <div class="sauce-field">
-            <label for="modalSauce${index}">
-              ${product.sauceCount > 1 ? `Соус ${index + 1}` : "Оберіть соус"}
-            </label>
-            <select id="modalSauce${index}" data-modal-sauce>
-              ${product.sauces.map(sauce => `
-                <option value="${escapeHtml(sauce)}">${escapeHtml(sauce)}</option>
-              `).join("")}
-            </select>
-          </div>
-        `).join("")}
-      </div>
-    `
-    : "";
+        ${(p.variants||[]).length ? `<div class="choice-group"><label>${escapeHtml(p.variantType || "Варіант")}</label><div class="choice-chips">${p.variants.map(v=>`<button class="choice-chip ${v.value===selectedVariantValue?"is-selected":""}" type="button" data-variant="${escapeAttr(v.value)}">${escapeHtml(v.value)} · ${formatMoney(v.effectivePrice)}</button>`).join("")}</div></div>` : ""}
+        ${p.sauceCount > 0 ? `<div class="choice-group"><label>${p.sauceCount>1?`Оберіть ${p.sauceCount} соуси`:"Оберіть соус"}</label>${Array.from({length:p.sauceCount},(_,idx)=>`<div class="choice-chips" data-sauce-group="${idx}" style="margin-bottom:8px">${p.sauces.map(s=>`<button class="choice-chip ${selectedSauces[idx]===s?"is-selected":""}" type="button" data-sauce-index="${idx}" data-sauce="${escapeAttr(s)}">${escapeHtml(s)}</button>`).join("")}</div>`).join("")}</div>` : ""}
 
-  elements.productModalContent.innerHTML = `
-    <div class="product-detail-grid">
-      <div>
-        <img
-          class="product-main-image"
-          id="productMainImage"
-          src="${escapeHtml(photos[selectedPhotoIndex])}"
-          alt="${escapeHtml(product.name)}"
-        >
-        <div class="thumbnail-row">${thumbs}</div>
-      </div>
-
-      <div class="product-detail-content">
-        <p class="product-category">${escapeHtml(product.categoryCode)}</p>
-        <h2 id="productModalTitle">${escapeHtml(product.name)}</h2>
-        <p class="product-full-description">
-          ${escapeHtml(product.fullDescription || product.shortDescription || "")}
-        </p>
-        <p class="product-weight">${escapeHtml(product.weight || "")}</p>
-        <div class="price-row">${price}</div>
-
-        ${variantField}
-
-        <div class="detail-info">
-          ${product.ingredients ? `<p><strong>Склад:</strong> ${escapeHtml(product.ingredients)}</p>` : ""}
-          ${product.allergens ? `<p><strong>Алергени:</strong> ${escapeHtml(product.allergens)}</p>` : ""}
+        <div class="product-modal-actions">
+          <div class="quantity-control"><button type="button" data-modal-qty="-1">−</button><span>${modalQuantity}</span><button type="button" data-modal-qty="1">+</button></div>
+          <button class="add-cart-button" type="button" data-modal-add ${p.available?"":"disabled"}>${p.available?`Додати · ${formatMoney(current*modalQuantity)}`:"Тимчасово недоступний"}</button>
         </div>
 
-        ${sauceFields}
+        ${p.ingredients?`<details class="detail-block"><summary>Склад</summary><p>${escapeHtml(p.ingredients)}</p></details>`:""}
+        ${p.allergens?`<details class="detail-block"><summary>Алергени</summary><p>${escapeHtml(p.allergens)}</p></details>`:""}
+        ${(p.shelfLife||p.storage)?`<details class="detail-block"><summary>Зберігання</summary><p>${escapeHtml(p.shelfLife||"")} ${escapeHtml(p.storage||"")}</p></details>`:""}
 
-        <button
-          class="modal-add-button"
-          type="button"
-          data-modal-add="${escapeHtml(product.code)}"
-          ${product.available ? "" : "disabled"}
-        >
-          ${product.available ? "Додати до кошика" : "Тимчасово недоступний"}
-        </button>
+        ${related.length?`<div class="related-products"><h3>З цим часто обирають</h3><div class="related-mini-grid">${related.map(r=>`<button class="related-mini-card" type="button" data-related-open="${escapeAttr(r.code)}"><img src="${escapeAttr(productPhotos(r)[0])}" alt="" loading="lazy"><strong>${escapeHtml(r.name)}</strong></button>`).join("")}</div></div>`:""}
+
+        <div class="product-feedback"><h3>Відгуки та запитання</h3><p class="product-detail-copy">${productReviews.length?`${productReviews.length} ${plural(productReviews.length,"відгук","відгуки","відгуків")} уже опубліковано.`:"Поки немає опублікованих відгуків саме про цей товар."}</p><div class="product-feedback-actions"><a class="button button-secondary" href="${escapeAttr(safeUrl(store?.settings?.googleReview || "#"))}" target="_blank" rel="noopener noreferrer">Залишити відгук</a><button class="button button-secondary" type="button" data-open-contact>Поставити запитання</button></div></div>
       </div>
-    </div>
-  `;
-}
-
-function collectModalSauces() {
-  return [...elements.productModalContent.querySelectorAll("[data-modal-sauce]")]
-    .map(select => select.value)
-    .filter(Boolean);
-}
-
-function quickAdd(code) {
-  const product = findProduct(code);
-  if (!product || !product.available) return;
-
-  if (product.sauceCount > 0 || product.variants?.length) {
-    openProduct(code);
-    return;
-  }
-
-  addToCart(product, []);
-}
-
-function addToCart(product, sauces, variant = null) {
-  const normalizedSauces = [...sauces];
-  const variantValue = variant?.value || "";
-  const unitPrice = variant?.effectivePrice ?? product.effectivePrice;
-  const cartItemId = `${product.code}__${variantValue}__${normalizedSauces.join("|")}`;
-
-  const existing = cart.find(item => item.cartItemId === cartItemId);
-
-  if (existing) {
-    existing.quantity += 1;
-  } else {
-    cart.push({
-      cartItemId,
-      code: product.code,
-      name: product.name,
-      price: unitPrice,
-      variantType: variant?.type || "",
-      variantValue,
-      sauces: normalizedSauces,
-      quantity: 1
-    });
-  }
-
-  saveCart();
-  renderCart();
-  closeProduct();
-  openCart();
-}
-
-function calculateCartCount() {
-  return cart.reduce((sum, item) => sum + item.quantity, 0);
-}
-
-function calculateCartTotal() {
-  return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-}
-
-function qualifiesForFreeDelivery(total = calculateCartTotal()) {
-  return total >= FREE_DELIVERY_THRESHOLD;
-}
-
-function getSelectedDeliveryMethod() {
-  return (store?.deliveryMethods || []).find(
-    item => item.code === elements.deliveryMethod?.value
-  ) || null;
-}
-
-function selectedDeliverySupportsFreeDelivery() {
-  const method = getSelectedDeliveryMethod();
-  return Boolean(method?.requireBranch);
-}
-
-function getFreeDeliveryCartMessage(total = calculateCartTotal()) {
-  if (qualifiesForFreeDelivery(total)) {
-    return `Безкоштовна доставка активована — до відділення або поштомату.`;
-  }
-
-  const remaining = Math.max(0, FREE_DELIVERY_THRESHOLD - total);
-  return `До безкоштовної доставки залишилося ${formatMoney(remaining)}. Безкоштовно — до відділення або поштомату при сумі товарів від ${formatMoney(FREE_DELIVERY_THRESHOLD)}.`;
-}
-
-function updateFreeDeliveryUi() {
-  const total = calculateCartTotal();
-  const cartFooterNote = document.querySelector(".cart-footer > p");
-
-  if (cartFooterNote) {
-    cartFooterNote.textContent = cart.length
-      ? getFreeDeliveryCartMessage(total)
-      : `Безкоштовна доставка до відділення або поштомату при замовленні від ${formatMoney(FREE_DELIVERY_THRESHOLD)}.`;
-  }
-
-  const trustDeliveryText = document.querySelector(".trust-strip article:nth-child(2) span");
-  if (trustDeliveryText) {
-    trustDeliveryText.textContent = `Нова пошта та Укрпошта. Від ${formatMoney(FREE_DELIVERY_THRESHOLD)} — доставка до відділення або поштомату безкоштовна.`;
-  }
-
-  let checkoutNote = document.querySelector("#checkoutFreeDeliveryNote");
-  const checkoutSummary = document.querySelector(".checkout-summary");
-  if (!checkoutNote && checkoutSummary) {
-    checkoutSummary.insertAdjacentHTML(
-      "afterend",
-      '<p id="checkoutFreeDeliveryNote" class="free-delivery-note"></p>'
-    );
-    checkoutNote = document.querySelector("#checkoutFreeDeliveryNote");
-  }
-
-  if (checkoutNote) {
-    if (qualifiesForFreeDelivery(total)) {
-      checkoutNote.textContent = selectedDeliverySupportsFreeDelivery()
-        ? `Доставка до вибраного відділення або поштомату — безкоштовна.`
-        : `Для замовлення діє безкоштовна доставка до відділення або поштомату. Оберіть відповідний спосіб доставки.`;
-    } else {
-      checkoutNote.textContent = getFreeDeliveryCartMessage(total);
-    }
-  }
+    </div>`;
 }
 
 function renderCart() {
-  elements.cartCount.textContent = calculateCartCount();
+  const count = cartCount();
+  const total = cartTotal();
+  els.cartCount.textContent = count;
+  els.mobileCartCount.textContent = count;
+  els.mobileCartCount.hidden = count === 0;
+  els.cartHeaderTotal.textContent = formatMoney(total);
+  els.cartTotal.textContent = formatMoney(total);
+  els.checkoutButton.disabled = count === 0;
+  els.checkoutSummaryTotal.textContent = formatMoney(total);
 
   if (!cart.length) {
-    elements.cartItems.innerHTML = `
-      <div class="empty-cart">
-        Кошик поки порожній. Оберіть свій смак у каталозі.
-      </div>
-    `;
-    elements.cartTotal.textContent = formatMoney(0);
-    elements.checkoutButton.disabled = true;
-    updateFreeDeliveryUi();
+    els.cartItems.innerHTML = `<div class="cart-empty">${escapeHtml(store?.settings?.messages?.emptyCart || "Тут поки тихо. Може, знайдемо щось хрумке?")}</div>`;
+    els.cartSuggestions.innerHTML = "";
+  } else {
+    els.cartItems.innerHTML = cart.map(item => `
+      <article class="cart-item">
+        <img src="${escapeAttr(item.photo || "images/brand/logo.webp")}" alt="" loading="lazy">
+        <div><h4>${escapeHtml(item.name)}</h4><p>${item.variantValue?`${escapeHtml(item.variantType || "Варіант")}: ${escapeHtml(item.variantValue)}`:""}${item.sauces?.length?`${item.variantValue?" · ":""}Соус${item.sauces.length>1?"и":""}: ${escapeHtml(item.sauces.join(", "))}`:""}</p><div class="cart-item-controls"><button type="button" data-cart-step="-1" data-cart-id="${escapeAttr(item.cartItemId)}">−</button><span>${item.quantity}</span><button type="button" data-cart-step="1" data-cart-id="${escapeAttr(item.cartItemId)}">+</button><button class="remove-item" type="button" data-cart-remove="${escapeAttr(item.cartItemId)}">прибрати</button></div></div>
+        <div class="cart-item-price">${formatMoney(item.price * item.quantity)}</div>
+      </article>`).join("");
+    renderCartSuggestions();
+  }
+  renderFreeDeliveryProgress();
+}
+
+function renderFreeDeliveryProgress() {
+  const total = cartTotal();
+  const threshold = getFreeDeliveryThreshold();
+  if (!cart.length) {
+    els.cartProgress.innerHTML = `Безкоштовна доставка до відділення або поштомату — від ${formatMoney(threshold)}.`;
+    els.checkoutDeliveryProgress.textContent = "";
     return;
   }
-
-  elements.cartItems.innerHTML = cart
-    .map(item => `
-      <article class="cart-item">
-        <p class="cart-item-title">${escapeHtml(item.name)}</p>
-        ${item.variantValue
-          ? `<p class="cart-item-sauces">${escapeHtml(item.variantType || "Варіант")}: ${escapeHtml(item.variantValue)}</p>`
-          : ""
-        }
-        ${item.sauces.length
-          ? `<p class="cart-item-sauces">Соус: ${item.sauces.map(escapeHtml).join(", ")}</p>`
-          : ""
-        }
-
-        <div class="cart-item-bottom">
-          <div class="quantity-control">
-            <button
-              class="quantity-button"
-              type="button"
-              data-cart-change="-1"
-              data-cart-item="${escapeHtml(item.cartItemId)}"
-            >−</button>
-            <span class="quantity-value">${item.quantity}</span>
-            <button
-              class="quantity-button"
-              type="button"
-              data-cart-change="1"
-              data-cart-item="${escapeHtml(item.cartItemId)}"
-            >+</button>
-          </div>
-          <strong class="cart-item-price">
-            ${formatMoney(item.price * item.quantity)}
-          </strong>
-        </div>
-
-        <button
-          class="remove-button"
-          type="button"
-          data-cart-remove="${escapeHtml(item.cartItemId)}"
-        >
-          Видалити
-        </button>
-      </article>
-    `)
-    .join("");
-
-  elements.cartTotal.textContent = formatMoney(calculateCartTotal());
-  elements.checkoutButton.disabled = false;
-  updateFreeDeliveryUi();
+  const remaining = Math.max(0, threshold-total);
+  const pct = Math.min(100, threshold ? total/threshold*100 : 100);
+  const text = remaining > 0 ? `Ще ${formatMoney(remaining)} — і доставку до відділення або поштомату беремо на себе.` : "Готово! Доставка до відділення або поштомату — за наш рахунок.";
+  els.cartProgress.innerHTML = `<strong>${escapeHtml(text)}</strong><div class="progress-track"><div class="progress-bar" style="width:${pct}%"></div></div>`;
+  els.checkoutDeliveryProgress.textContent = text;
 }
 
-function changeCartQuantity(cartItemId, change) {
-  const item = cart.find(entry => entry.cartItemId === cartItemId);
-  if (!item) return;
-
-  item.quantity += change;
-
-  if (item.quantity <= 0) {
-    cart = cart.filter(entry => entry.cartItemId !== cartItemId);
-  }
-
-  saveCart();
-  renderCart();
+function renderCartSuggestions() {
+  const inCart = new Set(cart.map(i=>i.code));
+  const codes = [...new Set(cart.flatMap(i => findProduct(i.code)?.relatedProductCodes || []))];
+  const suggestions = codes.map(findProduct).filter(p => p?.available && !inCart.has(p.code)).slice(0,3);
+  if (!suggestions.length) { els.cartSuggestions.innerHTML = ""; return; }
+  els.cartSuggestions.innerHTML = `<h3>Може, ще щось до компанії?</h3><div class="suggestion-row">${suggestions.map(p=>`<div class="suggestion-card"><strong>${escapeHtml(p.name)}</strong><span>${formatMoney(productMinPrice(p))}</span><button type="button" data-suggestion-add="${escapeAttr(p.code)}">Додати</button></div>`).join("")}</div>`;
 }
 
-function removeCartItem(cartItemId) {
-  cart = cart.filter(entry => entry.cartItemId !== cartItemId);
-  saveCart();
-  renderCart();
-}
-
-function openCart() {
-  elements.cartOverlay.classList.add("is-open");
-  elements.cartPanel.classList.add("is-open");
-  elements.cartPanel.setAttribute("aria-hidden", "false");
-  document.body.classList.add("no-scroll");
-}
-
-function closeCart() {
-  elements.cartOverlay.classList.remove("is-open");
-  elements.cartPanel.classList.remove("is-open");
-  elements.cartPanel.setAttribute("aria-hidden", "true");
-  unlockBodyIfNoModal();
-}
-
-function openModal(modal, overlay) {
-  overlay.classList.add("is-open");
-  modal.classList.add("is-open");
-  modal.setAttribute("aria-hidden", "false");
-  document.body.classList.add("no-scroll");
-}
-
-function closeModal(modal, overlay) {
-  overlay.classList.remove("is-open");
-  modal.classList.remove("is-open");
-  modal.setAttribute("aria-hidden", "true");
-  unlockBodyIfNoModal();
-}
-
-function unlockBodyIfNoModal() {
-  const open = document.querySelector(
-    ".cart-panel.is-open, .modal.is-open, .overlay.is-open, .modal-overlay.is-open"
-  );
-
-  if (!open) {
-    document.body.classList.remove("no-scroll");
-  }
-}
-
-function closeProduct() {
-  selectedProduct = null;
-  closeModal(elements.productModal, elements.productOverlay);
-}
+function openCart() { els.cartOverlay.classList.add("is-open"); els.cartPanel.classList.add("is-open"); els.cartPanel.setAttribute("aria-hidden","false"); lockBodyIfNeeded(); }
+function closeCart() { els.cartOverlay.classList.remove("is-open"); els.cartPanel.classList.remove("is-open"); els.cartPanel.setAttribute("aria-hidden","true"); lockBodyIfNeeded(); }
+function openModal(modal, overlay) { overlay.classList.add("is-open"); modal.classList.add("is-open"); modal.setAttribute("aria-hidden","false"); lockBodyIfNeeded(); }
+function closeModal(modal, overlay) { overlay.classList.remove("is-open"); modal.classList.remove("is-open"); modal.setAttribute("aria-hidden","true"); lockBodyIfNeeded(); }
+function closeProduct() { closeModal(els.productModal, els.productOverlay); selectedProduct = null; }
+function openTerms() { openModal(els.termsModal, els.termsOverlay); }
+function closeTerms() { closeModal(els.termsModal, els.termsOverlay); }
+function openContact() { openModal(els.contactModal, els.contactOverlay); }
+function closeContact() { closeModal(els.contactModal, els.contactOverlay); }
+function openMobileMenu() { els.mobileMenu.classList.add("is-open"); els.mobileMenuOverlay.classList.add("is-open"); els.mobileMenu.setAttribute("aria-hidden","false"); lockBodyIfNeeded(); }
+function closeMobileMenu() { els.mobileMenu.classList.remove("is-open"); els.mobileMenuOverlay.classList.remove("is-open"); els.mobileMenu.setAttribute("aria-hidden","true"); lockBodyIfNeeded(); }
 
 function openCheckout() {
   if (!cart.length) return;
-
   closeCart();
-  clearOrderStatus();
-  elements.checkoutSummaryTotal.textContent = formatMoney(calculateCartTotal());
-  updateFreeDeliveryUi();
-  elements.submitOrderButton.disabled = false;
-  elements.submitOrderButton.textContent = "Підтвердити замовлення";
-  openModal(elements.checkoutModal, elements.checkoutOverlay);
+  restoreCustomer();
+  renderCart();
+  els.orderStatus.textContent = "";
+  els.orderStatus.className = "order-status";
+  openModal(els.checkoutModal, els.checkoutOverlay);
 }
+function closeCheckout() { if (!isSubmittingOrder) closeModal(els.checkoutModal, els.checkoutOverlay); }
 
-function closeCheckout() {
-  if (isSubmittingOrder) return;
-  closeModal(elements.checkoutModal, elements.checkoutOverlay);
+function restoreCustomer() {
+  const data = loadJson(CUSTOMER_STORAGE_KEY, null);
+  if (!data) return;
+  els.customerName.value = data.name || "";
+  els.customerSurname.value = data.surname || "";
+  els.customerPhone.value = data.phone || "";
+  els.customerRegion.value = data.region || "";
+  els.customerCity.value = data.city || "";
+  els.rememberCustomer.checked = true;
 }
-
-function openTerms(fromCheckout = false) {
-  returnToCheckoutAfterTerms = fromCheckout;
-
-  if (fromCheckout) {
-    closeModal(elements.checkoutModal, elements.checkoutOverlay);
-  }
-
-  openModal(elements.termsModal, elements.termsOverlay);
-}
-
-function closeTerms() {
-  closeModal(elements.termsModal, elements.termsOverlay);
-
-  if (returnToCheckoutAfterTerms) {
-    returnToCheckoutAfterTerms = false;
-    openModal(elements.checkoutModal, elements.checkoutOverlay);
-  }
-}
-
-function updateDeliveryFields() {
-  const method = (store.deliveryMethods || []).find(
-    item => item.code === elements.deliveryMethod.value
-  );
-
-  if (!method) return;
-
-  elements.deliveryBranchLabel.textContent =
-    `${method.branchLabel || "Відділення / поштомат"}${method.requireBranch ? " *" : ""}`;
-
-  elements.deliveryBranch.placeholder = method.branchPlaceholder || "";
-  elements.deliveryBranch.required = Boolean(method.requireBranch);
-
-  const baseDeliveryNote = method.note || "";
-  const freeDeliveryNote = method.requireBranch
-    ? qualifiesForFreeDelivery()
-      ? ` Безкоштовна доставка для цього замовлення.`
-      : ` Безкоштовна доставка від ${formatMoney(FREE_DELIVERY_THRESHOLD)}.`
-    : "";
-
-  elements.deliveryNote.textContent = `${baseDeliveryNote}${freeDeliveryNote}`.trim();
-
-  $("#customerRegion").required = Boolean(method.requireRegion);
-  $("#customerCity").required = Boolean(method.requireCity);
-  updateFreeDeliveryUi();
-}
-
-function updatePaymentNote() {
-  const method = (store.paymentMethods || []).find(
-    item => item.code === elements.paymentMethod.value
-  );
-
-  elements.paymentNote.textContent = method?.note || "";
-}
-
-function clearOrderStatus() {
-  elements.orderStatus.className = "order-status";
-  elements.orderStatus.textContent = "";
-}
-
-function showOrderStatus(type, message) {
-  elements.orderStatus.className = `order-status is-${type}`;
-  elements.orderStatus.textContent = message;
-}
-
-function createRequestId() {
-  if (window.crypto && typeof window.crypto.randomUUID === "function") {
-    return window.crypto.randomUUID();
-  }
-
-  return `WEB-${Date.now()}-${Math.random().toString(36).slice(2, 12)}`;
+function saveCustomerIfNeeded() {
+  if (!els.rememberCustomer.checked) { localStorage.removeItem(CUSTOMER_STORAGE_KEY); return; }
+  saveJson(CUSTOMER_STORAGE_KEY, { name:els.customerName.value, surname:els.customerSurname.value, phone:els.customerPhone.value, region:els.customerRegion.value, city:els.customerCity.value });
 }
 
 function getRequestId() {
   let id = sessionStorage.getItem(REQUEST_ID_STORAGE_KEY);
-
-  if (!id) {
-    id = createRequestId();
-    sessionStorage.setItem(REQUEST_ID_STORAGE_KEY, id);
-  }
-
+  if (!id) { id = crypto?.randomUUID?.() || `req-${Date.now()}-${Math.random().toString(16).slice(2)}`; sessionStorage.setItem(REQUEST_ID_STORAGE_KEY,id); }
   return id;
 }
-
-function clearRequestId() {
-  sessionStorage.removeItem(REQUEST_ID_STORAGE_KEY);
-}
+function clearRequestId() { sessionStorage.removeItem(REQUEST_ID_STORAGE_KEY); }
 
 function createOrderPayload() {
-  const formData = new FormData(elements.checkoutForm);
-
+  const giftEnabled = els.isGift.checked;
+  const cardEnabled = giftEnabled && els.cardEnabled.checked;
   return {
     requestId: getRequestId(),
-    customer: {
-      name: formData.get("customerName"),
-      surname: formData.get("customerSurname"),
-      phone: formData.get("customerPhone"),
-      region: formData.get("customerRegion"),
-      city: formData.get("customerCity")
-    },
-    delivery: {
-      code: formData.get("deliveryMethod"),
-      branch: formData.get("deliveryBranch"),
-      freeDelivery: qualifiesForFreeDelivery() && selectedDeliverySupportsFreeDelivery(),
-      deliveryCost: qualifiesForFreeDelivery() && selectedDeliverySupportsFreeDelivery() ? 0 : null
-    },
-    paymentCode: formData.get("paymentMethod"),
-    comment: formData.get("customerComment"),
-    source: "GitHub Pages — Точка Хрускоту",
-    items: cart.map(item => ({
-      code: item.code,
-      quantity: item.quantity,
-      variantValue: item.variantValue || "",
-      sauces: item.sauces
-    }))
+    customer: { name:els.customerName.value, surname:els.customerSurname.value, phone:els.customerPhone.value, region:els.customerRegion.value, city:els.customerCity.value },
+    recipient: giftEnabled ? { name:els.recipientName.value, phone:els.recipientPhone.value } : {},
+    delivery: { code:els.deliveryMethod.value, branch:els.deliveryBranch.value },
+    paymentCode: els.paymentMethod.value,
+    desiredDate: els.desiredDate.value,
+    gift: giftEnabled ? {
+      isGift:true, isSurprise:els.isSurprise.checked, hidePrice:els.hidePrice.checked,
+      wrap:els.giftWrapping.value,
+      signatureMode:els.signatureMode.value,
+      hint:els.recipientHint.value,
+      courageScenario:els.courageScenario.value,
+      card: cardEnabled ? { enabled:true, style:els.cardStyle.value, text:els.cardText.value, helpWithText:els.helpWithCardText.checked, to:els.congratulationsTo.value, occasion:els.occasion.value, from:els.giftFrom.value } : { enabled:false }
+    } : { isGift:false },
+    certificateCode: els.hasCertificate.checked ? els.certificateCode.value : "",
+    comment: els.customerComment.value,
+    source: "GitHub Pages — Точка Хрускоту v2",
+    items: cart.map(item => ({ code:item.code, quantity:item.quantity, variantValue:item.variantValue || "", sauces:item.sauces || [] }))
   };
+}
+
+function friendlyValidationMessage() {
+  if (!els.customerName.value.trim()) return "Здається, ми пропустили ваше ім’я.";
+  if (!els.customerSurname.value.trim()) return "Додайте, будь ласка, прізвище.";
+  if (!els.customerPhone.value.trim()) return "Залиште телефон, щоб ми могли підтвердити замовлення.";
+  if (!els.deliveryMethod.value) return "Оберіть, як зручніше отримати замовлення.";
+  const method = (store?.deliveryMethods || []).find(i=>i.code===els.deliveryMethod.value);
+  if (method?.requireRegion && !els.customerRegion.value.trim()) return "Вкажіть область для доставки.";
+  if (method?.requireCity && !els.customerCity.value.trim()) return "Вкажіть місто або населений пункт.";
+  if (method?.requireBranch && !els.deliveryBranch.value.trim()) return "Вкажіть відділення, поштомат або індекс.";
+  if (!els.paymentMethod.value) return "Оберіть спосіб оплати.";
+  if (els.isGift.checked && els.recipientPhone.value && !/^\+?380\d{9}$/.test(els.recipientPhone.value.replace(/\s/g,""))) return "Перевірте телефон отримувача у форматі +380XXXXXXXXX.";
+  if (els.hasCertificate.checked && !els.certificateCode.value.trim()) return "Введіть код подарункового сертифіката.";
+  if (!els.termsAccepted.checked) return "Потрібно погодитися з умовами замовлення і доставки.";
+  return "";
+}
+
+function showOrderStatus(type, message) {
+  els.orderStatus.className = `order-status ${type}`;
+  els.orderStatus.textContent = message;
 }
 
 async function submitOrder(event) {
   event.preventDefault();
-
   if (isSubmittingOrder) return;
+  if (!cart.length) { showOrderStatus("error", "Тут поки тихо — кошик порожній."); return; }
+  const validation = friendlyValidationMessage();
+  if (validation) { showOrderStatus("error", validation); return; }
 
-  if (!cart.length) {
-    showOrderStatus("error", "Кошик порожній.");
-    return;
-  }
-
-  if (!elements.checkoutForm.checkValidity()) {
-    elements.checkoutForm.reportValidity();
-    showOrderStatus("error", "Заповніть усі обов’язкові поля.");
-    return;
-  }
-
+  saveCustomerIfNeeded();
   isSubmittingOrder = true;
-  elements.submitOrderButton.disabled = true;
-  elements.submitOrderButton.textContent = "Надсилаємо...";
-  showOrderStatus("loading", "Передаємо замовлення. Не закривайте сторінку.");
+  els.submitOrderButton.disabled = true;
+  els.submitOrderButton.textContent = "Надсилаємо...";
+  showOrderStatus("", "Передаємо замовлення. Це займе кілька секунд.");
 
   try {
     const body = new URLSearchParams();
     body.set("payload", JSON.stringify(createOrderPayload()));
+    const response = await fetch(STORE_API_URL, { method:"POST", body, redirect:"follow" });
+    if (!response.ok) throw new Error(`Сервер відповів ${response.status}`);
+    const result = await response.json();
+    if (!result?.success) throw new Error(result?.error || "Не вдалося записати замовлення.");
 
-    const response = await fetch(STORE_API_URL, {
-      method: "POST",
-      body,
-      redirect: "follow"
-    });
-
-    const text = await response.text();
-    let result;
-
-    try {
-      result = JSON.parse(text);
-    } catch {
-      throw new Error("Сервер повернув некоректну відповідь.");
-    }
-
-    if (!result.success) {
-      throw new Error(result.error || "Не вдалося записати замовлення.");
-    }
-
-    showOrderStatus(
-      "success",
-      result.duplicate
-        ? `Замовлення №${result.orderNumber} уже було записане.`
-        : `Замовлення №${result.orderNumber} успішно прийнято. Ми зв’яжемося з вами для підтвердження.`
-    );
-
+    const paymentLine = els.paymentMethod.value === "CASH_PICKUP" ? "Оплата — готівкою під час самовивозу." : "Поки що оплачувати нічого не потрібно.";
+    showOrderStatus("success", `Готово! Замовлення №${result.orderNumber} уже у нас. ${paymentLine} Ми зв’яжемося з вами для підтвердження.`);
     cart = [];
     saveCart();
     renderCart();
-    elements.checkoutForm.reset();
-    renderDeliveryAndPayment();
     clearRequestId();
-    elements.checkoutSummaryTotal.textContent = formatMoney(0);
-    elements.submitOrderButton.textContent = "Замовлення прийнято";
-    elements.submitOrderButton.disabled = true;
+    els.checkoutForm.reset();
+    populateCheckoutOptions();
+    els.submitOrderButton.textContent = "Замовлення прийнято";
+    els.submitOrderButton.disabled = true;
   } catch (error) {
     console.error(error);
-    showOrderStatus(
-      "error",
-      error.message || "Не вдалося передати замовлення. Спробуйте ще раз."
-    );
-    elements.submitOrderButton.disabled = false;
-    elements.submitOrderButton.textContent = "Спробувати ще раз";
-  } finally {
-    isSubmittingOrder = false;
-  }
+    showOrderStatus("error", error.message || "Не вдалося передати замовлення. Спробуйте ще раз.");
+    els.submitOrderButton.disabled = false;
+    els.submitOrderButton.textContent = "Спробувати ще раз";
+  } finally { isSubmittingOrder = false; }
 }
 
-elements.categoryGrid.addEventListener("click", event => {
-  const button = event.target.closest("[data-category-jump]");
-  if (!button) return;
+// Events
+els.categoryFilters.addEventListener("click", e => { const b=e.target.closest("[data-filter]"); if(b) setFilter(b.dataset.filter,false); });
+els.catalogSearch.addEventListener("input", e => { searchQuery=e.target.value.trim(); els.clearSearch.hidden=!searchQuery; renderCatalogue(); });
+els.clearSearch.addEventListener("click", ()=>{ els.catalogSearch.value=""; searchQuery=""; els.clearSearch.hidden=true; renderCatalogue(); els.catalogSearch.focus(); });
+els.sortSelect.addEventListener("change", e=>{ sortMode=e.target.value; renderCatalogue(); });
+els.resetCatalogue.addEventListener("click", ()=>{ activeFilter="ALL"; searchQuery=""; sortMode="default"; els.catalogSearch.value=""; els.sortSelect.value="default"; renderCatalogue(); });
 
-  const code = button.dataset.categoryJump;
-
-  if (code === "ALL") {
-    document.querySelector("#catalogue").scrollIntoView({ behavior: "smooth" });
-    return;
-  }
-
-  document
-    .querySelector(`#${categoryAnchor(code)}`)
-    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+els.productGrid.addEventListener("click", e => {
+  const open=e.target.closest("[data-open-product]"); if(open){ openProduct(open.dataset.openProduct); return; }
+  const add=e.target.closest("[data-quick-add]"); if(add){ quickAdd(add.dataset.quickAdd); return; }
+  const gallery=e.target.closest("[data-card-gallery]");
+  if(gallery && e.target.closest("[data-card-prev]")){ cardGalleryStep(gallery,-1); return; }
+  if(gallery && e.target.closest("[data-card-next]")){ cardGalleryStep(gallery,1); return; }
 });
 
-elements.catalogueSections.addEventListener("click", event => {
-  const galleryStepButton = event.target.closest("[data-card-gallery-step]");
-  if (galleryStepButton) {
-    const gallery = galleryStepButton.closest("[data-card-gallery]");
-    stepCardGallery(gallery, Number(galleryStepButton.dataset.cardGalleryStep) || 0);
-    return;
-  }
-
-  const galleryDot = event.target.closest("[data-card-gallery-dot]");
-  if (galleryDot) {
-    const gallery = galleryDot.closest("[data-card-gallery]");
-    setCardGalleryPhoto(gallery, Number(galleryDot.dataset.cardGalleryDot) || 0);
-    return;
-  }
-
-  const openButton = event.target.closest("[data-open-product]");
-  if (openButton) {
-    if (Date.now() < suppressProductOpenUntil) {
-      event.preventDefault();
-      return;
-    }
-
-    openProduct(openButton.dataset.openProduct);
-    return;
-  }
-
-  const quickButton = event.target.closest("[data-quick-add]");
-  if (quickButton) {
-    quickAdd(quickButton.dataset.quickAdd);
-    return;
-  }
-
-  if (event.target.closest("[data-scroll-all]")) {
-    document.querySelector("#catalogue").scrollIntoView({ behavior: "smooth" });
-  }
+els.productGrid.addEventListener("mouseover", e=>{
+  const gallery=e.target.closest("[data-card-gallery]");
+  if(!gallery || gallery.contains(e.relatedTarget)) return;
+  const p=findProduct(gallery.dataset.code); const photos=productPhotos(p).slice(0,3);
+  if(photos.length>1){ gallery.dataset.hoverIndex=gallery.dataset.index; gallery.dataset.index="1"; gallery.querySelector("[data-card-photo]").src=photos[1]; [...gallery.querySelectorAll(".card-dots i")].forEach((d,i)=>d.classList.toggle("active",i===1)); }
+});
+els.productGrid.addEventListener("mouseout", e=>{
+  const gallery=e.target.closest("[data-card-gallery]");
+  if(!gallery || gallery.contains(e.relatedTarget) || gallery.dataset.hoverIndex===undefined) return;
+  const p=findProduct(gallery.dataset.code); const photos=productPhotos(p).slice(0,3); const idx=Number(gallery.dataset.hoverIndex||0);
+  gallery.dataset.index=String(idx); delete gallery.dataset.hoverIndex; gallery.querySelector("[data-card-photo]").src=photos[idx]; [...gallery.querySelectorAll(".card-dots i")].forEach((d,i)=>d.classList.toggle("active",i===idx));
 });
 
-elements.catalogueSections.addEventListener("mouseover", event => {
-  const gallery = event.target.closest("[data-card-gallery]");
-  if (!gallery || gallery.contains(event.relatedTarget)) return;
-  previewSecondCardPhoto(gallery);
+els.productModalContent.addEventListener("click", e=>{
+  const photo=e.target.closest("[data-modal-photo]"); if(photo){ selectedPhotoIndex=Number(photo.dataset.modalPhoto); renderProductModal(); return; }
+  const step=e.target.closest("[data-modal-photo-step]"); if(step){ const photos=productPhotos(selectedProduct); selectedPhotoIndex=(selectedPhotoIndex+Number(step.dataset.modalPhotoStep)+photos.length)%photos.length; renderProductModal(); return; }
+  const variant=e.target.closest("[data-variant]"); if(variant){ selectedVariantValue=variant.dataset.variant; renderProductModal(); return; }
+  const sauce=e.target.closest("[data-sauce]"); if(sauce){ selectedSauces[Number(sauce.dataset.sauceIndex)]=sauce.dataset.sauce; renderProductModal(); return; }
+  const qty=e.target.closest("[data-modal-qty]"); if(qty){ modalQuantity=Math.max(1,Math.min(20,modalQuantity+Number(qty.dataset.modalQty))); renderProductModal(); return; }
+  if(e.target.closest("[data-modal-add]")){ addCartItem(selectedProduct,selectedVariant(),selectedSauces.filter(Boolean),modalQuantity); return; }
+  const related=e.target.closest("[data-related-open]"); if(related){ openProduct(related.dataset.relatedOpen); return; }
+  if(e.target.closest("[data-open-contact]")){ closeProduct(); openContact(); }
 });
 
-elements.catalogueSections.addEventListener("mouseout", event => {
-  const gallery = event.target.closest("[data-card-gallery]");
-  if (!gallery || gallery.contains(event.relatedTarget)) return;
-  restoreCardPhotoAfterHover(gallery);
+els.cartItems.addEventListener("click", e=>{
+  const step=e.target.closest("[data-cart-step]"); if(step){ const item=cart.find(i=>i.cartItemId===step.dataset.cartId); if(item){ item.quantity=Math.max(1,Math.min(20,item.quantity+Number(step.dataset.cartStep))); saveCart(); renderCart(); } return; }
+  const remove=e.target.closest("[data-cart-remove]"); if(remove){ cart=cart.filter(i=>i.cartItemId!==remove.dataset.cartRemove); saveCart(); renderCart(); }
+});
+els.cartSuggestions.addEventListener("click", e=>{ const b=e.target.closest("[data-suggestion-add]"); if(b) quickAdd(b.dataset.suggestionAdd); });
+
+els.certificateGrid.addEventListener("click", e=>{ const b=e.target.closest("[data-certificate-contact]"); if(b){ showToast(`Сертифікат: ${b.dataset.certificateContact}. Напишіть нам — оформимо.`); openContact(); } });
+els.faqList.addEventListener("click", e=>{ const q=e.target.closest(".faq-question"); if(q) q.closest(".faq-item").classList.toggle("is-open"); });
+
+$$('[data-filter-link]').forEach(el=>el.addEventListener("click",()=>setFilter(el.dataset.filterLink,true)));
+$$('[data-open-contact]').forEach(el=>el.addEventListener("click",openContact));
+
+els.mobileMenuButton.addEventListener("click",openMobileMenu); els.closeMobileMenu.addEventListener("click",closeMobileMenu); els.mobileMenuOverlay.addEventListener("click",closeMobileMenu);
+els.mobileMenu.addEventListener("click",e=>{ if(e.target.closest("a")) closeMobileMenu(); });
+els.headerSearchButton.addEventListener("click",()=>{ document.querySelector("#catalogue")?.scrollIntoView({behavior:"smooth"}); setTimeout(()=>els.catalogSearch.focus(),450); });
+els.mobileSearchButton.addEventListener("click",()=>{ document.querySelector("#catalogue")?.scrollIntoView({behavior:"smooth"}); setTimeout(()=>els.catalogSearch.focus(),450); });
+
+els.cartButton.addEventListener("click",openCart); els.mobileCartButton.addEventListener("click",openCart); els.closeCartButton.addEventListener("click",closeCart); els.cartOverlay.addEventListener("click",closeCart); els.checkoutButton.addEventListener("click",openCheckout);
+els.closeProductButton.addEventListener("click",closeProduct); els.productOverlay.addEventListener("click",closeProduct);
+els.closeCheckoutButton.addEventListener("click",closeCheckout); els.checkoutOverlay.addEventListener("click",closeCheckout);
+els.openTermsButton.addEventListener("click",openTerms); els.footerTermsButton.addEventListener("click",openTerms); els.checkoutTermsButton.addEventListener("click",openTerms); els.closeTermsButton.addEventListener("click",closeTerms); els.termsOverlay.addEventListener("click",closeTerms);
+els.closeContactButton.addEventListener("click",closeContact); els.contactOverlay.addEventListener("click",closeContact);
+
+els.deliveryMethod.addEventListener("change",updateDeliveryFields); els.paymentMethod.addEventListener("change",updatePaymentNote); els.giftWrapping.addEventListener("change",updateGiftWrappingNote);
+els.isGift.addEventListener("change",()=>{ els.giftFields.hidden=!els.isGift.checked; });
+els.cardEnabled.addEventListener("change",()=>{ els.cardFields.hidden=!els.cardEnabled.checked; });
+els.signatureMode.addEventListener("change",()=>{ els.recipientHintField.hidden=els.signatureMode.value!=="Нехай людина здогадається"; });
+els.cardStyle.addEventListener("change",()=>{ els.courageScenarioField.hidden=els.cardStyle.value!=="На що я не можу наважитися"; });
+els.hasCertificate.addEventListener("change",()=>{ els.certificateCodeField.hidden=!els.hasCertificate.checked; });
+els.checkoutForm.addEventListener("submit",submitOrder);
+
+window.addEventListener("keydown", e=>{
+  if(e.key!=="Escape") return;
+  closeMobileMenu(); closeCart(); closeProduct(); closeTerms(); closeContact(); closeCheckout();
 });
 
-elements.catalogueSections.addEventListener(
-  "touchstart",
-  event => {
-    const gallery = event.target.closest("[data-card-gallery]");
-    const touch = event.touches?.[0];
-    if (!gallery || !touch) return;
-
-    cardGalleryTouch = {
-      gallery,
-      startX: touch.clientX,
-      startY: touch.clientY
-    };
-  },
-  { passive: true }
-);
-
-elements.catalogueSections.addEventListener(
-  "touchend",
-  event => {
-    if (!cardGalleryTouch) return;
-
-    const touch = event.changedTouches?.[0];
-    if (!touch) {
-      cardGalleryTouch = null;
-      return;
-    }
-
-    const deltaX = touch.clientX - cardGalleryTouch.startX;
-    const deltaY = touch.clientY - cardGalleryTouch.startY;
-    const gallery = cardGalleryTouch.gallery;
-    cardGalleryTouch = null;
-
-    if (Math.abs(deltaX) < 45 || Math.abs(deltaX) <= Math.abs(deltaY)) {
-      return;
-    }
-
-    suppressProductOpenUntil = Date.now() + 450;
-    stepCardGallery(gallery, deltaX < 0 ? 1 : -1);
-  },
-  { passive: true }
-);
-
-elements.productModalContent.addEventListener("click", event => {
-  const thumb = event.target.closest("[data-photo-index]");
-  if (thumb && selectedProduct) {
-    selectedPhotoIndex = Number(thumb.dataset.photoIndex) || 0;
-    renderProductModal();
-    return;
-  }
-
-  const addButton = event.target.closest("[data-modal-add]");
-  if (addButton && selectedProduct) {
-    const sauces = collectModalSauces();
-
-    if (sauces.length !== selectedProduct.sauceCount) {
-      alert(`Потрібно вибрати соусів: ${selectedProduct.sauceCount}.`);
-      return;
-    }
-
-    const variant = selectedProduct.variants?.find(
-      item => item.value === selectedVariantValue
-    ) || null;
-
-    addToCart(selectedProduct, sauces, variant);
-  }
-});
-
-elements.productModalContent.addEventListener("change", event => {
-  const variantSelect = event.target.closest("[data-modal-variant]");
-  if (!variantSelect || !selectedProduct) return;
-
-  selectedVariantValue = variantSelect.value;
-  renderProductModal();
-});
-
-elements.cartItems.addEventListener("click", event => {
-  const changeButton = event.target.closest("[data-cart-change]");
-  if (changeButton) {
-    changeCartQuantity(
-      changeButton.dataset.cartItem,
-      Number(changeButton.dataset.cartChange)
-    );
-    return;
-  }
-
-  const removeButton = event.target.closest("[data-cart-remove]");
-  if (removeButton) {
-    removeCartItem(removeButton.dataset.cartRemove);
-  }
-});
-
-elements.cartButton.addEventListener("click", openCart);
-elements.closeCartButton.addEventListener("click", closeCart);
-elements.cartOverlay.addEventListener("click", closeCart);
-elements.checkoutButton.addEventListener("click", openCheckout);
-
-elements.closeProductButton.addEventListener("click", closeProduct);
-elements.productOverlay.addEventListener("click", closeProduct);
-
-elements.closeCheckoutButton.addEventListener("click", closeCheckout);
-elements.checkoutOverlay.addEventListener("click", closeCheckout);
-elements.checkoutForm.addEventListener("submit", submitOrder);
-elements.deliveryMethod.addEventListener("change", updateDeliveryFields);
-elements.paymentMethod.addEventListener("change", updatePaymentNote);
-
-elements.openTermsButton.addEventListener("click", () => openTerms(false));
-elements.footerTermsButton.addEventListener("click", () => openTerms(false));
-elements.checkoutTermsButton.addEventListener("click", () => openTerms(true));
-elements.closeTermsButton.addEventListener("click", closeTerms);
-elements.termsOverlay.addEventListener("click", closeTerms);
-
-document.addEventListener("keydown", event => {
-  if (event.key !== "Escape") return;
-
-  closeCart();
-  if (elements.productModal.classList.contains("is-open")) closeProduct();
-  if (elements.checkoutModal.classList.contains("is-open")) closeCheckout();
-  if (elements.termsModal.classList.contains("is-open")) closeTerms();
-});
-
+renderCart();
+setTimeout(hideLoader, 1200);
 loadStore();
