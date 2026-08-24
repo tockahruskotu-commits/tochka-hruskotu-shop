@@ -42,6 +42,7 @@ const els = {
   categoryFilters: $("#categoryFilters"),
   catalogueResultText: $("#catalogueResultText"),
   productGrid: $("#productGrid"),
+  newProductGrid: $("#newProductGrid"),
   catalogueEmpty: $("#catalogueEmpty"),
   resetCatalogue: $("#resetCatalogue"),
   storeError: $("#storeError"),
@@ -145,6 +146,11 @@ const els = {
   contactModal: $("#contactModal"),
   closeContactButton: $("#closeContactButton"),
   contactChoiceGrid: $("#contactChoiceGrid"),
+  cardsOverlay: $("#cardsOverlay"),
+  cardsModal: $("#cardsModal"),
+  openCardsPreview: $("#openCardsPreview"),
+  openCardsPreviewSecondary: $("#openCardsPreviewSecondary"),
+  closeCardsPreview: $("#closeCardsPreview"),
   toast: $("#toast")
 };
 
@@ -272,6 +278,7 @@ function renderStore(data) {
   applySettings();
   renderFilters();
   renderCatalogue();
+  renderNewProducts();
   renderCertificates();
   renderDeliveryPayment();
   renderAbout();
@@ -296,7 +303,6 @@ function applySettings() {
   els.catalogSearch.placeholder = s.searchPlaceholder || "Пошук: донати, карамель, подарунок, соус...";
   els.contactText.textContent = s.contactText || "«Точка Хрускоту» — м. Дубно, Рівненська область.";
   if (s.logo) { els.headerLogo.src = s.logo; els.footerLogo.src = s.logo; }
-  if (s.heroImage) els.heroImage.src = s.heroImage;
   if (s.googleReview) els.googleReviewLink.href = s.googleReview;
   if (s.googleProfile) els.googleProfileLink.href = s.googleProfile;
   if (s.phone) {
@@ -322,11 +328,29 @@ function publicFilterCategories() {
   return wanted.sort((a,b) => Number(a.order || 9999) - Number(b.order || 9999));
 }
 
+function categoryIcon(category) {
+  const key = `${category?.code || ""} ${category?.name || ""}`.toLowerCase();
+  if (key.includes("donut") || key.includes("донат")) return "🍩";
+  if (key.includes("waff") || key.includes("ваф")) return "🧇";
+  if (key.includes("fries") || key.includes("фрі")) return "🍟";
+  if (key.includes("nugget") || key.includes("нагет")) return "◉";
+  if (key.includes("cupcake") || key.includes("кекс")) return "🧁";
+  if (key.includes("pops") || key.includes("попс")) return "●";
+  if (key.includes("burger") || key.includes("бургер")) return "🍔";
+  if (key.includes("fortune") || key.includes("передбач")) return "☕";
+  if (key.includes("gift") || key.includes("подар")) return "🎁";
+  if (key.includes("sauce") || key.includes("соус")) return "🥄";
+  if (key.includes("cert") || key.includes("сертиф")) return "🎟";
+  if (key.includes("cookie") || key.includes("печив")) return "🍪";
+  if (key.includes("all") || key.includes("усі") || key.includes("весь")) return "✦";
+  return "♡";
+}
+
 function renderFilters() {
   els.categoryFilters.innerHTML = publicFilterCategories().map(category => `
     <button class="filter-chip ${category.code === activeFilter ? "is-active" : ""}" type="button" data-filter="${escapeAttr(category.code)}">
+      <span class="filter-icon" aria-hidden="true">${categoryIcon(category)}</span>
       <strong>${escapeHtml(category.name)}</strong>
-      ${category.description ? `<small>${escapeHtml(category.description)}</small>` : ""}
     </button>
   `).join("");
 }
@@ -428,6 +452,17 @@ function renderCatalogue() {
   const categoryName = findCategory(activeFilter)?.name || "Весь асортимент";
   els.catalogueResultText.textContent = `${categoryName}: ${products.length} ${plural(products.length, "позиція", "позиції", "позицій")}`;
   els.catalogueEmpty.hidden = products.length > 0;
+}
+
+function renderNewProducts() {
+  if (!els.newProductGrid) return;
+  const products = (store?.products || [])
+    .filter(product => product.available && product.isNew)
+    .sort((a,b) => Number(a.order || 9999) - Number(b.order || 9999))
+    .slice(0, 4);
+  els.newProductGrid.innerHTML = products.map(productCardHtml).join("");
+  const section = document.querySelector("#new");
+  if (section) section.hidden = products.length === 0;
 }
 
 function plural(n, one, few, many) {
@@ -569,7 +604,19 @@ function populateCheckoutOptions() {
 function updatePaymentOptions() {
   const delivery = (store?.deliveryMethods || []).find(i => i.code === els.deliveryMethod.value);
   const isPickup = delivery?.code === "PICKUP";
-  const allowed = (store?.paymentMethods || []).filter(p => isPickup ? p.forPickup : p.forPostalDelivery);
+  let allowed = (store?.paymentMethods || []).filter(p => isPickup ? p.forPickup : p.forPostalDelivery);
+
+  if (isPickup && !allowed.some(p => p.code === "CASH_PICKUP")) {
+    allowed = [
+      {
+        code: "CASH_PICKUP",
+        name: "Готівкою при самовивозі",
+        note: "Оплата готівкою під час отримання замовлення у м. Дубно."
+      },
+      ...allowed
+    ];
+  }
+
   els.paymentMethod.innerHTML = `<option value="">Оберіть спосіб оплати</option>` + allowed.map(i => `<option value="${escapeAttr(i.code)}" data-note="${escapeAttr(i.note || "")}">${escapeHtml(i.name)}</option>`).join("");
   updatePaymentNote();
 }
@@ -749,7 +796,7 @@ function renderCartSuggestions() {
   const codes = [...new Set(cart.flatMap(i => findProduct(i.code)?.relatedProductCodes || []))];
   const suggestions = codes.map(findProduct).filter(p => p?.available && !inCart.has(p.code)).slice(0,3);
   if (!suggestions.length) { els.cartSuggestions.innerHTML = ""; return; }
-  els.cartSuggestions.innerHTML = `<h3>Може, ще щось до компанії?</h3><div class="suggestion-row">${suggestions.map(p=>`<div class="suggestion-card"><strong>${escapeHtml(p.name)}</strong><span>${formatMoney(productMinPrice(p))}</span><button type="button" data-suggestion-add="${escapeAttr(p.code)}">Додати</button></div>`).join("")}</div>`;
+  els.cartSuggestions.innerHTML = `<h3>Може, ще щось до компанії?</h3><div class="suggestion-row">${suggestions.map(p=>`<div class="suggestion-card"><img src="${escapeAttr(productPhotos(p)[0])}" alt="${escapeAttr(p.name)}" loading="lazy"><div class="suggestion-copy"><strong>${escapeHtml(p.name)}</strong><span>${formatMoney(productMinPrice(p))}</span></div><button type="button" data-suggestion-add="${escapeAttr(p.code)}">+ Додати</button></div>`).join("")}</div>`;
 }
 
 function openCart() { els.cartOverlay.classList.add("is-open"); els.cartPanel.classList.add("is-open"); els.cartPanel.setAttribute("aria-hidden","false"); lockBodyIfNeeded(); }
@@ -761,6 +808,8 @@ function openTerms() { openModal(els.termsModal, els.termsOverlay); }
 function closeTerms() { closeModal(els.termsModal, els.termsOverlay); }
 function openContact() { openModal(els.contactModal, els.contactOverlay); }
 function closeContact() { closeModal(els.contactModal, els.contactOverlay); }
+function openCardsModal() { if (els.cardsModal && els.cardsOverlay) openModal(els.cardsModal, els.cardsOverlay); }
+function closeCardsModal() { if (els.cardsModal && els.cardsOverlay) closeModal(els.cardsModal, els.cardsOverlay); }
 function openMobileMenu() { els.mobileMenu.classList.add("is-open"); els.mobileMenuOverlay.classList.add("is-open"); els.mobileMenu.setAttribute("aria-hidden","false"); lockBodyIfNeeded(); }
 function closeMobileMenu() { els.mobileMenu.classList.remove("is-open"); els.mobileMenuOverlay.classList.remove("is-open"); els.mobileMenu.setAttribute("aria-hidden","true"); lockBodyIfNeeded(); }
 
@@ -897,6 +946,16 @@ els.productGrid.addEventListener("click", e => {
   if(gallery && e.target.closest("[data-card-next]")){ cardGalleryStep(gallery,1); return; }
 });
 
+if (els.newProductGrid) {
+  els.newProductGrid.addEventListener("click", e => {
+    const open=e.target.closest("[data-open-product]"); if(open){ openProduct(open.dataset.openProduct); return; }
+    const add=e.target.closest("[data-quick-add]"); if(add){ quickAdd(add.dataset.quickAdd); return; }
+    const gallery=e.target.closest("[data-card-gallery]");
+    if(gallery && e.target.closest("[data-card-prev]")){ cardGalleryStep(gallery,-1); return; }
+    if(gallery && e.target.closest("[data-card-next]")){ cardGalleryStep(gallery,1); return; }
+  });
+}
+
 els.productGrid.addEventListener("mouseover", e=>{
   const gallery=e.target.closest("[data-card-gallery]");
   if(!gallery || gallery.contains(e.relatedTarget)) return;
@@ -943,6 +1002,10 @@ els.closeProductButton.addEventListener("click",closeProduct); els.productOverla
 els.closeCheckoutButton.addEventListener("click",closeCheckout); els.checkoutOverlay.addEventListener("click",closeCheckout);
 els.openTermsButton.addEventListener("click",openTerms); els.footerTermsButton.addEventListener("click",openTerms); els.checkoutTermsButton.addEventListener("click",openTerms); els.closeTermsButton.addEventListener("click",closeTerms); els.termsOverlay.addEventListener("click",closeTerms);
 els.closeContactButton.addEventListener("click",closeContact); els.contactOverlay.addEventListener("click",closeContact);
+els.openCardsPreview?.addEventListener("click",openCardsModal);
+els.openCardsPreviewSecondary?.addEventListener("click",openCardsModal);
+els.closeCardsPreview?.addEventListener("click",closeCardsModal);
+els.cardsOverlay?.addEventListener("click",closeCardsModal);
 
 els.deliveryMethod.addEventListener("change",updateDeliveryFields); els.paymentMethod.addEventListener("change",updatePaymentNote); els.giftWrapping.addEventListener("change",updateGiftWrappingNote);
 els.isGift.addEventListener("change",()=>{ els.giftFields.hidden=!els.isGift.checked; });
@@ -954,7 +1017,7 @@ els.checkoutForm.addEventListener("submit",submitOrder);
 
 window.addEventListener("keydown", e=>{
   if(e.key!=="Escape") return;
-  closeMobileMenu(); closeCart(); closeProduct(); closeTerms(); closeContact(); closeCheckout();
+  closeMobileMenu(); closeCart(); closeProduct(); closeTerms(); closeContact(); closeCardsModal(); closeCheckout();
 });
 
 renderCart();
