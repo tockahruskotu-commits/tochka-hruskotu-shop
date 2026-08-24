@@ -54,6 +54,8 @@ const els = {
   reviewsEmpty: $("#reviewsEmpty"),
   faqList: $("#faqList"),
   contactText: $("#contactText"),
+  contactPhoneDirect: $("#contactPhoneDirect"),
+  contactSocialDirect: $("#contactSocialDirect"),
   contactActions: $("#contactActions"),
   socialLinks: $("#socialLinks"),
   googleReviewLink: $("#googleReviewLink"),
@@ -323,7 +325,8 @@ function publicFilterCategories() {
 function renderFilters() {
   els.categoryFilters.innerHTML = publicFilterCategories().map(category => `
     <button class="filter-chip ${category.code === activeFilter ? "is-active" : ""}" type="button" data-filter="${escapeAttr(category.code)}">
-      ${escapeHtml(category.name)}
+      <strong>${escapeHtml(category.name)}</strong>
+      ${category.description ? `<small>${escapeHtml(category.description)}</small>` : ""}
     </button>
   `).join("");
 }
@@ -488,16 +491,57 @@ function contactItems() {
     ["Telegram", s.telegram],
     ["Viber", s.viber],
     ["Instagram", s.instagram],
-    ["Зателефонувати", phone]
+    [s.phone ? `Телефон ${s.phone}` : "Зателефонувати", phone]
   ].filter(([,url]) => Boolean(url));
+}
+
+function socialDisplayValue(name, url) {
+  const value = String(url || "").trim();
+  if (!value) return "";
+  try {
+    const parsed = new URL(value);
+    const path = decodeURIComponent(parsed.pathname || "").replace(/^\/+|\/+$/g, "");
+    if (["Telegram", "Instagram", "TikTok"].includes(name) && path) {
+      const handle = path.split("/").filter(Boolean).pop();
+      return handle ? `@${handle.replace(/^@/, "")}` : value;
+    }
+    if (name === "YouTube" && path) return path.replace(/^@/, "@");
+    if (name === "Facebook") return "Точка Хрускоту";
+    return value;
+  } catch (error) {
+    return value;
+  }
 }
 
 function renderContacts() {
   const items = contactItems();
   els.contactActions.innerHTML = items.map(([name,url]) => `<a class="contact-pill" href="${escapeAttr(safeUrl(url))}" ${String(url).startsWith("http") ? 'target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(name)}</a>`).join("");
   els.contactChoiceGrid.innerHTML = items.map(([name,url]) => `<a class="contact-choice" href="${escapeAttr(safeUrl(url))}" ${String(url).startsWith("http") ? 'target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(name)}</a>`).join("");
+
   const s = store?.settings || {};
-  els.socialLinks.innerHTML = [["Telegram",s.telegram],["Instagram",s.instagram],["Facebook",s.facebook],["TikTok",s.tiktok],["YouTube",s.youtube]].filter(([,u])=>u).map(([n,u])=>`<a href="${escapeAttr(safeUrl(u))}" target="_blank" rel="noopener noreferrer">${escapeHtml(n)}</a>`).join("");
+  if (els.contactPhoneDirect && s.phone) {
+    els.contactPhoneDirect.href = `tel:${s.phone.replace(/[^\d+]/g, "")}`;
+    els.contactPhoneDirect.textContent = s.phone;
+  }
+
+  const socialRows = [
+    ["Telegram", s.telegram],
+    ["Instagram", s.instagram],
+    ["Facebook", s.facebook],
+    ["TikTok", s.tiktok],
+    ["YouTube", s.youtube]
+  ].filter(([,url]) => Boolean(url));
+
+  if (els.contactSocialDirect) {
+    els.contactSocialDirect.innerHTML = socialRows.map(([name,url]) => `
+      <a class="contact-social-item" href="${escapeAttr(safeUrl(url))}" target="_blank" rel="noopener noreferrer">
+        <strong>${escapeHtml(name)}</strong>
+        <span>${escapeHtml(socialDisplayValue(name, url))}</span>
+      </a>
+    `).join("");
+  }
+
+  els.socialLinks.innerHTML = socialRows.map(([name,url])=>`<a href="${escapeAttr(safeUrl(url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(name)}</a>`).join("");
 }
 
 function renderTerms() {
