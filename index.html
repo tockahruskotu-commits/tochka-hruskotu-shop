@@ -155,7 +155,7 @@
         <div class="section-heading catalogue-heading">
           <p class="section-kicker">Каталог</p>
           <h2 id="searchTitle">Що сьогодні хочеться похрумтіти?</h2>
-          <p>Обирайте смак, формат або подарунок. Усе в одному каталозі — без нескінченного гортання категорій.</p>
+          <p>Усі розділи каталогу одразу перед вами. Натисніть потрібний — і нижче залишаться тільки товари з цього розділу.</p>
         </div>
 
         <div class="catalogue-tools" id="catalogueTools">
@@ -174,8 +174,8 @@
           </select>
         </div>
 
-        <div class="filter-scroller-wrap">
-          <div class="filter-scroller" id="categoryFilters" aria-label="Фільтри каталогу"></div>
+        <div class="category-list-wrap">
+          <div class="category-list" id="categoryFilters" aria-label="Розділи каталогу"></div>
         </div>
 
         <div class="catalogue-meta">
@@ -198,24 +198,55 @@
     </section>
 
     <section class="gift-section" id="gifts">
-      <div class="container split-feature">
-        <div class="feature-copy">
+      <div class="container">
+        <div class="section-heading compact-heading gift-heading">
           <p class="section-kicker">Подарунки</p>
-          <h2>Коли хочеться сказати більше, ніж просто «вітаю»</h2>
-          <p>Можна відправити замовлення одразу іншій людині, додати листівку, приховати вартість або залишитися анонімним.</p>
-          <div class="feature-points">
-            <span>Безкоштовна листівка</span>
-            <span>Допоможемо з текстом</span>
-            <span>Індивідуальне оформлення</span>
-            <span>«Нехай людина здогадається»</span>
-          </div>
-          <button class="button button-primary" type="button" data-filter-link="GIFT-SETS">Обрати подарунок</button>
+          <h2>Не просто смаколик — готовий спосіб потішити людину</h2>
+          <p>Тут одразу видно, що можна зробити: обрати подарунок, додати листівку, оформити сюрприз або сказати те, на що давно не вистачало слів.</p>
         </div>
-        <div class="feature-card warm-card">
-          <p class="quote-mark">“</p>
-          <h3>На що я не можу наважитися</h3>
-          <p>Іноді найважчі слова — саме ті, які найбільше хочеться сказати.</p>
-          <small>Зізнатися в почуттях · попросити пробачення · помиритися · подякувати · сказати, що сумую</small>
+
+        <div class="gift-visual-grid">
+          <article class="gift-visual-card gift-choice-card">
+            <div class="gift-visual-media">
+              <img src="images/products/gift-sets/box-10/01.webp" alt="Подарунковий набір Точка Хрускоту" loading="lazy">
+              <span class="visual-label">Подарунок</span>
+            </div>
+            <div class="gift-visual-body">
+              <h3>Зібрати подарунок</h3>
+              <p>Оберіть готовий набір або смаколики, а під час оформлення додайте листівку, сюрприз чи індивідуальне святкове пакування.</p>
+              <div class="visual-option-list">
+                <span>🎁 Подарункові набори</span>
+                <span>💌 Безкоштовна листівка</span>
+                <span>✨ Святкове оформлення</span>
+                <span>🙈 Не вкладати інформацію про ціну</span>
+              </div>
+              <button class="button button-primary" type="button" data-filter-link="GIFT-SETS">Обрати подарунок</button>
+            </div>
+          </article>
+
+          <article class="gift-visual-card dare-card">
+            <div class="gift-visual-media dare-media">
+              <img src="images/products/coffee-fortunes/for-her/01.webp" alt="Листівка для важливих слів" loading="lazy">
+              <span class="visual-label visual-label-berry">Особлива листівка</span>
+              <div class="dare-media-mark">💌</div>
+            </div>
+            <div class="gift-visual-body">
+              <p class="dare-kicker">На що я не можу наважитися</p>
+              <h3>Коли важко сказати — ми допоможемо сформулювати</h3>
+              <p>Іноді найважчі слова — саме ті, які найбільше хочеться сказати. Оберіть ситуацію під час оформлення подарунка.</p>
+              <div class="dare-scenarios" aria-label="Варіанти особливої листівки">
+                <span>❤️ Зізнатися в почуттях</span>
+                <span>🌷 Натякнути на симпатію</span>
+                <span>☕ Запросити на побачення</span>
+                <span>🤍 Попросити пробачення</span>
+                <span>🫶 Помиритися</span>
+                <span>✨ Подякувати</span>
+                <span>🌙 Сказати, що сумую</span>
+                <span>💬 Сказати: «Ти для мене важлива/важливий»</span>
+              </div>
+              <p class="dare-note">Можна підписатися своїм ім’ям, залишитися анонімно або дати людині маленьку підказку.</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -296,12 +327,20 @@
 
     <section class="contacts-section" id="contacts">
       <div class="container contact-card">
-        <div>
+        <div class="contact-copy">
           <p class="section-kicker">Контакти</p>
           <h2>Ми поруч, якщо хочеться щось уточнити</h2>
           <p id="contactText">«Точка Хрускоту» — м. Дубно, Рівненська область. Звідси ми готуємо та відправляємо ваші хрумкі замовлення по Україні.</p>
+          <p class="contact-copy-note">Можна натиснути й перейти в соцмережу, а можна просто скопіювати телефон або назву профілю.</p>
         </div>
-        <div class="contact-actions" id="contactActions"></div>
+        <div class="contact-direct">
+          <div class="contact-phone-line">
+            <span>Телефон</span>
+            <a id="contactPhoneDirect" href="tel:+380638330860">+380638330860</a>
+          </div>
+          <div class="contact-social-list" id="contactSocialDirect"></div>
+          <div class="contact-actions" id="contactActions"></div>
+        </div>
       </div>
     </section>
   </main>
