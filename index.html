@@ -22,7 +22,8 @@
   <link rel="icon" href="images/brand/logo.webp" type="image/webp">
   <link rel="apple-touch-icon" href="images/brand/logo.webp">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="preload" as="image" href="images/hero/main-cover.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="images/site/hero-family-desktop.webp" media="(min-width: 761px)" fetchpriority="high">
+  <link rel="preload" as="image" href="images/site/hero-family-mobile.webp" media="(max-width: 760px)" fetchpriority="high">
 
   <meta property="og:locale" content="uk_UA">
   <meta property="og:type" content="website">
@@ -30,7 +31,7 @@
   <meta property="og:title" content="Точка Хрускоту — трохи дитинства, багато тепла">
   <meta property="og:description" content="Крафтові десерти ручної роботи та подарунки з доставкою по Україні.">
   <meta property="og:url" content="https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/">
-  <meta property="og:image" content="https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/images/hero/main-cover.webp">
+  <meta property="og:image" content="https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/images/site/hero-family-desktop.webp">
   <meta name="twitter:card" content="summary_large_image">
 
   <script type="application/ld+json">
@@ -52,7 +53,7 @@
   }
   </script>
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2.2-20260824">
 </head>
 <body>
   <div class="page-loader" id="pageLoader" aria-live="polite">
@@ -72,9 +73,9 @@
 
       <nav class="desktop-nav" aria-label="Головна навігація">
         <a href="#catalogue">Каталог</a>
-        <button type="button" data-filter-link="NEW">Новинки</button>
-        <button type="button" data-filter-link="GIFT-SETS">Подарунки</button>
-        <button type="button" data-filter-link="CERTIFICATES">Сертифікати</button>
+        <a href="#new">Новинки</a>
+        <a href="#gifts">Подарунки</a>
+        <a href="#certificates">Сертифікати</a>
         <a href="#delivery">Доставка</a>
         <a href="#about">Про нас</a>
         <a href="#reviews">Відгуки</a>
@@ -103,9 +104,9 @@
     </div>
     <nav>
       <a href="#catalogue">Каталог</a>
-      <button type="button" data-filter-link="NEW">Новинки</button>
-      <button type="button" data-filter-link="GIFT-SETS">Подарунки</button>
-      <button type="button" data-filter-link="CERTIFICATES">Сертифікати</button>
+      <a href="#new">Новинки</a>
+      <a href="#gifts">Подарунки</a>
+      <a href="#certificates">Сертифікати</a>
       <a href="#delivery">Доставка й оплата</a>
       <a href="#about">Про нас</a>
       <a href="#reviews">Відгуки</a>
@@ -124,7 +125,7 @@
           <p class="hero-text" id="heroText">Солодощі, які хочеться смакувати самим, ділити з близькими й дарувати тим, кого любиш.</p>
           <div class="hero-actions">
             <a class="button button-primary" id="heroButton" href="#catalogue">Обрати щось смачненьке</a>
-            <button class="button button-secondary" id="heroGiftButton" type="button" data-filter-link="GIFT-SETS">Знайти подарунок</button>
+            <a class="button button-secondary" id="heroGiftButton" href="#gifts">Знайти подарунок</a>
           </div>
           <div class="hero-facts">
             <span>Невеликі партії</span>
@@ -135,7 +136,10 @@
         </div>
         <div class="hero-visual">
           <div class="hero-image-card">
-            <img id="heroImage" src="images/hero/main-cover.webp" alt="Смаколики Точка Хрускоту" width="1496" height="1051" fetchpriority="high">
+            <picture>
+              <source media="(max-width: 760px)" srcset="images/site/hero-family-mobile.webp">
+              <img id="heroImage" src="images/site/hero-family-desktop.webp" alt="Тепле сімейне чаювання зі смаколиками Точка Хрускоту" width="1600" height="900" fetchpriority="high">
+            </picture>
           </div>
           <div class="hero-sticker">Візьми · Вмочи · Хрусни · Усміхнись</div>
         </div>
@@ -197,88 +201,105 @@
       </div>
     </section>
 
+    <section class="new-section" id="new">
+      <div class="container">
+        <div class="section-heading compact-heading new-heading">
+          <p class="section-kicker">Новинки</p>
+          <h2>Щойно з нашої кухні</h2>
+          <p>Кілька найсвіжіших позицій — щоб швидко побачити, що нового з’явилося у «Точці Хрускоту».</p>
+        </div>
+        <div class="product-grid new-product-grid" id="newProductGrid"></div>
+        <div class="new-actions">
+          <button class="button button-secondary" type="button" data-filter-link="NEW">Переглянути всі новинки</button>
+        </div>
+      </div>
+    </section>
+
     <section class="gift-section" id="gifts">
       <div class="container">
         <div class="section-heading compact-heading gift-heading">
           <p class="section-kicker">Подарунки</p>
-          <h2>Не просто смаколик — готовий спосіб потішити людину</h2>
-          <p>Тут одразу видно, що можна зробити: обрати подарунок, додати листівку, оформити сюрприз або сказати те, на що давно не вистачало слів.</p>
+          <h2>Коли хочеться подарувати не просто солодке</h2>
+          <p>Зберемо подарунок, додамо листівку, святкове оформлення й допоможемо сказати найважливіше.</p>
         </div>
 
-        <div class="gift-visual-grid">
-          <article class="gift-visual-card gift-choice-card">
-            <div class="gift-visual-media">
-              <img src="images/products/gift-sets/box-10/01.webp" alt="Подарунковий набір Точка Хрускоту" loading="lazy">
-              <span class="visual-label">Подарунок</span>
+        <article class="gift-builder-card">
+          <div class="gift-builder-media">
+            <img src="images/site/gift-builder.webp" alt="Подарункове оформлення Точка Хрускоту" loading="lazy">
+          </div>
+          <div class="gift-builder-copy">
+            <p class="section-kicker">Зібрати подарунок</p>
+            <h3>Ви обираєте смаколики — ми збираємо теплий подарунок</h3>
+            <p>Додайте листівку, сюрприз, індивідуальне святкове оформлення або попросіть не вкладати інформацію про вартість.</p>
+            <div class="visual-option-list">
+              <span>🎁 Готові набори або ваш вибір</span>
+              <span>💌 Безкоштовна листівка</span>
+              <span>✨ Індивідуальне оформлення</span>
+              <span>🙈 Без інформації про ціну</span>
             </div>
-            <div class="gift-visual-body">
-              <h3>Зібрати подарунок</h3>
-              <p>Оберіть готовий набір або смаколики, а під час оформлення додайте листівку, сюрприз чи індивідуальне святкове пакування.</p>
-              <div class="visual-option-list">
-                <span>🎁 Подарункові набори</span>
-                <span>💌 Безкоштовна листівка</span>
-                <span>✨ Святкове оформлення</span>
-                <span>🙈 Не вкладати інформацію про ціну</span>
-              </div>
-              <button class="button button-primary" type="button" data-filter-link="GIFT-SETS">Обрати подарунок</button>
-            </div>
-          </article>
+            <button class="button button-primary" type="button" data-filter-link="GIFT-SETS">Обрати подарунок</button>
+          </div>
+        </article>
+      </div>
+    </section>
 
-          <article class="gift-visual-card dare-card">
-            <div class="gift-visual-media dare-media">
-              <img src="images/products/coffee-fortunes/for-her/01.webp" alt="Листівка для важливих слів" loading="lazy">
-              <span class="visual-label visual-label-berry">Особлива листівка</span>
-              <div class="dare-media-mark">💌</div>
-            </div>
-            <div class="gift-visual-body">
-              <p class="dare-kicker">На що я не можу наважитися</p>
-              <h3>Коли важко сказати — ми допоможемо сформулювати</h3>
-              <p>Іноді найважчі слова — саме ті, які найбільше хочеться сказати. Оберіть ситуацію під час оформлення подарунка.</p>
-              <div class="dare-scenarios" aria-label="Варіанти особливої листівки">
-                <span>❤️ Зізнатися в почуттях</span>
-                <span>🌷 Натякнути на симпатію</span>
-                <span>☕ Запросити на побачення</span>
-                <span>🤍 Попросити пробачення</span>
-                <span>🫶 Помиритися</span>
-                <span>✨ Подякувати</span>
-                <span>🌙 Сказати, що сумую</span>
-                <span>💬 Сказати: «Ти для мене важлива/важливий»</span>
-              </div>
-              <p class="dare-note">Можна підписатися своїм ім’ям, залишитися анонімно або дати людині маленьку підказку.</p>
-            </div>
-          </article>
+    <section class="cards-section" id="cards">
+      <div class="container cards-grid">
+        <div class="cards-preview">
+          <button class="cards-preview-button" id="openCardsPreview" type="button" aria-label="Переглянути всі дизайни листівок">
+            <img src="images/site/cards-preview.webp" alt="Вісім стилів листівок Точка Хрускоту" loading="lazy">
+            <span>Натисніть, щоб роздивитися</span>
+          </button>
+        </div>
+        <div class="cards-copy">
+          <p class="section-kicker">Листівки</p>
+          <h2>Листівка може сказати трохи більше</h2>
+          <p>Листівка безкоштовна. Можете написати текст самі або попросити нас допомогти сформулювати його.</p>
+          <div class="card-style-list">
+            <span>Ніжно</span><span>Весело</span><span>Для дитини</span><span>Романтично</span>
+            <span>Офіційно</span><span>Універсально</span><span>Створити саме для вас</span><span>На що я не можу наважитися</span>
+          </div>
+          <button class="button button-secondary" id="openCardsPreviewSecondary" type="button">Переглянути листівки</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="courage-section" id="courage">
+      <div class="container courage-grid">
+        <div class="courage-media">
+          <img src="images/site/courage.webp" alt="Коли важко сказати важливі слова" loading="lazy">
+        </div>
+        <div class="courage-copy">
+          <p class="section-kicker">Особлива листівка</p>
+          <h2>На що я не можу наважитися</h2>
+          <h3>Коли важко сказати — ми допоможемо сформулювати</h3>
+          <p>Іноді найважчі слова — саме ті, які найбільше хочеться сказати. Допоможемо передати їх красиво, делікатно й з турботою.</p>
+          <div class="dare-scenarios">
+            <span>❤️ Зізнатися в почуттях</span>
+            <span>🌷 Натякнути на симпатію</span>
+            <span>☕ Запросити на побачення</span>
+            <span>🤍 Попросити пробачення</span>
+            <span>🫶 Помиритися</span>
+            <span>✨ Подякувати</span>
+            <span>🌙 Сказати, що сумую</span>
+            <span>💬 Інше — допоможіть сказати красиво</span>
+          </div>
+          <button class="button button-primary" type="button" data-filter-link="GIFT-SETS">Обрати подарунок і послання</button>
         </div>
       </div>
     </section>
 
     <section class="certificate-section" id="certificates">
-      <div class="container">
-        <div class="section-heading compact-heading">
+      <div class="container certificate-feature">
+        <div class="certificate-art">
+          <img src="images/site/certificate-500.webp" alt="Електронний подарунковий сертифікат Точка Хрускоту" loading="lazy">
+        </div>
+        <div class="certificate-copy">
           <p class="section-kicker">Подарункові сертифікати</p>
           <h2>Подаруйте вибір</h2>
-          <p>500, 1 000, 1 500, 2 000 грн або інша сума. Сертифікат безстроковий і використовується один раз.</p>
-        </div>
-        <div class="certificate-grid" id="certificateGrid"></div>
-      </div>
-    </section>
-
-    <section class="delivery-section" id="delivery">
-      <div class="container">
-        <div class="section-heading compact-heading">
-          <p class="section-kicker">Доставка й оплата</p>
-          <h2>Спокійно й без сюрпризів</h2>
-          <p>Після оформлення ми перевіримо замовлення, зв’яжемося з вами і лише потім надішлемо реквізити для оплати.</p>
-        </div>
-        <div class="delivery-grid">
-          <div class="info-card">
-            <h3>Доставка</h3>
-            <div id="deliveryList" class="stack-list"></div>
-          </div>
-          <div class="info-card accent-card">
-            <h3>Оплата</h3>
-            <div id="paymentList" class="stack-list"></div>
-            <button class="text-button" id="openTermsButton" type="button">Переглянути всі умови</button>
-          </div>
+          <p class="certificate-lead">Електронний подарунковий сертифікат «Точки Хрускоту» — коли хочеться подарувати смак, тепло і хрускіт.</p>
+          <div class="certificate-grid" id="certificateGrid"></div>
+          <p class="certificate-rules">Безстроковий · одноразове використання · якщо сума замовлення більша — можна доплатити.</p>
         </div>
       </div>
     </section>
@@ -286,13 +307,71 @@
     <section class="about-section" id="about">
       <div class="container about-grid">
         <div class="about-visual">
-          <img src="images/hero/main-cover.webp" alt="Точка Хрускоту — смаколики ручної роботи" loading="lazy">
+          <img src="images/site/about-maker.webp" alt="Готуємо смаколики Точка Хрускоту невеликими партіями" loading="lazy">
         </div>
         <div class="about-copy">
           <p class="section-kicker">Про нас</p>
           <h2 id="aboutTitle">Тут усе починається з турботи</h2>
-          <p id="aboutText">Ми готуємо невеликими партіями, пакуємо замовлення вручну й хочемо, щоб разом із кожною коробочкою до вас приїжджало трохи радості.</p>
+          <p id="aboutText">«Точка Хрускоту» — це невеликі партії солодощів, ручна робота й багато уваги до деталей. Ми готуємо, оформлюємо й пакуємо ваші замовлення самі.</p>
+          <p>Знаходимося у м. Дубно, Рівненська область. Звідси відправляємо ваші хрумкі замовлення по Україні.</p>
           <div class="about-signature">Точка Хрускоту · Дубно</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="process-section" id="process">
+      <div class="container">
+        <div class="section-heading compact-heading">
+          <p class="section-kicker">Як ми готуємо</p>
+          <h2>Від тіста до вашої коробки</h2>
+          <p>Три прості етапи — без зайвої постановки, на реальних фото нашої роботи.</p>
+        </div>
+        <div class="process-grid">
+          <article class="process-card">
+            <div class="process-duo">
+              <img src="images/site/process-dough.webp" alt="Тісто з білими шоколадними дропсами" loading="lazy">
+              <img src="images/site/process-filled-donuts.webp" alt="Пончики з начинкою у формі" loading="lazy">
+            </div>
+            <div class="process-copy"><span>1</span><div><h3>Готуємо</h3><p>Готуємо невеликими партіями й додаємо начинку.</p></div></div>
+          </article>
+          <article class="process-card">
+            <img class="process-main-image" src="images/site/process-finished.webp" alt="Готові оформлені міні-донати" loading="lazy">
+            <div class="process-copy"><span>2</span><div><h3>Оформлюємо</h3><p>Покриваємо, прикрашаємо й доводимо кожну партію до готового вигляду.</p></div></div>
+          </article>
+          <article class="process-card">
+            <img class="process-main-image" src="images/site/process-packed.webp" alt="Міні-донати у фірмовому стакані Точка Хрускоту" loading="lazy">
+            <div class="process-copy"><span>3</span><div><h3>Пакуємо</h3><p>Пакуємо так, щоб замовлення було готове до дороги.</p></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="delivery-section" id="delivery">
+      <div class="container">
+        <div class="section-heading compact-heading">
+          <p class="section-kicker">Доставка й оплата</p>
+          <h2>Від нас — до вас</h2>
+          <p>Після оформлення ми перевіримо замовлення, зв’яжемося з вами і лише потім надішлемо реквізити для оплати.</p>
+        </div>
+        <div class="delivery-feature-grid">
+          <div class="delivery-photo">
+            <img src="images/site/delivery-packing.webp" alt="Реальне пакування замовлень Точка Хрускоту для відправки" loading="lazy">
+          </div>
+          <div class="delivery-grid">
+            <div class="info-card">
+              <h3>Доставка</h3>
+              <div id="deliveryList" class="stack-list"></div>
+            </div>
+            <div class="info-card accent-card">
+              <h3>Оплата</h3>
+              <div id="paymentList" class="stack-list"></div>
+              <div class="pickup-payment-highlight">
+                <strong>Готівкою при самовивозі</strong>
+                <span>Самовивіз доступний у м. Дубно, Рівненська область.</span>
+              </div>
+              <button class="text-button" id="openTermsButton" type="button">Переглянути всі умови</button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -340,6 +419,23 @@
           </div>
           <div class="contact-social-list" id="contactSocialDirect"></div>
           <div class="contact-actions" id="contactActions"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="social-showcase">
+      <div class="container social-showcase-card">
+        <div>
+          <p class="section-kicker">Соцмережі</p>
+          <h2>Ще більше хрускоту — у наших соцмережах</h2>
+          <p>Там показуємо реальні відео, виробництво, пакування, новинки й те, що не поміщається на сайт.</p>
+        </div>
+        <div class="social-showcase-links">
+          <a href="https://t.me/tockahruskotu" target="_blank" rel="noopener noreferrer">Telegram</a>
+          <a href="https://instagram.com/tockahruskotu" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.facebook.com/tockahruskotu/" target="_blank" rel="noopener noreferrer">Facebook</a>
+          <a href="https://www.tiktok.com/@tockahruskotu" target="_blank" rel="noopener noreferrer">TikTok</a>
+          <a href="https://www.youtube.com/@ТочкаХрускоту" target="_blank" rel="noopener noreferrer">YouTube</a>
         </div>
       </div>
     </section>
@@ -489,6 +585,18 @@
     </div>
   </section>
 
+  <div class="modal-overlay" id="cardsOverlay"></div>
+  <section class="modal cards-modal" id="cardsModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="cardsModalTitle">
+    <div class="modal-card cards-preview-modal-card">
+      <header class="checkout-header">
+        <div><p class="panel-kicker">Листівки</p><h2 id="cardsModalTitle">8 стилів для різних слів і приводів</h2></div>
+        <button class="icon-button" id="closeCardsPreview" type="button" aria-label="Закрити">×</button>
+      </header>
+      <img src="images/site/cards-preview.webp" alt="Вісім стилів листівок Точка Хрускоту">
+      <p>Під час оформлення замовлення оберіть стиль листівки. Текст можна написати самостійно або попросити нас допомогти безкоштовно.</p>
+    </div>
+  </section>
+
   <div class="modal-overlay" id="termsOverlay"></div>
   <section class="modal terms-modal" id="termsModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="termsTitle">
     <div class="modal-card terms-card">
@@ -510,6 +618,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=2.2-20260824"></script>
 </body>
 </html>
