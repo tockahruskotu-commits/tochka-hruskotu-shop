@@ -997,4 +997,93 @@ h3 { margin: 0; font-size: 1.32rem; }
   .suggestion-card img { width: 54px; height: 54px; }
   .suggestion-card button { grid-column: 2; justify-self: start; }
   .social-showcase-card { padding: 22px; }
+}/* =====================================================
+   Точка Хрускоту — виправлення кошика
+   Головне: товари в кошику займають основну висоту,
+   рекомендації — компактний горизонтальний блок унизу.
+   Додати В САМИЙ КІНЕЦЬ style.css
+   ===================================================== */
+
+.cart-panel {
+  overflow: hidden;
 }
+
+/* Основна зона кошика повинна забирати весь вільний простір */
+.cart-items {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Рекомендації більше не можуть "з'їдати" кошик */
+.cart-suggestions {
+  flex: 0 0 auto !important;
+  max-height: 180px !important;
+  overflow: hidden !important;
+  padding-top: 10px !important;
+  border-top: 1px solid var(--line, #ead8c7);
+}
+
+.cart-suggestions h3 {
+  margin: 0 0 8px !important;
+  line-height: 1.2;
+}
+
+/* Рекомендовані товари — в один горизонтальний ряд */
+.cart-suggestions .suggestion-row {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding-bottom: 5px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cart-suggestions .suggestion-card {
+  flex: 0 0 210px !important;
+  width: 210px !important;
+  min-width: 210px !important;
+  max-width: 210px !important;
+  min-height: 86px;
+  scroll-snap-align: start;
+}
+
+/* Якщо у рекомендаціях є фото — робимо їх компактнішими */
+.cart-suggestions .suggestion-card img {
+  width: 58px !important;
+  height: 58px !important;
+  object-fit: cover;
+  flex: 0 0 58px;
+}
+
+/* Нижня частина з сумою та кнопкою завжди залишається видимою */
+.cart-footer {
+  flex: 0 0 auto !important;
+}
+
+@media (max-width: 640px) {
+  .cart-suggestions {
+    max-height: 156px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    padding-bottom: 8px !important;
+  }
+
+  .cart-suggestions .suggestion-card {
+    flex-basis: 190px !important;
+    width: 190px !important;
+    min-width: 190px !important;
+    max-width: 190px !important;
+  }
+
+  .cart-items {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
