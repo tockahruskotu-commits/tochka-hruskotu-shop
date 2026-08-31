@@ -758,8 +758,58 @@ function renderProductModal() {
   const regular = Number(variant?.regularPrice ?? p.regularPrice ?? productRegularMinPrice(p));
   const sale = Boolean(variant?.saleActive || p.saleActive) && regular > current;
   const related = (p.relatedProductCodes || []).map(findProduct).filter(Boolean).slice(0,3);
-  const productReviews = (store?.reviews || []).filter(r => !r.productCode || r.productCode === p.code);
+
+  // Показуємо тільки відгуки/питання, що належать саме цьому товару.
+  // Старі загальні відгуки без коду товару сюди не підмішуємо.
+  const productFeedback = (store?.reviews || []).filter(item =>
+    String(item?.productCode || "").trim().toUpperCase() === String(p.code || "").trim().toUpperCase()
+  );
+
+  const isQuestionFeedback = item => {
+    const type = normalizeText(item?.type || "");
+    return type === "question" || type.includes("питан");
+  };
+
+  const productQuestions = productFeedback.filter(isQuestionFeedback);
+  const productReviews = productFeedback.filter(item => !isQuestionFeedback(item));
   const categoryName = findCategory(p.categoryCode)?.name || "";
+
+  const reviewListHtml = productReviews.length
+    ? `<div class="product-review-list">${productReviews.map(review => {
+        const brandAnswer = review.answer || review.reply || "";
+        const stars = review.rating
+          ? "★".repeat(Math.max(1, Math.min(5, Number(review.rating))))
+          : "";
+        return `
+          <article class="product-review-item">
+            <div class="product-review-head">
+              <strong>${escapeHtml(review.name || "Покупець")}</strong>
+              ${stars ? `<span aria-label="Оцінка ${escapeAttr(review.rating)} з 5">${stars}</span>` : ""}
+            </div>
+            <div class="review-badges">
+              ${review.verifiedPurchase ? '<span class="verified-badge">Підтверджена покупка</span>' : ""}
+            </div>
+            <p>${escapeHtml(review.text || "")}</p>
+            ${brandAnswer ? `<div class="brand-reply"><strong>Точка Хрускоту</strong><p>${escapeHtml(brandAnswer)}</p></div>` : ""}
+          </article>`;
+      }).join("")}</div>`
+    : `<p class="product-detail-copy">Поки немає опублікованих відгуків про цей товар.</p>`;
+
+  const questionListHtml = productQuestions.length
+    ? `<div class="product-review-list">${productQuestions.map(question => {
+        const brandAnswer = question.answer || question.reply || "";
+        return `
+          <article class="product-review-item">
+            <div class="review-badges">
+              <span class="feedback-type-badge">Питання</span>
+            </div>
+            <p><strong>${escapeHtml(question.name || "Покупець")}:</strong> ${escapeHtml(question.text || "")}</p>
+            ${brandAnswer
+              ? `<div class="brand-reply"><strong>Точка Хрускоту</strong><p>${escapeHtml(brandAnswer)}</p></div>`
+              : ""}
+          </article>`;
+      }).join("")}</div>`
+    : `<p class="product-detail-copy">Поки ніхто не ставив опублікованих запитань про цей товар.</p>`;
 
   els.productModalContent.innerHTML = `
     <div class="product-modal-layout">
@@ -792,19 +842,16 @@ function renderProductModal() {
         ${related.length?`<div class="related-products"><h3>З цим часто обирають</h3><div class="related-mini-grid">${related.map(r=>`<button class="related-mini-card" type="button" data-related-open="${escapeAttr(r.code)}"><img src="${escapeAttr(productPhotos(r)[0])}" alt="" loading="lazy"><strong>${escapeHtml(r.name)}</strong></button>`).join("")}</div></div>`:""}
 
         <div class="product-feedback">
-          <h3>Відгуки та запитання</h3>
-          <p class="product-detail-copy">
-            ${productReviews.length
-              ? `${productReviews.length} ${plural(productReviews.length,"відгук","відгуки","відгуків")} уже опубліковано.`
-              : "Поки немає опублікованих відгуків саме про цей товар."}
-          </p>
+          <h3>Відгуки покупців${productReviews.length ? ` (${productReviews.length})` : ""}</h3>
+          ${reviewListHtml}
           <div class="product-feedback-actions">
-            <button class="button button-secondary" type="button" data-open-review>
-              Залишити відгук
-            </button>
-            <button class="button button-secondary" type="button" data-open-question>
-              Поставити запитання
-            </button>
+            <button class="button button-secondary" type="button" data-open-review>Залишити відгук</button>
+          </div>
+
+          <h3 style="margin-top:26px">Питання про товар${productQuestions.length ? ` (${productQuestions.length})` : ""}</h3>
+          ${questionListHtml}
+          <div class="product-feedback-actions">
+            <button class="button button-secondary" type="button" data-open-question>Поставити запитання</button>
           </div>
         </div>
       </div>
