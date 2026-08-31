@@ -18,6 +18,8 @@ let selectedVariantValue = "";
 let selectedSauces = [];
 let modalQuantity = 1;
 let isSubmittingOrder = false;
+let isSubmittingReview = false;
+let isSubmittingQuestion = false;
 let toastTimer = null;
 
 const $ = selector => document.querySelector(selector);
@@ -862,6 +864,10 @@ function openReviewForm(product) {
   els.reviewProductName.textContent = name;
   els.reviewStatus.textContent = "";
   els.reviewStatus.className = "order-status";
+  if (els.submitReviewButton) {
+    els.submitReviewButton.disabled = false;
+    els.submitReviewButton.textContent = "Надіслати відгук";
+  }
 
   closeProduct();
   openModal(els.reviewModal, els.reviewOverlay);
@@ -883,6 +889,10 @@ function openQuestionForm(product) {
   els.questionProductName.textContent = name;
   els.questionStatus.textContent = "";
   els.questionStatus.className = "order-status";
+  if (els.submitQuestionButton) {
+    els.submitQuestionButton.disabled = false;
+    els.submitQuestionButton.textContent = "Надіслати питання";
+  }
 
   closeProduct();
   openModal(els.questionModal, els.questionOverlay);
@@ -890,6 +900,167 @@ function openQuestionForm(product) {
 
 function closeQuestionForm() {
   if (els.questionModal && els.questionOverlay) closeModal(els.questionModal, els.questionOverlay);
+}
+
+function showReviewStatus(type, message) {
+  if (!els.reviewStatus) return;
+  els.reviewStatus.className = `order-status ${type || ""}`.trim();
+  els.reviewStatus.textContent = message || "";
+}
+
+function showQuestionStatus(type, message) {
+  if (!els.questionStatus) return;
+  els.questionStatus.className = `order-status ${type || ""}`.trim();
+  els.questionStatus.textContent = message || "";
+}
+
+async function sendFeedbackPayload(payload) {
+  const body = new URLSearchParams();
+  body.set("payload", JSON.stringify(payload));
+
+  const response = await fetch(STORE_API_URL, {
+    method: "POST",
+    body,
+    redirect: "follow"
+  });
+
+  if (!response.ok) {
+    throw new Error(`Сервер відповів ${response.status}`);
+  }
+
+  const result = await response.json();
+  if (!result?.success) {
+    throw new Error(result?.error || "Не вдалося передати повідомлення.");
+  }
+
+  return result;
+}
+
+async function submitReview(event) {
+  event.preventDefault();
+  if (isSubmittingReview) return;
+
+  const name = els.reviewName?.value.trim() || "";
+  const rating = Number(els.reviewRating?.value || 0);
+  const text = els.reviewText?.value.trim() || "";
+
+  if (name.length < 2) {
+    showReviewStatus("error", "Вкажіть, будь ласка, ваше ім’я.");
+    els.reviewName?.focus();
+    return;
+  }
+
+  if (!Number.isFinite(rating) || rating < 1 || rating > 5) {
+    showReviewStatus("error", "Оберіть оцінку від 1 до 5.");
+    els.reviewRating?.focus();
+    return;
+  }
+
+  if (text.length < 5) {
+    showReviewStatus("error", "Напишіть кілька слів про враження.");
+    els.reviewText?.focus();
+    return;
+  }
+
+  const payload = {
+    action: "feedback",
+    feedbackType: "review",
+    name,
+    rating,
+    text,
+    contact: "",
+    productCode: els.reviewProductCode?.value || "",
+    productName: els.reviewProductNameInput?.value || "",
+    website: ""
+  };
+
+  isSubmittingReview = true;
+  if (els.submitReviewButton) {
+    els.submitReviewButton.disabled = true;
+    els.submitReviewButton.textContent = "Надсилаємо...";
+  }
+  showReviewStatus("", "Передаємо відгук. Це займе кілька секунд.");
+
+  try {
+    const result = await sendFeedbackPayload(payload);
+    showReviewStatus("success", result.message || "Дякуємо! Ваш відгук уже у нас і очікує модерації.");
+
+    if (els.submitReviewButton) {
+      els.submitReviewButton.textContent = "Надіслано";
+    }
+
+    setTimeout(() => closeReviewForm(), 1800);
+  } catch (error) {
+    console.error(error);
+    showReviewStatus("error", error.message || "Не вдалося передати відгук. Спробуйте ще раз.");
+
+    if (els.submitReviewButton) {
+      els.submitReviewButton.disabled = false;
+      els.submitReviewButton.textContent = "Надіслати відгук";
+    }
+  } finally {
+    isSubmittingReview = false;
+  }
+}
+
+async function submitQuestion(event) {
+  event.preventDefault();
+  if (isSubmittingQuestion) return;
+
+  const name = els.questionName?.value.trim() || "";
+  const text = els.questionText?.value.trim() || "";
+
+  if (name.length < 2) {
+    showQuestionStatus("error", "Вкажіть, будь ласка, ваше ім’я.");
+    els.questionName?.focus();
+    return;
+  }
+
+  if (text.length < 5) {
+    showQuestionStatus("error", "Напишіть ваше запитання.");
+    els.questionText?.focus();
+    return;
+  }
+
+  const payload = {
+    action: "feedback",
+    feedbackType: "question",
+    name,
+    rating: "",
+    text,
+    contact: "",
+    productCode: els.questionProductCode?.value || "",
+    productName: els.questionProductNameInput?.value || "",
+    website: ""
+  };
+
+  isSubmittingQuestion = true;
+  if (els.submitQuestionButton) {
+    els.submitQuestionButton.disabled = true;
+    els.submitQuestionButton.textContent = "Надсилаємо...";
+  }
+  showQuestionStatus("", "Передаємо запитання. Це займе кілька секунд.");
+
+  try {
+    const result = await sendFeedbackPayload(payload);
+    showQuestionStatus("success", result.message || "Дякуємо! Запитання вже у нас. Відповімо після перегляду.");
+
+    if (els.submitQuestionButton) {
+      els.submitQuestionButton.textContent = "Надіслано";
+    }
+
+    setTimeout(() => closeQuestionForm(), 1800);
+  } catch (error) {
+    console.error(error);
+    showQuestionStatus("error", error.message || "Не вдалося передати запитання. Спробуйте ще раз.");
+
+    if (els.submitQuestionButton) {
+      els.submitQuestionButton.disabled = false;
+      els.submitQuestionButton.textContent = "Надіслати питання";
+    }
+  } finally {
+    isSubmittingQuestion = false;
+  }
 }
 
 function openCardsModal() { if (els.cardsModal && els.cardsOverlay) openModal(els.cardsModal, els.cardsOverlay); }
@@ -1112,6 +1283,8 @@ els.cardEnabled.addEventListener("change",()=>{ els.cardFields.hidden=!els.cardE
 els.signatureMode.addEventListener("change",()=>{ els.recipientHintField.hidden=els.signatureMode.value!=="Нехай людина здогадається"; });
 els.cardStyle.addEventListener("change",()=>{ els.courageScenarioField.hidden=els.cardStyle.value!=="На що я не можу наважитися"; });
 els.hasCertificate.addEventListener("change",()=>{ els.certificateCodeField.hidden=!els.hasCertificate.checked; });
+els.reviewForm?.addEventListener("submit", submitReview);
+els.questionForm?.addEventListener("submit", submitQuestion);
 els.checkoutForm.addEventListener("submit",submitOrder);
 
 window.addEventListener("keydown", e=>{
