@@ -1086,4 +1086,44 @@ h3 { margin: 0; font-size: 1.32rem; }
     padding-bottom: 8px !important;
   }
 }
+.feedback-summary-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 4px;
+}
 
+.feedback-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1;
+  border: 1px solid transparent;
+}
+
+.feedback-pill-rating {
+  background: #fff4cf;
+  color: #8a6413;
+  border-color: #efd488;
+}
+
+.feedback-pill-review {
+  background: #f8ebe2;
+  color: #7c4a30;
+  border-color: #e8c7b4;
+}
+
+.feedback-pill-question {
+  background: #eaf2ff;
+  color: #355b92;
+  border-color: #bfd2f3;
+}
+
+.feedback-pill-answer {
+  background: #e9f7ed;
+  color: #2f6b44;
+  border-color: #bfe0c8;
+}
