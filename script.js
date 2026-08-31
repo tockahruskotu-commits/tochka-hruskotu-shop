@@ -448,10 +448,54 @@ function productPriceHtml(product) {
   return `${prefix}<span class="price-current">${formatMoney(current)}</span>${hasSale ? `<span class="price-old">${formatMoney(regular)}</span>` : ""}`;
 }
 
+function productFeedbackSummary(product) {
+  const code = String(product?.code || "").trim().toUpperCase();
+  if (!code) return [];
+
+  const feedback = (store?.reviews || []).filter(item =>
+    String(item?.productCode || "").trim().toUpperCase() === code
+  );
+
+  const isQuestion = item => {
+    const type = normalizeText(item?.type || "");
+    return type === "question" || type.includes("питан");
+  };
+
+  const reviews = feedback.filter(item => !isQuestion(item));
+  const questions = feedback.filter(isQuestion);
+  const answeredQuestions = questions.filter(item => String(item?.answer || item?.reply || "").trim()).length;
+  const ratings = reviews
+    .map(item => Number(item?.rating || 0))
+    .filter(value => Number.isFinite(value) && value >= 1 && value <= 5);
+
+  const parts = [];
+
+  if (ratings.length) {
+    const average = ratings.reduce((sum, value) => sum + value, 0) / ratings.length;
+    parts.push(`★ ${average.toFixed(1).replace(".", ",")}`);
+  }
+
+  if (reviews.length) {
+    parts.push(`${reviews.length} ${plural(reviews.length, "відгук", "відгуки", "відгуків")}`);
+  }
+
+  if (questions.length) {
+    parts.push(`${questions.length} ${plural(questions.length, "питання", "питання", "питань")}`);
+  }
+
+  if (answeredQuestions) {
+    parts.push(`${answeredQuestions} ${plural(answeredQuestions, "відповідь", "відповіді", "відповідей")}`);
+  }
+
+  return parts;
+}
+
 function productCardHtml(product) {
   const photos = productPhotos(product).slice(0, 3);
   const status = product.status || "Під замовлення";
   const production = product.productionTime || "1–3 робочі дні";
+  const feedbackSummary = productFeedbackSummary(product);
+
   return `
     <article class="product-card" data-product-card="${escapeAttr(product.code)}">
       <div class="product-media" data-card-gallery data-code="${escapeAttr(product.code)}" data-index="0">
@@ -469,6 +513,10 @@ function productCardHtml(product) {
           <span>${escapeHtml(status)}</span>
           <span>${escapeHtml(production)}</span>
         </div>
+        ${feedbackSummary.length ? `
+          <div class="product-meta" aria-label="Відгуки та питання про товар">
+            ${feedbackSummary.map(item => `<span>${escapeHtml(item)}</span>`).join("")}
+          </div>` : ""}
         <div class="price-row">${productPriceHtml(product)}</div>
         <div class="product-actions">
           <button class="add-cart-button" type="button" data-quick-add="${escapeAttr(product.code)}" ${product.available ? "" : "disabled"}>${product.available ? "У кошик" : "Недоступно"}</button>
