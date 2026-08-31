@@ -182,6 +182,24 @@ const els = {
   toast: $("#toast")
 };
 
+// Надійно перехоплюємо відправлення внутрішніх форм ще до решти ініціалізації.
+// Це не дає браузеру виконати стандартний submit і перезавантажити сторінку.
+document.addEventListener("submit", event => {
+  const form = event.target;
+  if (!form || !form.id) return;
+
+  if (form.id === "reviewForm") {
+    event.preventDefault();
+    submitReview(event);
+    return;
+  }
+
+  if (form.id === "questionForm") {
+    event.preventDefault();
+    submitQuestion(event);
+  }
+}, true);
+
 function loadJson(key, fallback) {
   try {
     const raw = localStorage.getItem(key);
