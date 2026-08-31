@@ -616,6 +616,165 @@
     </div>
   </section>
 
+    <!-- ВНУТРІШНЯ ФОРМА ВІДГУКУ ПРО ТОВАР -->
+  <div class="modal-overlay" id="reviewOverlay"></div>
+
+  <section
+    class="modal contact-modal"
+    id="reviewModal"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="reviewModalTitle"
+  >
+    <div class="modal-card contact-modal-card">
+      <button
+        class="modal-close"
+        id="closeReviewButton"
+        type="button"
+        aria-label="Закрити"
+      >×</button>
+
+      <p class="section-kicker">Відгук про товар</p>
+      <h2 id="reviewModalTitle">Поділіться враженнями</h2>
+
+      <p id="reviewProductName"></p>
+
+      <form id="reviewForm" novalidate>
+        <input type="hidden" id="reviewProductCode" name="productCode">
+        <input type="hidden" id="reviewProductNameInput" name="productName">
+
+        <div class="form-field">
+          <label for="reviewName">Ваше ім’я *</label>
+          <input
+            id="reviewName"
+            name="name"
+            type="text"
+            maxlength="80"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="reviewRating">Ваша оцінка *</label>
+          <select id="reviewRating" name="rating" required>
+            <option value="">Оберіть оцінку</option>
+            <option value="5">★★★★★ — 5</option>
+            <option value="4">★★★★☆ — 4</option>
+            <option value="3">★★★☆☆ — 3</option>
+            <option value="2">★★☆☆☆ — 2</option>
+            <option value="1">★☆☆☆☆ — 1</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="reviewText">Ваш відгук *</label>
+          <textarea
+            id="reviewText"
+            name="text"
+            rows="5"
+            maxlength="1500"
+            placeholder="Напишіть, що вам сподобалося..."
+            required
+          ></textarea>
+        </div>
+
+        <div
+          class="order-status"
+          id="reviewStatus"
+          aria-live="polite"
+        ></div>
+
+        <button
+          class="button button-primary"
+          id="submitReviewButton"
+          type="submit"
+        >
+          Надіслати відгук
+        </button>
+
+        <p class="product-detail-copy">
+          Відгук з’явиться на сайті після модерації.
+        </p>
+      </form>
+    </div>
+  </section>
+
+
+  <!-- ВНУТРІШНЯ ФОРМА ПИТАННЯ ПРО ТОВАР -->
+  <div class="modal-overlay" id="questionOverlay"></div>
+
+  <section
+    class="modal contact-modal"
+    id="questionModal"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="questionModalTitle"
+  >
+    <div class="modal-card contact-modal-card">
+      <button
+        class="modal-close"
+        id="closeQuestionButton"
+        type="button"
+        aria-label="Закрити"
+      >×</button>
+
+      <p class="section-kicker">Питання про товар</p>
+      <h2 id="questionModalTitle">Що хочете уточнити?</h2>
+
+      <p id="questionProductName"></p>
+
+      <form id="questionForm" novalidate>
+        <input type="hidden" id="questionProductCode" name="productCode">
+        <input type="hidden" id="questionProductNameInput" name="productName">
+
+        <div class="form-field">
+          <label for="questionName">Ваше ім’я *</label>
+          <input
+            id="questionName"
+            name="name"
+            type="text"
+            maxlength="80"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="questionText">Ваше питання *</label>
+          <textarea
+            id="questionText"
+            name="text"
+            rows="5"
+            maxlength="1500"
+            placeholder="Наприклад: Чи можна замовити без посипки?"
+            required
+          ></textarea>
+        </div>
+
+        <div
+          class="order-status"
+          id="questionStatus"
+          aria-live="polite"
+        ></div>
+
+        <button
+          class="button button-primary"
+          id="submitQuestionButton"
+          type="submit"
+        >
+          Надіслати питання
+        </button>
+
+        <p class="product-detail-copy">
+          Після відповіді та модерації питання буде видно іншим покупцям.
+        </p>
+      </form>
+    </div>
+  </section>
+  
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="script.js?v=2.2-20260824"></script>
