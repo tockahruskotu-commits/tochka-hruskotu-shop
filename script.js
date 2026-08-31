@@ -151,6 +151,32 @@ const els = {
   openCardsPreview: $("#openCardsPreview"),
   openCardsPreviewSecondary: $("#openCardsPreviewSecondary"),
   closeCardsPreview: $("#closeCardsPreview"),
+
+  reviewOverlay: $("#reviewOverlay"),
+  reviewModal: $("#reviewModal"),
+  closeReviewButton: $("#closeReviewButton"),
+  reviewForm: $("#reviewForm"),
+  reviewProductCode: $("#reviewProductCode"),
+  reviewProductName: $("#reviewProductName"),
+  reviewProductNameInput: $("#reviewProductNameInput"),
+  reviewName: $("#reviewName"),
+  reviewRating: $("#reviewRating"),
+  reviewText: $("#reviewText"),
+  reviewStatus: $("#reviewStatus"),
+  submitReviewButton: $("#submitReviewButton"),
+
+  questionOverlay: $("#questionOverlay"),
+  questionModal: $("#questionModal"),
+  closeQuestionButton: $("#closeQuestionButton"),
+  questionForm: $("#questionForm"),
+  questionProductCode: $("#questionProductCode"),
+  questionProductName: $("#questionProductName"),
+  questionProductNameInput: $("#questionProductNameInput"),
+  questionName: $("#questionName"),
+  questionText: $("#questionText"),
+  questionStatus: $("#questionStatus"),
+  submitQuestionButton: $("#submitQuestionButton"),
+
   toast: $("#toast")
 };
 
@@ -745,7 +771,22 @@ function renderProductModal() {
 
         ${related.length?`<div class="related-products"><h3>З цим часто обирають</h3><div class="related-mini-grid">${related.map(r=>`<button class="related-mini-card" type="button" data-related-open="${escapeAttr(r.code)}"><img src="${escapeAttr(productPhotos(r)[0])}" alt="" loading="lazy"><strong>${escapeHtml(r.name)}</strong></button>`).join("")}</div></div>`:""}
 
-        <div class="product-feedback"><h3>Відгуки та запитання</h3><p class="product-detail-copy">${productReviews.length?`${productReviews.length} ${plural(productReviews.length,"відгук","відгуки","відгуків")} уже опубліковано.`:"Поки немає опублікованих відгуків саме про цей товар."}</p><div class="product-feedback-actions"><a class="button button-secondary" href="${escapeAttr(safeUrl(store?.settings?.googleReview || "#"))}" target="_blank" rel="noopener noreferrer">Залишити відгук</a><button class="button button-secondary" type="button" data-open-contact>Поставити запитання</button></div></div>
+        <div class="product-feedback">
+          <h3>Відгуки та запитання</h3>
+          <p class="product-detail-copy">
+            ${productReviews.length
+              ? `${productReviews.length} ${plural(productReviews.length,"відгук","відгуки","відгуків")} уже опубліковано.`
+              : "Поки немає опублікованих відгуків саме про цей товар."}
+          </p>
+          <div class="product-feedback-actions">
+            <button class="button button-secondary" type="button" data-open-review>
+              Залишити відгук
+            </button>
+            <button class="button button-secondary" type="button" data-open-question>
+              Поставити запитання
+            </button>
+          </div>
+        </div>
       </div>
     </div>`;
 }
@@ -808,6 +849,49 @@ function openTerms() { openModal(els.termsModal, els.termsOverlay); }
 function closeTerms() { closeModal(els.termsModal, els.termsOverlay); }
 function openContact() { openModal(els.contactModal, els.contactOverlay); }
 function closeContact() { closeModal(els.contactModal, els.contactOverlay); }
+
+function openReviewForm(product) {
+  if (!product || !els.reviewForm || !els.reviewModal || !els.reviewOverlay) return;
+
+  const code = product.code || "";
+  const name = product.name || "";
+
+  els.reviewForm.reset();
+  els.reviewProductCode.value = code;
+  els.reviewProductNameInput.value = name;
+  els.reviewProductName.textContent = name;
+  els.reviewStatus.textContent = "";
+  els.reviewStatus.className = "order-status";
+
+  closeProduct();
+  openModal(els.reviewModal, els.reviewOverlay);
+}
+
+function closeReviewForm() {
+  if (els.reviewModal && els.reviewOverlay) closeModal(els.reviewModal, els.reviewOverlay);
+}
+
+function openQuestionForm(product) {
+  if (!product || !els.questionForm || !els.questionModal || !els.questionOverlay) return;
+
+  const code = product.code || "";
+  const name = product.name || "";
+
+  els.questionForm.reset();
+  els.questionProductCode.value = code;
+  els.questionProductNameInput.value = name;
+  els.questionProductName.textContent = name;
+  els.questionStatus.textContent = "";
+  els.questionStatus.className = "order-status";
+
+  closeProduct();
+  openModal(els.questionModal, els.questionOverlay);
+}
+
+function closeQuestionForm() {
+  if (els.questionModal && els.questionOverlay) closeModal(els.questionModal, els.questionOverlay);
+}
+
 function openCardsModal() { if (els.cardsModal && els.cardsOverlay) openModal(els.cardsModal, els.cardsOverlay); }
 function closeCardsModal() { if (els.cardsModal && els.cardsOverlay) closeModal(els.cardsModal, els.cardsOverlay); }
 function openMobileMenu() { els.mobileMenu.classList.add("is-open"); els.mobileMenuOverlay.classList.add("is-open"); els.mobileMenu.setAttribute("aria-hidden","false"); lockBodyIfNeeded(); }
@@ -977,7 +1061,16 @@ els.productModalContent.addEventListener("click", e=>{
   const qty=e.target.closest("[data-modal-qty]"); if(qty){ modalQuantity=Math.max(1,Math.min(20,modalQuantity+Number(qty.dataset.modalQty))); renderProductModal(); return; }
   if(e.target.closest("[data-modal-add]")){ addCartItem(selectedProduct,selectedVariant(),selectedSauces.filter(Boolean),modalQuantity); return; }
   const related=e.target.closest("[data-related-open]"); if(related){ openProduct(related.dataset.relatedOpen); return; }
-  if(e.target.closest("[data-open-contact]")){ closeProduct(); openContact(); }
+
+  if(e.target.closest("[data-open-review]")){
+    openReviewForm(selectedProduct);
+    return;
+  }
+
+  if(e.target.closest("[data-open-question]")){
+    openQuestionForm(selectedProduct);
+    return;
+  }
 });
 
 els.cartItems.addEventListener("click", e=>{
@@ -1002,6 +1095,12 @@ els.closeProductButton.addEventListener("click",closeProduct); els.productOverla
 els.closeCheckoutButton.addEventListener("click",closeCheckout); els.checkoutOverlay.addEventListener("click",closeCheckout);
 els.openTermsButton.addEventListener("click",openTerms); els.footerTermsButton.addEventListener("click",openTerms); els.checkoutTermsButton.addEventListener("click",openTerms); els.closeTermsButton.addEventListener("click",closeTerms); els.termsOverlay.addEventListener("click",closeTerms);
 els.closeContactButton.addEventListener("click",closeContact); els.contactOverlay.addEventListener("click",closeContact);
+
+els.closeReviewButton?.addEventListener("click", closeReviewForm);
+els.reviewOverlay?.addEventListener("click", closeReviewForm);
+els.closeQuestionButton?.addEventListener("click", closeQuestionForm);
+els.questionOverlay?.addEventListener("click", closeQuestionForm);
+
 els.openCardsPreview?.addEventListener("click",openCardsModal);
 els.openCardsPreviewSecondary?.addEventListener("click",openCardsModal);
 els.closeCardsPreview?.addEventListener("click",closeCardsModal);
@@ -1017,7 +1116,7 @@ els.checkoutForm.addEventListener("submit",submitOrder);
 
 window.addEventListener("keydown", e=>{
   if(e.key!=="Escape") return;
-  closeMobileMenu(); closeCart(); closeProduct(); closeTerms(); closeContact(); closeCardsModal(); closeCheckout();
+  closeMobileMenu(); closeCart(); closeProduct(); closeTerms(); closeContact(); closeReviewForm(); closeQuestionForm(); closeCardsModal(); closeCheckout();
 });
 
 renderCart();
