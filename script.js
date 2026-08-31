@@ -463,7 +463,10 @@ function productFeedbackSummary(product) {
 
   const reviews = feedback.filter(item => !isQuestion(item));
   const questions = feedback.filter(isQuestion);
-  const answeredQuestions = questions.filter(item => String(item?.answer || item?.reply || "").trim()).length;
+  const answeredQuestions = questions.filter(item =>
+    String(item?.answer || item?.reply || "").trim()
+  ).length;
+
   const ratings = reviews
     .map(item => Number(item?.rating || 0))
     .filter(value => Number.isFinite(value) && value >= 1 && value <= 5);
@@ -472,19 +475,31 @@ function productFeedbackSummary(product) {
 
   if (ratings.length) {
     const average = ratings.reduce((sum, value) => sum + value, 0) / ratings.length;
-    parts.push(`★ ${average.toFixed(1).replace(".", ",")}`);
+    parts.push({
+      label: `★ ${average.toFixed(1).replace(".", ",")}`,
+      className: "feedback-pill-rating"
+    });
   }
 
   if (reviews.length) {
-    parts.push(`${reviews.length} ${plural(reviews.length, "відгук", "відгуки", "відгуків")}`);
+    parts.push({
+      label: `${reviews.length} ${plural(reviews.length, "відгук", "відгуки", "відгуків")}`,
+      className: "feedback-pill-review"
+    });
   }
 
   if (questions.length) {
-    parts.push(`${questions.length} ${plural(questions.length, "питання", "питання", "питань")}`);
+    parts.push({
+      label: `${questions.length} ${plural(questions.length, "питання", "питання", "питань")}`,
+      className: "feedback-pill-question"
+    });
   }
 
   if (answeredQuestions) {
-    parts.push(`${answeredQuestions} ${plural(answeredQuestions, "відповідь", "відповіді", "відповідей")}`);
+    parts.push({
+      label: `${answeredQuestions} ${plural(answeredQuestions, "відповідь", "відповіді", "відповідей")}`,
+      className: "feedback-pill-answer"
+    });
   }
 
   return parts;
@@ -513,10 +528,14 @@ function productCardHtml(product) {
           <span>${escapeHtml(status)}</span>
           <span>${escapeHtml(production)}</span>
         </div>
-        ${feedbackSummary.length ? `
-          <div class="product-meta" aria-label="Відгуки та питання про товар">
-            ${feedbackSummary.map(item => `<span>${escapeHtml(item)}</span>`).join("")}
-          </div>` : ""}
+      ${feedbackSummary.length ? `
+  <div class="feedback-summary-row" aria-label="Відгуки та питання про товар">
+    ${feedbackSummary.map(item => `
+      <span class="feedback-pill ${escapeAttr(item.className)}">
+        ${escapeHtml(item.label)}
+      </span>
+    `).join("")}
+  </div>` : ""}
         <div class="price-row">${productPriceHtml(product)}</div>
         <div class="product-actions">
           <button class="add-cart-button" type="button" data-quick-add="${escapeAttr(product.code)}" ${product.available ? "" : "disabled"}>${product.available ? "У кошик" : "Недоступно"}</button>
