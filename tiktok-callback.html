@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>TikTok Authorization | Точка Хрускоту</title>
+
+  <meta name="robots" content="noindex,nofollow">
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      background: #fff8ef;
+      color: #38291f;
+    }
+
+    .box {
+      width: min(560px, calc(100% - 40px));
+      padding: 35px;
+      box-sizing: border-box;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 8px 35px rgba(0,0,0,.08);
+      text-align: center;
+    }
+
+    h1 {
+      color: #7a3f16;
+    }
+
+    .success {
+      color: #287744;
+    }
+
+    .error {
+      color: #b3261e;
+    }
+
+    a {
+      color: #8b4818;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+
+  <h1>Точка Хрускоту</h1>
+
+  <div id="result">
+    Обробляємо відповідь TikTok…
+  </div>
+
+</div>
+
+<script>
+
+(function () {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const code =
+    params.get('code');
+
+  const error =
+    params.get('error');
+
+  const errorDescription =
+    params.get('error_description');
+
+  const result =
+    document.getElementById('result');
+
+
+  if (error) {
+
+    result.innerHTML =
+      '<p class="error"><strong>Авторизацію TikTok не завершено.</strong></p>' +
+      '<p>' +
+      (
+        errorDescription ||
+        error
+      ) +
+      '</p>';
+
+    return;
+  }
+
+
+  if (code) {
+
+    /*
+     * ВАЖЛИВО:
+     * код авторизації НЕ показуємо користувачу
+     * і не записуємо у відкритий HTML.
+     *
+     * Наступним етапом тут буде безпечна
+     * передача code у Google Apps Script.
+     */
+
+    result.innerHTML =
+      '<p class="success"><strong>Авторизацію TikTok отримано.</strong></p>' +
+      '<p>Можна повернутися до системи «Точка Хрускоту».</p>';
+
+    return;
+  }
+
+
+  result.innerHTML =
+    '<p>Це службова сторінка авторизації TikTok.</p>' +
+    '<p><a href="./">Повернутися на сайт</a></p>';
+
+})();
+
+</script>
+
+</body>
+</html>
