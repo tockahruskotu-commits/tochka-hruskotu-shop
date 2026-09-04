@@ -34,6 +34,7 @@
       --line:rgba(69,45,28,.14);
       --ok:#2e6b42;
       --bad:#a43a30;
+      --dark:#1f1b18;
     }
 
     *{
@@ -45,6 +46,7 @@
       min-height:100vh;
       display:grid;
       place-items:center;
+      padding:24px;
       background:var(--bg);
       color:var(--ink);
       font-family:
@@ -54,15 +56,17 @@
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
-      padding:24px;
     }
 
     .card{
-      width:min(640px,100%);
+      width:min(
+        640px,
+        100%
+      );
+      padding:30px;
       background:var(--card);
       border:1px solid var(--line);
       border-radius:26px;
-      padding:30px;
       box-shadow:
         0 18px 50px
         rgba(65,42,23,.08);
@@ -83,6 +87,7 @@
     .status{
       color:var(--muted);
       line-height:1.6;
+      margin:16px 0;
     }
 
     .status.ok{
@@ -93,13 +98,15 @@
       color:var(--bad);
     }
 
-    .backend-frame{
-      position:absolute;
-      width:1px;
-      height:1px;
-      border:0;
-      opacity:0;
-      pointer-events:none;
+    .button{
+      display:inline-block;
+      padding:13px 20px;
+      border-radius:999px;
+      background:var(--dark);
+      color:white;
+      text-decoration:none;
+      font-weight:800;
+      margin-top:12px;
     }
 
   </style>
@@ -120,6 +127,7 @@
       Точка Хрускоту
     </h1>
 
+
     <p
       class="status"
       id="status"
@@ -127,23 +135,47 @@
       Завершуємо безпечне підключення TikTok…
     </p>
 
+
+    <a
+      class="button"
+      id="backButton"
+      href="tiktok-share.html"
+      hidden
+    >
+      Повернутися до TikTok
+    </a>
+
   </main>
 
 
-  <iframe
-    class="backend-frame"
-    id="backendFrame"
-    name="backendFrame"
-    title="TikTok backend"
-  ></iframe>
-
-
   <form
-    id="backendForm"
+    id="exchangeForm"
     method="post"
-    target="backendFrame"
+    action="https://script.google.com/macros/s/AKfycbz9iRnTBNfG4iai2IoKlFw3PlXqs_OgCbYsUxq21GOEG2zcpvptt0EsIUZHC5JRzzkA/exec"
     hidden
-  ></form>
+  >
+
+    <input
+      type="hidden"
+      name="action"
+      value="tiktok_oauth_exchange"
+    >
+
+    <input
+      type="hidden"
+      id="codeInput"
+      name="code"
+      value=""
+    >
+
+    <input
+      type="hidden"
+      id="stateInput"
+      name="state"
+      value=""
+    >
+
+  </form>
 
 
 <script>
@@ -153,334 +185,106 @@
   'use strict';
 
 
-  const BACKEND_URL =
-    'https://script.google.com/macros/s/AKfycbz9iRnTBNfG4iai2IoKlFw3PlXqs_OgCbYsUxq21GOEG2zcpvptt0EsIUZHC5JRzzkA/exec';
-
-
-  const SESSION_KEY =
-    'TH_TIKTOK_AUDIT_SESSION_ID';
-
-
   const status =
     document.getElementById(
       'status'
     );
 
 
-  const iframe =
+  const backButton =
     document.getElementById(
-      'backendFrame'
+      'backButton'
     );
 
 
   const form =
     document.getElementById(
-      'backendForm'
+      'exchangeForm'
+    );
+
+
+  const codeInput =
+    document.getElementById(
+      'codeInput'
+    );
+
+
+  const stateInput =
+    document.getElementById(
+      'stateInput'
     );
 
 
   const params =
     new URLSearchParams(
-      location.search
+      window.location.search
     );
 
 
   const code =
-    params.get(
-      'code'
-    ) || '';
+    String(
+      params.get(
+        'code'
+      ) || ''
+    ).trim();
 
 
   const state =
-    params.get(
-      'state'
-    ) || '';
+    String(
+      params.get(
+        'state'
+      ) || ''
+    ).trim();
 
 
   const oauthError =
-    params.get(
-      'error'
-    ) || '';
+    String(
+      params.get(
+        'error'
+      ) || ''
+    ).trim();
 
 
   const oauthErrorDescription =
-    params.get(
-      'error_description'
-    ) || '';
-
-
-  /*
-   * Після того як ми зчитали
-   * одноразовий code та state,
-   * одразу прибираємо їх
-   * з адресного рядка браузера.
-   */
-  history.replaceState(
-    null,
-    '',
-    location.pathname
-  );
+    String(
+      params.get(
+        'error_description'
+      ) || ''
+    ).trim();
 
 
 
-  function setStatus(
-    text,
-    type
+  function showError(
+    message
   ){
 
     status.textContent =
-      text;
+      message;
 
 
-    status.classList.remove(
-      'ok',
+    status.classList.add(
       'error'
     );
 
 
-    if (type){
-
-      status.classList.add(
-        type
-      );
-
-    }
+    backButton.hidden =
+      false;
 
   }
-
-
-
-  function postBackend(
-    data
-  ){
-
-    /*
-     * Очищаємо попередні
-     * приховані поля форми.
-     */
-    while (
-      form.firstChild
-    ){
-
-      form.removeChild(
-        form.firstChild
-      );
-
-    }
-
-
-    form.action =
-      BACKEND_URL;
-
-
-    Object.keys(
-      data
-    )
-    .forEach(
-      function(key){
-
-        const input =
-          document.createElement(
-            'input'
-          );
-
-
-        input.type =
-          'hidden';
-
-
-        input.name =
-          key;
-
-
-        input.value =
-          String(
-            data[key] ?? ''
-          );
-
-
-        form.appendChild(
-          input
-        );
-
-      }
-    );
-
-
-    form.submit();
-
-  }
-
-
-
-  function validBackendMessage(
-    event
-  ){
-
-    /*
-     * Приймаємо відповідь тільки
-     * від нашого прихованого iframe.
-     */
-    if (
-      event.source !==
-      iframe.contentWindow
-    ){
-
-      return false;
-
-    }
-
-
-    const origin =
-      String(
-        event.origin || ''
-      );
-
-
-    /*
-     * Apps Script Web App
-     * може відповідати через
-     * script.google.com або
-     * googleusercontent.
-     */
-    return (
-
-      origin ===
-        'https://script.google.com'
-
-      ||
-
-      origin ===
-        'https://script.googleusercontent.com'
-
-      ||
-
-      origin.endsWith(
-        '.googleusercontent.com'
-      )
-
-    );
-
-  }
-
-
-
-  window.addEventListener(
-    'message',
-
-    function(event){
-
-      if (
-        !validBackendMessage(
-          event
-        )
-      ){
-
-        return;
-
-      }
-
-
-      const msg =
-        event.data || {};
-
-
-      /*
-       * Успішний server-side
-       * обмін authorization code
-       * на TikTok session.
-       */
-      if (
-        msg.type ===
-          'TH_TIKTOK_OAUTH_COMPLETE'
-
-        &&
-
-        msg.ok
-
-        &&
-
-        msg.sessionId
-      ){
-
-        /*
-         * У браузері зберігаємо
-         * НЕ TikTok access token,
-         * а тільки нашу випадкову
-         * session ID.
-         */
-        sessionStorage.setItem(
-          SESSION_KEY,
-          String(
-            msg.sessionId
-          )
-        );
-
-
-        setStatus(
-          'TikTok успішно підключено. Повертаємося до створення публікації…',
-          'ok'
-        );
-
-
-        /*
-         * Повертаємо користувача
-         * на сторінку створення TikTok.
-         */
-        setTimeout(
-          function(){
-
-            location.replace(
-              'tiktok-share.html?connected=1'
-            );
-
-          },
-          700
-        );
-
-
-        return;
-
-      }
-
-
-      /*
-       * Помилка нашого backend.
-       */
-      if (
-        msg.type ===
-          'TH_TIKTOK_ERROR'
-
-        ||
-
-        msg.ok === false
-      ){
-
-        setStatus(
-          msg.message ||
-          'TikTok повернув помилку авторизації.',
-          'error'
-        );
-
-      }
-
-    }
-  );
 
 
 
   /*
-   * TikTok сам повідомив
-   * про відмову або OAuth-помилку.
+   * TikTok повернув відмову
+   * або OAuth-помилку.
    */
   if (
     oauthError
   ){
 
-    setStatus(
+    showError(
       oauthErrorDescription ||
-      oauthError,
-      'error'
+      oauthError
     );
 
 
@@ -492,16 +296,15 @@
 
   /*
    * Для успішного OAuth
-   * потрібні і code, і state.
+   * потрібні обидва значення.
    */
   if (
     !code ||
     !state
   ){
 
-    setStatus(
-      'TikTok не повернув authorization code або state. Поверніться назад і спробуйте увійти ще раз.',
-      'error'
+    showError(
+      'TikTok не повернув authorization code або state. Поверніться назад і спробуйте увійти ще раз.'
     );
 
 
@@ -512,24 +315,36 @@
 
 
   /*
-   * Передаємо code + state
-   * нашому Apps Script backend.
-
-   * Client Secret у браузері
-   * ніколи немає.
+   * Передаємо одноразові code + state
+   * прямо нашому Apps Script backend
+   * звичайною HTML-form POST.
+   *
+   * Client Secret тут НЕМАЄ.
    */
-  postBackend({
+  codeInput.value =
+    code;
 
-    action:
-      'tiktok_oauth_exchange',
 
-    code:
-      code,
+  stateInput.value =
+    state;
 
-    state:
-      state
 
-  });
+  status.textContent =
+    'TikTok підтвердив вхід. Захищено передаємо авторизацію серверу…';
+
+
+  /*
+   * Невелика затримка лише для того,
+   * щоб користувач побачив повідомлення.
+   */
+  setTimeout(
+    function(){
+
+      form.submit();
+
+    },
+    350
+  );
 
 })();
 
