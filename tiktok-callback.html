@@ -2,6 +2,7 @@
 <html lang="uk">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -10,7 +11,7 @@
   >
 
   <title>
-    TikTok авторизація — Точка Хрускоту
+    Підключення TikTok — Точка Хрускоту
   </title>
 
   <meta
@@ -24,6 +25,7 @@
     type="image/webp"
   >
 
+
   <style>
 
     :root{
@@ -32,9 +34,9 @@
       --ink:#2e231b;
       --muted:#746457;
       --line:rgba(69,45,28,.14);
+      --dark:#1f1b18;
       --ok:#2e6b42;
       --bad:#a43a30;
-      --dark:#1f1b18;
     }
 
     *{
@@ -63,7 +65,7 @@
         640px,
         100%
       );
-      padding:30px;
+      padding:32px;
       background:var(--card);
       border:1px solid var(--line);
       border-radius:26px;
@@ -74,20 +76,21 @@
     }
 
     .logo{
-      width:72px;
-      height:72px;
+      width:82px;
+      height:82px;
       border-radius:50%;
-      margin-bottom:12px;
+      margin-bottom:14px;
     }
 
     h1{
       margin:.3rem 0 .7rem;
+      font-size:2rem;
     }
 
     .status{
       color:var(--muted);
-      line-height:1.6;
-      margin:16px 0;
+      line-height:1.65;
+      margin:16px 0 24px;
     }
 
     .status.ok{
@@ -99,29 +102,54 @@
     }
 
     .button{
-      display:inline-block;
-      padding:13px 20px;
+      border:0;
       border-radius:999px;
       background:var(--dark);
-      color:white;
+      color:#fff;
+      padding:14px 24px;
+      font:inherit;
+      font-weight:900;
+      cursor:pointer;
       text-decoration:none;
-      font-weight:800;
-      margin-top:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:260px;
+    }
+
+    .button:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+
+    .note{
+      margin-top:18px;
+      font-size:.9rem;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    [hidden]{
+      display:none !important;
     }
 
   </style>
+
 </head>
 
 
 <body>
 
+
   <main class="card">
+
 
     <img
       class="logo"
       src="images/brand/logo.webp"
       alt=""
     >
+
 
     <h1>
       Точка Хрускоту
@@ -132,8 +160,50 @@
       class="status"
       id="status"
     >
-      Завершуємо безпечне підключення TikTok…
+      Перевіряємо відповідь TikTok…
     </p>
+
+
+    <form
+      id="exchangeForm"
+      method="post"
+      target="_top"
+      action="https://script.google.com/macros/s/AKfycbz9iRnTBNfG4iai2IoKlFw3PlXqs_OgCbYsUxq21GOEG2zcpvptt0EsIUZHC5JRzzkA/exec"
+      hidden
+    >
+
+      <input
+        type="hidden"
+        name="action"
+        value="tiktok_oauth_exchange"
+      >
+
+
+      <input
+        type="hidden"
+        id="codeInput"
+        name="code"
+        value=""
+      >
+
+
+      <input
+        type="hidden"
+        id="stateInput"
+        name="state"
+        value=""
+      >
+
+
+      <button
+        class="button"
+        id="finishButton"
+        type="submit"
+      >
+        Завершити підключення TikTok
+      </button>
+
+    </form>
 
 
     <a
@@ -142,40 +212,20 @@
       href="tiktok-share.html"
       hidden
     >
-      Повернутися до TikTok
+      Повернутися до сторінки TikTok
     </a>
+
+
+    <p
+      class="note"
+      id="note"
+    >
+      На цьому етапі нічого не публікується.
+    </p>
+
 
   </main>
 
-
-  <form
-    id="exchangeForm"
-    method="post"
-    action="https://script.google.com/macros/s/AKfycbz9iRnTBNfG4iai2IoKlFw3PlXqs_OgCbYsUxq21GOEG2zcpvptt0EsIUZHC5JRzzkA/exec"
-    hidden
-  >
-
-    <input
-      type="hidden"
-      name="action"
-      value="tiktok_oauth_exchange"
-    >
-
-    <input
-      type="hidden"
-      id="codeInput"
-      name="code"
-      value=""
-    >
-
-    <input
-      type="hidden"
-      id="stateInput"
-      name="state"
-      value=""
-    >
-
-  </form>
 
 
 <script>
@@ -188,12 +238,6 @@
   const status =
     document.getElementById(
       'status'
-    );
-
-
-  const backButton =
-    document.getElementById(
-      'backButton'
     );
 
 
@@ -212,6 +256,24 @@
   const stateInput =
     document.getElementById(
       'stateInput'
+    );
+
+
+  const finishButton =
+    document.getElementById(
+      'finishButton'
+    );
+
+
+  const backButton =
+    document.getElementById(
+      'backButton'
+    );
+
+
+  const note =
+    document.getElementById(
+      'note'
     );
 
 
@@ -267,16 +329,24 @@
     );
 
 
+    form.hidden =
+      true;
+
+
     backButton.hidden =
       false;
+
+
+    note.textContent =
+      'Нічого не було опубліковано. Почніть підключення TikTok ще раз.';
 
   }
 
 
 
   /*
-   * TikTok повернув відмову
-   * або OAuth-помилку.
+   * TikTok повернув OAuth-помилку
+   * або користувач не підтвердив вхід.
    */
   if (
     oauthError
@@ -295,8 +365,8 @@
 
 
   /*
-   * Для успішного OAuth
-   * потрібні обидва значення.
+   * Для завершення OAuth
+   * потрібні і code, і state.
    */
   if (
     !code ||
@@ -304,7 +374,7 @@
   ){
 
     showError(
-      'TikTok не повернув authorization code або state. Поверніться назад і спробуйте увійти ще раз.'
+      'Не отримано authorization code або state від TikTok.'
     );
 
 
@@ -315,11 +385,9 @@
 
 
   /*
-   * Передаємо одноразові code + state
-   * прямо нашому Apps Script backend
-   * звичайною HTML-form POST.
-   *
-   * Client Secret тут НЕМАЄ.
+   * Передаємо code і state
+   * тільки після окремої
+   * дії користувача.
    */
   codeInput.value =
     code;
@@ -330,25 +398,64 @@
 
 
   status.textContent =
-    'TikTok підтвердив вхід. Захищено передаємо авторизацію серверу…';
+    'TikTok підтвердив вхід ✅ Тепер завершіть безпечне підключення.';
+
+
+  status.classList.add(
+    'ok'
+  );
+
+
+  form.hidden =
+    false;
+
 
 
   /*
-   * Невелика затримка лише для того,
-   * щоб користувач побачив повідомлення.
+   * Одноразові параметри вже
+   * записані у приховані поля.
+   * Прибираємо їх з адресного рядка.
    */
-  setTimeout(
+  history.replaceState(
+    null,
+    '',
+    window.location.pathname
+  );
+
+
+
+  form.addEventListener(
+    'submit',
     function(){
 
-      form.submit();
+      finishButton.disabled =
+        true;
 
-    },
-    350
+
+      finishButton.textContent =
+        'Завершуємо підключення…';
+
+
+      status.textContent =
+        'Захищено передаємо authorization code серверу…';
+
+
+      status.classList.remove(
+        'ok'
+      );
+
+
+      note.textContent =
+        'Client Secret і TikTok tokens залишаються на сервері.';
+
+    }
   );
+
 
 })();
 
 </script>
+
 
 </body>
 </html>
