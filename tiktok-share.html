@@ -1,1 +1,2349 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Поділись своїм Хрускотом у TikTok — Точка Хрускоту</title>
+  <meta name="description" content="Підключіть свій TikTok, додайте власне оригінальне відео або фото та підготуйте публікацію у своєму профілі.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/tiktok-share.html">
+  <link rel="icon" href="images/brand/logo.webp" type="image/webp">
 
+  <style>
+    :root{
+      --bg:#fbf3e8;
+      --card:#fffdf9;
+      --ink:#2e231b;
+      --muted:#746457;
+      --line:rgba(69,45,28,.14);
+      --dark:#1f1b18;
+      --soft:#f6eadb;
+      --ok:#2e6b42;
+      --bad:#a43a30
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+    }
+
+    a{color:inherit}
+
+    .wrap{
+      width:min(1060px,calc(100% - 32px));
+      margin:auto
+    }
+
+    header{
+      padding:18px 0;
+      border-bottom:1px solid var(--line);
+      background:rgba(251,243,232,.94);
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter:blur(12px)
+    }
+
+    .head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      font-weight:900
+    }
+
+    .brand img{
+      width:48px;
+      height:48px;
+      border-radius:50%
+    }
+
+    .back{
+      font-weight:800;
+      text-decoration:none
+    }
+
+    main{
+      padding:48px 0 80px
+    }
+
+    .hero{
+      text-align:center;
+      max-width:820px;
+      margin:0 auto 30px
+    }
+
+    .eyebrow{
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-size:.78rem
+    }
+
+    h1{
+      font-size:clamp(2rem,5vw,4rem);
+      line-height:1.04;
+      margin:.35rem 0 1rem
+    }
+
+    .hero p{
+      font-size:1.05rem;
+      line-height:1.65;
+      color:var(--muted)
+    }
+
+    .steps{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+      margin:26px 0
+    }
+
+    .step{
+      padding:13px 10px;
+      border-radius:16px;
+      background:var(--soft);
+      border:1px solid var(--line);
+      font-weight:800;
+      text-align:center;
+      font-size:.92rem
+    }
+
+    .step.active{
+      background:var(--dark);
+      color:white
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:24px;
+      margin:16px 0;
+      box-shadow:0 12px 34px rgba(65,42,23,.06)
+    }
+
+    .card h2{
+      margin:0 0 8px
+    }
+
+    .card>p{
+      color:var(--muted);
+      line-height:1.55
+    }
+
+    .btn{
+      border:0;
+      border-radius:999px;
+      background:var(--dark);
+      color:white;
+      padding:14px 20px;
+      font:inherit;
+      font-weight:900;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center
+    }
+
+    .btn.secondary{
+      background:#efe1d0;
+      color:var(--ink)
+    }
+
+    .btn:disabled{
+      opacity:.45;
+      cursor:not-allowed
+    }
+
+    .status{
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:14px;
+      background:#f5ecdf;
+      color:var(--muted);
+      line-height:1.5
+    }
+
+    .status.ok{
+      background:#e8f2ea;
+      color:var(--ok)
+    }
+
+    .status.error{
+      background:#f8e7e4;
+      color:var(--bad)
+    }
+
+    .creator{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding:15px;
+      border-radius:18px;
+      background:#f7ede2
+    }
+
+    .creator-avatar{
+      width:58px;
+      height:58px;
+      border-radius:50%;
+      background:#e5d5c3;
+      object-fit:cover
+    }
+
+    .creator strong{
+      display:block;
+      font-size:1.05rem
+    }
+
+    .creator small{
+      display:block;
+      color:var(--muted);
+      margin-top:3px
+    }
+
+    .creator-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:7px
+    }
+
+    .field.full{
+      grid-column:1/-1
+    }
+
+    label,.label{
+      font-weight:800
+    }
+
+    input[type="text"],
+    textarea,
+    select,
+    input[type="file"]{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 13px;
+      background:white;
+      color:var(--ink);
+      font:inherit
+    }
+
+    textarea{
+      min-height:112px;
+      resize:vertical
+    }
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      margin:14px 0
+    }
+
+    .tab{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:999px;
+      padding:10px 15px;
+      font:inherit;
+      font-weight:800;
+      cursor:pointer
+    }
+
+    .tab.active{
+      background:var(--dark);
+      color:#fff
+    }
+
+    .preview{
+      margin-top:15px;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px
+    }
+
+    .preview img,
+    .preview video{
+      width:100%;
+      aspect-ratio:9/16;
+      object-fit:cover;
+      border-radius:14px;
+      background:#1d1d1d
+    }
+
+    .checks{
+      display:grid;
+      gap:10px
+    }
+
+    .check{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      padding:12px 13px;
+      border:1px solid var(--line);
+      border-radius:14px
+    }
+
+    .check input{
+      margin-top:3px
+    }
+
+    .check small{
+      display:block;
+      color:var(--muted);
+      margin-top:3px
+    }
+
+    .subpanel{
+      margin-top:12px;
+      padding:15px;
+      border-radius:16px;
+      background:#f7ede2
+    }
+
+    .note{
+      font-size:.92rem;
+      color:var(--muted);
+      line-height:1.5
+    }
+
+    .consent{
+      padding:15px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:#fff8ef;
+      line-height:1.55
+    }
+
+    .publish-row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:18px
+    }
+
+    .publish-status{
+      margin-top:18px;
+      padding:16px;
+      border-radius:16px;
+      background:#f1eadf;
+      line-height:1.5
+    }
+
+    .locked{
+      opacity:.58
+    }
+
+    .locked input,
+    .locked textarea,
+    .locked select,
+    .locked button{
+      pointer-events:none
+    }
+
+    footer{
+      border-top:1px solid var(--line);
+      padding:28px 0 42px
+    }
+
+    .footer-links{
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
+      color:var(--muted)
+    }
+
+    .backend-frame{
+      position:absolute;
+      width:1px;
+      height:1px;
+      border:0;
+      opacity:0;
+      pointer-events:none
+    }
+
+    [hidden]{
+      display:none!important
+    }
+
+    @media(max-width:760px){
+      .steps{
+        grid-template-columns:1fr 1fr
+      }
+
+      .grid{
+        grid-template-columns:1fr
+      }
+
+      .field.full{
+        grid-column:auto
+      }
+
+      .preview{
+        grid-template-columns:repeat(2,minmax(0,1fr))
+      }
+
+      .card{
+        padding:19px
+      }
+
+      .back{
+        font-size:.92rem
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="wrap head">
+
+    <a class="brand" href="./">
+      <img src="images/brand/logo.webp" alt="">
+      <span>Точка Хрускоту</span>
+    </a>
+
+    <a class="back" href="./#share-hub">
+      ← До соцмереж
+    </a>
+
+  </div>
+</header>
+
+
+<main class="wrap">
+
+  <section class="hero">
+
+    <p class="eyebrow">
+      Поділись своїм Хрускотом
+    </p>
+
+    <h1>
+      Створи власну публікацію для TikTok
+    </h1>
+
+    <p>
+      Підключи свій TikTok, додай власне оригінальне відео або фото,
+      перевір налаштування і самостійно підтвердь публікацію у свій профіль.
+    </p>
+
+  </section>
+
+
+  <div class="steps" aria-label="Етапи публікації">
+
+    <div class="step active" id="step1">
+      1. TikTok
+    </div>
+
+    <div class="step" id="step2">
+      2. Медіа
+    </div>
+
+    <div class="step" id="step3">
+      3. Налаштування
+    </div>
+
+    <div class="step" id="step4">
+      4. Публікація
+    </div>
+
+  </div>
+
+
+  <section class="card" id="loginCard">
+
+    <h2>
+      1. Підключи свій TikTok
+    </h2>
+
+    <p>
+      Авторизація проходить через офіційний TikTok Login Kit.
+      Client Secret, access token і refresh token залишаються тільки на сервері.
+    </p>
+
+    <button
+      class="btn"
+      id="loginTikTok"
+      type="button"
+    >
+      Увійти через TikTok
+    </button>
+
+    <div
+      class="status"
+      id="loginStatus"
+    >
+      TikTok ще не підключений.
+    </div>
+
+  </section>
+
+
+  <section
+    class="card"
+    id="creatorCard"
+    hidden
+  >
+
+    <h2>
+      Підключений профіль
+    </h2>
+
+    <div class="creator">
+
+      <img
+        class="creator-avatar"
+        id="creatorAvatar"
+        alt="Аватар TikTok"
+      >
+
+      <div>
+
+        <strong id="creatorNickname">
+          TikTok creator
+        </strong>
+
+        <small id="creatorUsername">
+          Саме в цей профіль буде відправлена публікація
+        </small>
+
+      </div>
+
+    </div>
+
+    <div class="creator-actions">
+
+      <button
+        class="btn secondary"
+        id="logoutTikTok"
+        type="button"
+      >
+        Від’єднати TikTok
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <div
+    id="publishWorkspace"
+    class="locked"
+  >
+
+
+    <section
+      class="card"
+      id="mediaCard"
+    >
+
+      <h2>
+        2. Додай своє медіа
+      </h2>
+
+      <p>
+        Використовуй лише власний оригінальний контент або матеріали,
+        на які маєш права. Ми не додаємо водяні знаки чи рекламні написи
+        поверх твого контенту.
+      </p>
+
+
+      <div class="tabs">
+
+        <button
+          class="tab active"
+          type="button"
+          data-mode="video"
+        >
+          Відео
+        </button>
+
+        <button
+          class="tab"
+          type="button"
+          data-mode="photo"
+        >
+          Фото / карусель
+        </button>
+
+      </div>
+
+
+      <div id="videoPicker">
+
+        <div class="field">
+
+          <label for="videoFile">
+            Відео
+          </label>
+
+          <input
+            id="videoFile"
+            type="file"
+            accept="video/mp4,video/quicktime,video/webm"
+          >
+
+          <small
+            class="note"
+            id="videoRule"
+          >
+            Після входу TikTok поверне максимальну тривалість для вашого профілю.
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="photoPicker"
+        hidden
+      >
+
+        <div class="field">
+
+          <label for="photoFiles">
+            Фото / карусель
+          </label>
+
+          <input
+            id="photoFiles"
+            type="file"
+            accept="image/jpeg,image/webp"
+            multiple
+          >
+
+          <small class="note">
+            До 35 JPEG/WebP зображень.
+            Серверну передачу фото підключимо окремим наступним кроком.
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="preview"
+        id="mediaPreview"
+      ></div>
+
+    </section>
+
+
+    <section
+      class="card"
+      id="settingsCard"
+    >
+
+      <h2>
+        3. Налаштування публікації
+      </h2>
+
+
+      <div class="grid">
+
+        <div
+          class="field full"
+          id="videoCaptionField"
+        >
+
+          <label for="caption">
+            Підпис до відео
+          </label>
+
+          <textarea
+            id="caption"
+            maxlength="2200"
+            placeholder="Напиши свій текст, хештеги або згадки. Усе можна змінити перед публікацією."
+          ></textarea>
+
+        </div>
+
+
+        <div
+          class="field"
+          id="photoTitleField"
+          hidden
+        >
+
+          <label for="photoTitle">
+            Заголовок фото
+          </label>
+
+          <input
+            id="photoTitle"
+            type="text"
+            maxlength="90"
+          >
+
+        </div>
+
+
+        <div
+          class="field full"
+          id="photoDescriptionField"
+          hidden
+        >
+
+          <label for="photoDescription">
+            Опис фото / каруселі
+          </label>
+
+          <textarea
+            id="photoDescription"
+            maxlength="4000"
+          ></textarea>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="privacy">
+            Хто може бачити публікацію?
+          </label>
+
+          <select id="privacy">
+
+            <option
+              value=""
+              selected
+              disabled
+            >
+              Оберіть видимість
+            </option>
+
+          </select>
+
+          <small class="note">
+            Варіанти завантажуються безпосередньо з TikTok Creator Info.
+            Значення за замовчуванням не вибирається.
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <h3>
+        Взаємодії
+      </h3>
+
+
+      <div class="checks">
+
+        <label class="check">
+
+          <input
+            id="allowComment"
+            type="checkbox"
+          >
+
+          <span>
+
+            <strong>
+              Дозволити коментарі
+            </strong>
+
+            <small id="commentHelp">
+              Спочатку вимкнено.
+            </small>
+
+          </span>
+
+        </label>
+
+
+        <label class="check video-only">
+
+          <input
+            id="allowDuet"
+            type="checkbox"
+          >
+
+          <span>
+
+            <strong>
+              Дозволити Duet
+            </strong>
+
+            <small id="duetHelp">
+              Тільки для відео. Спочатку вимкнено.
+            </small>
+
+          </span>
+
+        </label>
+
+
+        <label class="check video-only">
+
+          <input
+            id="allowStitch"
+            type="checkbox"
+          >
+
+          <span>
+
+            <strong>
+              Дозволити Stitch
+            </strong>
+
+            <small id="stitchHelp">
+              Тільки для відео. Спочатку вимкнено.
+            </small>
+
+          </span>
+
+        </label>
+
+      </div>
+
+
+      <h3>
+        Комерційний контент
+      </h3>
+
+
+      <label class="check">
+
+        <input
+          id="commercialToggle"
+          type="checkbox"
+        >
+
+        <span>
+
+          <strong>
+            Цей допис просуває мене, бренд, товар або послугу
+          </strong>
+
+          <small>
+            Якщо ввімкнеш — потрібно вибрати тип просування.
+          </small>
+
+        </span>
+
+      </label>
+
+
+      <div
+        class="subpanel"
+        id="commercialOptions"
+        hidden
+      >
+
+        <div class="checks">
+
+          <label class="check">
+
+            <input
+              id="yourBrand"
+              type="checkbox"
+            >
+
+            <span>
+
+              <strong>
+                Your brand
+              </strong>
+
+              <small>
+                Просування себе або власного бізнесу.
+              </small>
+
+            </span>
+
+          </label>
+
+
+          <label class="check">
+
+            <input
+              id="brandedContent"
+              type="checkbox"
+            >
+
+            <span>
+
+              <strong>
+                Branded content
+              </strong>
+
+              <small>
+                Оплачена співпраця або просування іншого бренду.
+              </small>
+
+            </span>
+
+          </label>
+
+        </div>
+
+
+        <p
+          class="note"
+          id="commercialWarning"
+        ></p>
+
+      </div>
+
+
+      <h3>
+        AI-контент
+      </h3>
+
+
+      <label class="check">
+
+        <input
+          id="isAigc"
+          type="checkbox"
+        >
+
+        <span>
+
+          <strong>
+            Цей контент створено або суттєво змінено за допомогою ШІ
+          </strong>
+
+          <small>
+            Якщо обрано, TikTok може додати відповідну позначку.
+          </small>
+
+        </span>
+
+      </label>
+
+    </section>
+
+
+    <section
+      class="card"
+      id="publishCard"
+    >
+
+      <h2>
+        4. Перевір і підтвердь
+      </h2>
+
+      <p>
+        Перед передачею матеріалів у TikTok ти бачиш,
+        що саме буде опубліковано, і самостійно підтверджуєш відправлення.
+      </p>
+
+
+      <div
+        class="consent"
+        id="consentText"
+      >
+
+        <strong>
+          By posting, you agree to TikTok's Music Usage Confirmation.
+        </strong>
+
+        <div class="note">
+          Натискаючи кнопку публікації,
+          ти явно підтверджуєш передачу вибраного контенту в TikTok.
+        </div>
+
+      </div>
+
+
+      <label
+        class="check"
+        style="margin-top:14px"
+      >
+
+        <input
+          id="explicitConsent"
+          type="checkbox"
+        >
+
+        <span>
+
+          <strong>
+            Я перевірив(-ла) контент і хочу відправити його в TikTok
+          </strong>
+
+          <small>
+            Без цієї згоди передача медіа не почнеться.
+          </small>
+
+        </span>
+
+      </label>
+
+
+      <div class="publish-row">
+
+        <button
+          class="btn"
+          id="publishButton"
+          type="button"
+          disabled
+        >
+          Опублікувати в TikTok
+        </button>
+
+        <a
+          class="btn secondary"
+          href="./#share-hub"
+        >
+          Скасувати
+        </a>
+
+      </div>
+
+
+      <div
+        class="publish-status"
+        id="publishStatus"
+      >
+        На цьому етапі Login Kit і Creator Info вже працюватимуть реально.
+        Сам Direct Post підключимо наступним серверним кроком після перевірки входу.
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="wrap footer-links">
+
+    <a href="./">
+      Головна
+    </a>
+
+    <a href="privacy.html">
+      Політика конфіденційності
+    </a>
+
+    <a href="terms.html">
+      Умови використання
+    </a>
+
+    <a href="mailto:tockahruskotu@gmail.com">
+      Контакт
+    </a>
+
+  </div>
+
+</footer>
+
+
+<iframe
+  class="backend-frame"
+  id="backendFrame"
+  name="backendFrame"
+  title="TikTok backend"
+></iframe>
+
+
+<form
+  id="backendForm"
+  method="post"
+  target="backendFrame"
+  hidden
+></form>
+
+
+<script>
+(function(){
+
+  'use strict';
+
+
+  const BACKEND_URL =
+    'https://script.google.com/macros/s/AKfycbz9iRnTBNfG4iai2IoKlFw3PlXqs_OgCbYsUxq21GOEG2zcpvptt0EsIUZHC5JRzzkA/exec';
+
+
+  const SESSION_KEY =
+    'TH_TIKTOK_AUDIT_SESSION_ID';
+
+
+  const iframe =
+    document.getElementById(
+      'backendFrame'
+    );
+
+
+  const form =
+    document.getElementById(
+      'backendForm'
+    );
+
+
+  const loginButton =
+    document.getElementById(
+      'loginTikTok'
+    );
+
+
+  const logoutButton =
+    document.getElementById(
+      'logoutTikTok'
+    );
+
+
+  const loginStatus =
+    document.getElementById(
+      'loginStatus'
+    );
+
+
+  const creatorCard =
+    document.getElementById(
+      'creatorCard'
+    );
+
+
+  const creatorAvatar =
+    document.getElementById(
+      'creatorAvatar'
+    );
+
+
+  const creatorNickname =
+    document.getElementById(
+      'creatorNickname'
+    );
+
+
+  const creatorUsername =
+    document.getElementById(
+      'creatorUsername'
+    );
+
+
+  const workspace =
+    document.getElementById(
+      'publishWorkspace'
+    );
+
+
+  const privacy =
+    document.getElementById(
+      'privacy'
+    );
+
+
+  const allowComment =
+    document.getElementById(
+      'allowComment'
+    );
+
+
+  const allowDuet =
+    document.getElementById(
+      'allowDuet'
+    );
+
+
+  const allowStitch =
+    document.getElementById(
+      'allowStitch'
+    );
+
+
+  const commentHelp =
+    document.getElementById(
+      'commentHelp'
+    );
+
+
+  const duetHelp =
+    document.getElementById(
+      'duetHelp'
+    );
+
+
+  const stitchHelp =
+    document.getElementById(
+      'stitchHelp'
+    );
+
+
+  const videoRule =
+    document.getElementById(
+      'videoRule'
+    );
+
+
+  const videoFile =
+    document.getElementById(
+      'videoFile'
+    );
+
+
+  const photoFiles =
+    document.getElementById(
+      'photoFiles'
+    );
+
+
+  const preview =
+    document.getElementById(
+      'mediaPreview'
+    );
+
+
+  const publishButton =
+    document.getElementById(
+      'publishButton'
+    );
+
+
+  const publishStatus =
+    document.getElementById(
+      'publishStatus'
+    );
+
+
+  const consent =
+    document.getElementById(
+      'explicitConsent'
+    );
+
+
+  const commercialToggle =
+    document.getElementById(
+      'commercialToggle'
+    );
+
+
+  const commercialOptions =
+    document.getElementById(
+      'commercialOptions'
+    );
+
+
+  const yourBrand =
+    document.getElementById(
+      'yourBrand'
+    );
+
+
+  const brandedContent =
+    document.getElementById(
+      'brandedContent'
+    );
+
+
+  const commercialWarning =
+    document.getElementById(
+      'commercialWarning'
+    );
+
+
+  const consentText =
+    document.getElementById(
+      'consentText'
+    );
+
+
+  const tabs =
+    [
+      ...document.querySelectorAll(
+        '.tab'
+      )
+    ];
+
+
+  const videoOnly =
+    [
+      ...document.querySelectorAll(
+        '.video-only'
+      )
+    ];
+
+
+  const videoPicker =
+    document.getElementById(
+      'videoPicker'
+    );
+
+
+  const photoPicker =
+    document.getElementById(
+      'photoPicker'
+    );
+
+
+  const videoCaptionField =
+    document.getElementById(
+      'videoCaptionField'
+    );
+
+
+  const photoTitleField =
+    document.getElementById(
+      'photoTitleField'
+    );
+
+
+  const photoDescriptionField =
+    document.getElementById(
+      'photoDescriptionField'
+    );
+
+
+  let mode =
+    'video';
+
+
+  let creatorReady =
+    false;
+
+
+  let maxVideoSec =
+    0;
+
+
+
+  function setStatus(
+    text,
+    type
+  ){
+
+    loginStatus.textContent =
+      text;
+
+
+    loginStatus.classList.remove(
+      'ok',
+      'error'
+    );
+
+
+    if (type){
+
+      loginStatus.classList.add(
+        type
+      );
+
+    }
+
+  }
+
+
+
+  function postBackend(
+    action,
+    data
+  ){
+
+    while (
+      form.firstChild
+    ){
+
+      form.removeChild(
+        form.firstChild
+      );
+
+    }
+
+
+    form.action =
+      BACKEND_URL;
+
+
+    const payload =
+      Object.assign(
+        {
+          action:
+            action
+        },
+        data || {}
+      );
+
+
+    Object.keys(
+      payload
+    )
+    .forEach(function(key){
+
+      const input =
+        document.createElement(
+          'input'
+        );
+
+
+      input.type =
+        'hidden';
+
+
+      input.name =
+        key;
+
+
+      input.value =
+        String(
+          payload[key] ?? ''
+        );
+
+
+      form.appendChild(
+        input
+      );
+
+    });
+
+
+    form.submit();
+
+  }
+
+
+
+  function validBackendMessage(
+    event
+  ){
+
+    if (
+      event.source !==
+      iframe.contentWindow
+    ){
+
+      return false;
+
+    }
+
+
+    const origin =
+      String(
+        event.origin || ''
+      );
+
+
+    return (
+      origin ===
+        'https://script.google.com' ||
+
+      origin ===
+        'https://script.googleusercontent.com' ||
+
+      origin.endsWith(
+        '.googleusercontent.com'
+      )
+    );
+
+  }
+
+
+
+  function privacyLabel(
+    value
+  ){
+
+    return (
+      {
+        PUBLIC_TO_EVERYONE:
+          'Усі',
+
+        MUTUAL_FOLLOW_FRIENDS:
+          'Друзі (взаємні підписки)',
+
+        FOLLOWER_OF_CREATOR:
+          'Підписники',
+
+        SELF_ONLY:
+          'Тільки я'
+      }
+    )[value] || value;
+
+  }
+
+
+
+  function unlockWorkspace(){
+
+    workspace.classList.remove(
+      'locked'
+    );
+
+
+    creatorReady =
+      true;
+
+
+    document
+      .getElementById(
+        'step1'
+      )
+      .classList
+      .remove(
+        'active'
+      );
+
+
+    document
+      .getElementById(
+        'step2'
+      )
+      .classList
+      .add(
+        'active'
+      );
+
+
+    updatePublishState();
+
+  }
+
+
+
+  function lockWorkspace(){
+
+    workspace.classList.add(
+      'locked'
+    );
+
+
+    creatorReady =
+      false;
+
+
+    creatorCard.hidden =
+      true;
+
+
+    document
+      .getElementById(
+        'step1'
+      )
+      .classList
+      .add(
+        'active'
+      );
+
+
+    document
+      .getElementById(
+        'step2'
+      )
+      .classList
+      .remove(
+        'active'
+      );
+
+
+    privacy.innerHTML =
+      '<option value="" selected disabled>Оберіть видимість</option>';
+
+
+    updatePublishState();
+
+  }
+
+
+
+  function loadCreatorInfo(){
+
+    const sessionId =
+      sessionStorage.getItem(
+        SESSION_KEY
+      );
+
+
+    if (!sessionId){
+
+      lockWorkspace();
+
+      return;
+
+    }
+
+
+    setStatus(
+      'Перевіряємо підключений TikTok-профіль…'
+    );
+
+
+    postBackend(
+      'tiktok_creator_info',
+      {
+        session_id:
+          sessionId
+      }
+    );
+
+  }
+
+
+
+  window.addEventListener(
+    'message',
+    function(event){
+
+      if (
+        !validBackendMessage(
+          event
+        )
+      ){
+
+        return;
+
+      }
+
+
+      const msg =
+        event.data || {};
+
+
+      if (
+        msg.type ===
+          'TH_TIKTOK_OAUTH_URL' &&
+        msg.ok &&
+        msg.authUrl
+      ){
+
+        setStatus(
+          'Переходимо до TikTok для авторизації…'
+        );
+
+
+        window.location.assign(
+          msg.authUrl
+        );
+
+
+        return;
+
+      }
+
+
+      if (
+        msg.type ===
+          'TH_TIKTOK_CREATOR_INFO' &&
+        msg.ok &&
+        msg.data
+      ){
+
+        const d =
+          msg.data;
+
+
+        creatorNickname.textContent =
+          d.creatorNickname ||
+          'TikTok creator';
+
+
+        creatorUsername.textContent =
+          d.creatorUsername
+            ? '@' +
+              d.creatorUsername
+            : 'Підключений TikTok-профіль';
+
+
+        if (
+          d.creatorAvatarUrl
+        ){
+
+          creatorAvatar.src =
+            d.creatorAvatarUrl;
+
+        } else {
+
+          creatorAvatar.removeAttribute(
+            'src'
+          );
+
+        }
+
+
+        privacy.innerHTML =
+          '<option value="" selected disabled>Оберіть видимість</option>';
+
+
+        (
+          d.privacyLevelOptions ||
+          []
+        )
+        .forEach(function(v){
+
+          const o =
+            document.createElement(
+              'option'
+            );
+
+
+          o.value =
+            v;
+
+
+          o.textContent =
+            privacyLabel(
+              v
+            );
+
+
+          privacy.appendChild(
+            o
+          );
+
+        });
+
+
+        allowComment.checked =
+          false;
+
+        allowDuet.checked =
+          false;
+
+        allowStitch.checked =
+          false;
+
+
+        allowComment.disabled =
+          !!d.commentDisabled;
+
+        allowDuet.disabled =
+          !!d.duetDisabled;
+
+        allowStitch.disabled =
+          !!d.stitchDisabled;
+
+
+        commentHelp.textContent =
+          d.commentDisabled
+            ? 'Коментарі вимкнені у налаштуваннях цього TikTok-профілю.'
+            : 'Доступно для цього профілю. Спочатку вимкнено.';
+
+
+        duetHelp.textContent =
+          d.duetDisabled
+            ? 'Duet недоступний для цього TikTok-профілю.'
+            : 'Доступно для цього профілю. Спочатку вимкнено.';
+
+
+        stitchHelp.textContent =
+          d.stitchDisabled
+            ? 'Stitch недоступний для цього TikTok-профілю.'
+            : 'Доступно для цього профілю. Спочатку вимкнено.';
+
+
+        maxVideoSec =
+          Number(
+            d.maxVideoPostDurationSec ||
+            0
+          );
+
+
+        videoRule.textContent =
+          maxVideoSec
+            ? 'TikTok дозволяє цьому профілю відео до ' +
+              maxVideoSec +
+              ' сек.'
+            : 'TikTok не повернув обмеження тривалості.';
+
+
+        creatorCard.hidden =
+          false;
+
+
+        unlockWorkspace();
+
+
+        setStatus(
+          'TikTok успішно підключений.',
+          'ok'
+        );
+
+
+        return;
+
+      }
+
+
+      if (
+        msg.type ===
+          'TH_TIKTOK_LOGOUT' &&
+        msg.ok
+      ){
+
+        sessionStorage.removeItem(
+          SESSION_KEY
+        );
+
+
+        setStatus(
+          'TikTok від’єднано.'
+        );
+
+
+        lockWorkspace();
+
+
+        return;
+
+      }
+
+
+      if (
+        msg.type ===
+          'TH_TIKTOK_ERROR' ||
+        msg.ok === false
+      ){
+
+        setStatus(
+          msg.message ||
+          'TikTok повернув помилку.',
+          'error'
+        );
+
+
+        return;
+
+      }
+
+    }
+  );
+
+
+
+  loginButton.addEventListener(
+    'click',
+    function(){
+
+      setStatus(
+        'Створюємо безпечне посилання TikTok…'
+      );
+
+
+      postBackend(
+        'tiktok_oauth_start',
+        {}
+      );
+
+    }
+  );
+
+
+
+  logoutButton.addEventListener(
+    'click',
+    function(){
+
+      const sessionId =
+        sessionStorage.getItem(
+          SESSION_KEY
+        );
+
+
+      if (!sessionId){
+
+        lockWorkspace();
+
+        return;
+
+      }
+
+
+      postBackend(
+        'tiktok_logout',
+        {
+          session_id:
+            sessionId
+        }
+      );
+
+    }
+  );
+
+
+
+  function setMode(
+    next
+  ){
+
+    mode =
+      next;
+
+
+    tabs.forEach(
+      function(b){
+
+        b.classList.toggle(
+          'active',
+          b.dataset.mode === next
+        );
+
+      }
+    );
+
+
+    videoPicker.hidden =
+      next !== 'video';
+
+
+    photoPicker.hidden =
+      next !== 'photo';
+
+
+    videoOnly.forEach(
+      function(el){
+
+        el.hidden =
+          next !== 'video';
+
+      }
+    );
+
+
+    videoCaptionField.hidden =
+      next !== 'video';
+
+
+    photoTitleField.hidden =
+      next !== 'photo';
+
+
+    photoDescriptionField.hidden =
+      next !== 'photo';
+
+
+    preview.innerHTML =
+      '';
+
+
+    updatePublishState();
+
+  }
+
+
+
+  tabs.forEach(
+    function(b){
+
+      b.addEventListener(
+        'click',
+        function(){
+
+          setMode(
+            b.dataset.mode
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+
+  videoFile.addEventListener(
+    'change',
+    function(){
+
+      preview.innerHTML =
+        '';
+
+
+      const f =
+        this.files &&
+        this.files[0];
+
+
+      if (!f){
+
+        updatePublishState();
+
+        return;
+
+      }
+
+
+      const url =
+        URL.createObjectURL(
+          f
+        );
+
+
+      const v =
+        document.createElement(
+          'video'
+        );
+
+
+      v.src =
+        url;
+
+
+      v.controls =
+        true;
+
+
+      v.muted =
+        true;
+
+
+      v.addEventListener(
+        'loadedmetadata',
+        function(){
+
+          if (
+            maxVideoSec &&
+            v.duration >
+              maxVideoSec
+          ){
+
+            videoRule.textContent =
+              'СТОП: відео має ' +
+              v.duration.toFixed(1) +
+              ' сек., а TikTok дозволяє максимум ' +
+              maxVideoSec +
+              ' сек.';
+
+
+            videoRule.style.color =
+              '#a43a30';
+
+          } else if (
+            maxVideoSec
+          ){
+
+            videoRule.textContent =
+              'Тривалість відео: ' +
+              v.duration.toFixed(1) +
+              ' сек. Максимум TikTok: ' +
+              maxVideoSec +
+              ' сек.';
+
+
+            videoRule.style.color =
+              '';
+
+          }
+
+
+          updatePublishState();
+
+        }
+      );
+
+
+      preview.appendChild(
+        v
+      );
+
+
+      updatePublishState();
+
+    }
+  );
+
+
+
+  photoFiles.addEventListener(
+    'change',
+    function(){
+
+      preview.innerHTML =
+        '';
+
+
+      const fs =
+        [
+          ...(
+            this.files ||
+            []
+          )
+        ];
+
+
+      if (
+        fs.length > 35
+      ){
+
+        alert(
+          'TikTok дозволяє до 35 фото в одній публікації.'
+        );
+
+
+        this.value =
+          '';
+
+
+        updatePublishState();
+
+
+        return;
+
+      }
+
+
+      fs.forEach(
+        function(f){
+
+          const img =
+            document.createElement(
+              'img'
+            );
+
+
+          img.src =
+            URL.createObjectURL(
+              f
+            );
+
+
+          img.alt =
+            'Попередній перегляд';
+
+
+          preview.appendChild(
+            img
+          );
+
+        }
+      );
+
+
+      updatePublishState();
+
+    }
+  );
+
+
+
+  commercialToggle.addEventListener(
+    'change',
+    function(){
+
+      commercialOptions.hidden =
+        !commercialToggle.checked;
+
+
+      if (
+        !commercialToggle.checked
+      ){
+
+        yourBrand.checked =
+          false;
+
+
+        brandedContent.checked =
+          false;
+
+      }
+
+
+      updateCommercial();
+
+    }
+  );
+
+
+
+  [
+    yourBrand,
+    brandedContent,
+    privacy
+  ]
+  .forEach(
+    function(el){
+
+      el.addEventListener(
+        'change',
+        updateCommercial
+      );
+
+    }
+  );
+
+
+  consent.addEventListener(
+    'change',
+    updatePublishState
+  );
+
+
+
+  function updateCommercial(){
+
+    if (
+      commercialToggle.checked &&
+      !yourBrand.checked &&
+      !brandedContent.checked
+    ){
+
+      commercialWarning.textContent =
+        'Оберіть Your brand, Branded content або обидва варіанти.';
+
+    } else if (
+      brandedContent.checked &&
+      privacy.value ===
+        'SELF_ONLY'
+    ){
+
+      commercialWarning.textContent =
+        'Branded content не можна публікувати з видимістю «Тільки я». Оберіть іншу доступну видимість.';
+
+    } else if (
+      brandedContent.checked
+    ){
+
+      commercialWarning.textContent =
+        'TikTok позначить публікацію як Paid partnership.';
+
+    } else if (
+      yourBrand.checked
+    ){
+
+      commercialWarning.textContent =
+        'TikTok позначить публікацію як Promotional content.';
+
+    } else {
+
+      commercialWarning.textContent =
+        '';
+
+    }
+
+
+    consentText
+      .querySelector(
+        'strong'
+      )
+      .textContent =
+        brandedContent.checked
+          ? "By posting, you agree to TikTok's Branded Content Policy and Music Usage Confirmation."
+          : "By posting, you agree to TikTok's Music Usage Confirmation.";
+
+
+    updatePublishState();
+
+  }
+
+
+
+  function hasMedia(){
+
+    return (
+      mode === 'video'
+        ? !!videoFile.files[0]
+        : photoFiles.files.length > 0
+    );
+
+  }
+
+
+
+  function updatePublishState(){
+
+    const commercialOk =
+      !commercialToggle.checked ||
+      yourBrand.checked ||
+      brandedContent.checked;
+
+
+    const privacyOk =
+      !!privacy.value &&
+      !(
+        brandedContent.checked &&
+        privacy.value ===
+          'SELF_ONLY'
+      );
+
+
+    publishButton.disabled =
+      !(
+        creatorReady &&
+        hasMedia() &&
+        privacyOk &&
+        commercialOk &&
+        consent.checked
+      );
+
+  }
+
+
+
+  publishButton.addEventListener(
+    'click',
+    function(){
+
+      publishStatus.textContent =
+        'Login Kit і Creator Info вже підключені. Direct Post ще навмисно не запускається — наступним кроком підключимо серверне завантаження та статус, після окремого безпечного тесту.';
+
+    }
+  );
+
+
+
+  if (
+    new URLSearchParams(
+      location.search
+    ).get(
+      'connected'
+    ) === '1'
+  ){
+
+    history.replaceState(
+      null,
+      '',
+      location.pathname
+    );
+
+  }
+
+
+  if (
+    sessionStorage.getItem(
+      SESSION_KEY
+    )
+  ){
+
+    loadCreatorInfo();
+
+  } else {
+
+    lockWorkspace();
+
+  }
+
+
+  updateCommercial();
+
+})();
+</script>
+
+</body>
+</html>
