@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>
+    YouTube-публікація | Точка Хрускоту
+  </title>
+
+  <meta
+    name="description"
+    content="Завантаження відео до YouTube через офіційний YouTube Data API та Google OAuth."
+  >
+
+  <link
+    rel="canonical"
+    href="https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/youtube-share.html"
+  >
+
+  <link
+    rel="icon"
+    href="images/brand/logo.webp"
+    type="image/webp"
+  >
+
+
+  <style>
+
+    :root{
+      --bg:#fbf3e8;
+      --card:#fffdf9;
+      --ink:#2f231b;
+      --muted:#746457;
+      --line:rgba(69,45,28,.14);
+      --dark:#1f1b18;
+      --soft:#f6eadb;
+      --green:#2e6b42;
+      --green-bg:#e8f2ea;
+      --red:#c4302b;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      line-height:1.55;
+    }
+
+    a{
+      color:inherit;
+    }
+
+    .wrap{
+      width:min(
+        980px,
+        calc(100% - 32px)
+      );
+      margin:0 auto;
+    }
+
+
+    header{
+      border-bottom:
+        1px solid
+        var(--line);
+      background:
+        rgba(251,243,232,.96);
+    }
+
+
+    .head{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      font-weight:900;
+    }
+
+
+    .brand img{
+      width:52px;
+      height:52px;
+      object-fit:cover;
+      border-radius:50%;
+    }
+
+
+    .back{
+      text-decoration:none;
+      font-weight:800;
+    }
+
+
+    main{
+      padding:
+        52px
+        0
+        72px;
+    }
+
+
+    .hero{
+      max-width:760px;
+      margin:
+        0
+        auto
+        28px;
+      text-align:center;
+    }
+
+
+    .eyebrow{
+      margin:
+        0
+        0
+        10px;
+      font-size:.82rem;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+
+    h1{
+      margin:
+        0
+        0
+        14px;
+      font-size:
+        clamp(
+          2.2rem,
+          6vw,
+          4rem
+        );
+      line-height:1.05;
+    }
+
+
+    .hero-text{
+      color:var(--muted);
+      font-size:1.05rem;
+      margin:0;
+    }
+
+
+    .youtube-mark{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:16px;
+      font-weight:900;
+    }
+
+
+    .youtube-icon{
+      width:42px;
+      height:30px;
+      border-radius:8px;
+      background:var(--red);
+      position:relative;
+      flex:0 0 auto;
+    }
+
+
+    .youtube-icon::after{
+      content:"";
+      position:absolute;
+      left:17px;
+      top:8px;
+      border-left:11px solid #fff;
+      border-top:7px solid transparent;
+      border-bottom:7px solid transparent;
+    }
+
+
+    .status{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:
+        14px
+        18px;
+      margin:
+        0
+        auto
+        24px;
+      max-width:760px;
+      border-radius:18px;
+      background:var(--green-bg);
+      color:var(--green);
+    }
+
+
+    .status strong{
+      color:var(--green);
+    }
+
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:
+        30px;
+      box-shadow:
+        0 14px 36px
+        rgba(65,42,23,.05);
+    }
+
+
+    .card h2{
+      margin:
+        0
+        0
+        12px;
+      font-size:
+        clamp(
+          1.5rem,
+          4vw,
+          2.2rem
+        );
+    }
+
+
+    .card p{
+      color:var(--muted);
+    }
+
+
+    .steps{
+      display:grid;
+      grid-template-columns:
+        repeat(4,minmax(0,1fr));
+      gap:14px;
+      margin:
+        26px
+        0;
+    }
+
+
+    .step{
+      padding:
+        18px;
+      border-radius:18px;
+      background:var(--soft);
+    }
+
+
+    .step-number{
+      width:32px;
+      height:32px;
+      display:grid;
+      place-items:center;
+      margin-bottom:10px;
+      border-radius:50%;
+      background:var(--dark);
+      color:#fff;
+      font-weight:900;
+    }
+
+
+    .step strong{
+      display:block;
+      margin-bottom:5px;
+    }
+
+
+    .step span{
+      color:var(--muted);
+      font-size:.92rem;
+    }
+
+
+    .notice{
+      margin:
+        22px
+        0;
+      padding:
+        18px;
+      border-radius:18px;
+      background:#fff7e8;
+      color:#745823;
+    }
+
+
+    .actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:24px;
+    }
+
+
+    .button{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:52px;
+      padding:
+        13px
+        22px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:900;
+      border:
+        1px solid
+        var(--line);
+    }
+
+
+    .button.primary{
+      background:var(--dark);
+      color:#fff;
+      border-color:var(--dark);
+    }
+
+
+    .button.secondary{
+      background:var(--soft);
+      color:var(--ink);
+    }
+
+
+    .security{
+      margin-top:22px;
+      padding:
+        18px
+        20px;
+      border-radius:18px;
+      border:
+        1px solid
+        var(--line);
+    }
+
+
+    .security strong{
+      display:block;
+      margin-bottom:6px;
+    }
+
+
+    .security p{
+      margin:0;
+    }
+
+
+    .legal{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:28px;
+      color:var(--muted);
+      font-size:.93rem;
+    }
+
+
+    footer{
+      border-top:
+        1px solid
+        var(--line);
+      padding:
+        26px
+        0
+        40px;
+      color:var(--muted);
+      font-size:.92rem;
+    }
+
+
+    @media(max-width:760px){
+
+      .steps{
+        grid-template-columns:1fr;
+      }
+
+      .head{
+        min-height:72px;
+      }
+
+      .card{
+        padding:
+          23px
+          18px;
+      }
+
+      .actions{
+        flex-direction:column;
+      }
+
+      .button{
+        width:100%;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+  <div class="wrap head">
+
+    <a
+      class="brand"
+      href="./"
+    >
+
+      <img
+        src="images/brand/logo.webp"
+        alt="Точка Хрускоту"
+      >
+
+      <span>
+        Точка Хрускоту
+      </span>
+
+    </a>
+
+
+    <a
+      class="back"
+      href="publish.html"
+    >
+      ← Центр публікацій
+    </a>
+
+  </div>
+
+</header>
+
+
+<main>
+
+<div class="wrap">
+
+
+  <section class="hero">
+
+    <div class="youtube-mark">
+
+      <span class="youtube-icon"></span>
+
+      <span>
+        YouTube
+      </span>
+
+    </div>
+
+
+    <p class="eyebrow">
+      YouTube Data API Services
+    </p>
+
+
+    <h1>
+      Опублікувати відео в YouTube
+    </h1>
+
+
+    <p class="hero-text">
+      Завантаження виконується
+      через офіційний YouTube Data API v3
+      після авторизації Google OAuth 2.0.
+    </p>
+
+  </section>
+
+
+
+  <div class="status">
+
+    <strong>
+      API підключено.
+    </strong>
+
+    Тестове завантаження відео
+    успішно виконане.
+
+  </div>
+
+
+
+  <section class="card">
+
+
+    <h2>
+      Завантаження відео
+    </h2>
+
+
+    <p>
+      Після натискання кнопки
+      відкриється захищена сторінка
+      YouTube Backend «Точки Хрускоту».
+    </p>
+
+
+    <p>
+      На ній ви зможете самостійно
+      обрати відеофайл та параметри
+      завантаження.
+    </p>
+
+
+
+    <div class="steps">
+
+
+      <div class="step">
+
+        <div class="step-number">
+          1
+        </div>
+
+        <strong>
+          Оберіть відео
+        </strong>
+
+        <span>
+          MP4, MOV або WebM.
+        </span>
+
+      </div>
+
+
+
+      <div class="step">
+
+        <div class="step-number">
+          2
+        </div>
+
+        <strong>
+          Заповніть дані
+        </strong>
+
+        <span>
+          Назва, опис і теги.
+        </span>
+
+      </div>
+
+
+
+      <div class="step">
+
+        <div class="step-number">
+          3
+        </div>
+
+        <strong>
+          Контент для дітей
+        </strong>
+
+        <span>
+          Оберіть правильний параметр.
+        </span>
+
+      </div>
+
+
+
+      <div class="step">
+
+        <div class="step-number">
+          4
+        </div>
+
+        <strong>
+          Завантажте
+        </strong>
+
+        <span>
+          YouTube поверне video ID.
+        </span>
+
+      </div>
+
+
+    </div>
+
+
+
+    <div class="notice">
+
+      Під час поточного тестового етапу
+      відео, завантажені через цей
+      API-проєкт, використовуються
+      у режимі Private.
+
+    </div>
+
+
+
+    <div class="actions">
+
+
+      <a
+        class="button primary"
+        href="https://script.google.com/macros/s/AKfycby1DyX7Kp5rkPrcNI96iIlRGpA_cCfb3RI7z7FeI7p80xq1xbDc5PzPALl6GXGPIBqmCg/exec"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Відкрити YouTube-публікацію
+      </a>
+
+
+
+      <a
+        class="button secondary"
+        href="https://www.youtube.com/@ТочкаХрускоту"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Відкрити канал YouTube
+      </a>
+
+
+    </div>
+
+
+
+    <div class="security">
+
+      <strong>
+        Безпека та контроль користувача
+      </strong>
+
+      <p>
+        Пароль Google або YouTube
+        не передається «Точці Хрускоту».
+        Авторизація здійснюється Google.
+        Access token і refresh token
+        зберігаються лише на сервері.
+        Відео передається до YouTube
+        тільки після вашої явної дії.
+      </p>
+
+    </div>
+
+
+  </section>
+
+
+
+  <div class="legal">
+
+    <a href="privacy.html">
+      Політика конфіденційності
+    </a>
+
+    <span>·</span>
+
+    <a href="terms.html">
+      Умови використання
+    </a>
+
+    <span>·</span>
+
+    <a
+      href="https://www.youtube.com/t/terms"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Умови YouTube
+    </a>
+
+    <span>·</span>
+
+    <a
+      href="https://policies.google.com/privacy"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Політика Google
+    </a>
+
+  </div>
+
+
+</div>
+
+</main>
+
+
+<footer>
+
+  <div class="wrap">
+
+    © 2026 Точка Хрускоту
+
+  </div>
+
+</footer>
+
+
+</body>
+
+</html>
