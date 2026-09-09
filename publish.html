@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>
+    Публікація відео | Точка Хрускоту
+  </title>
+
+  <meta
+    name="description"
+    content="Центр публікації відео Точки Хрускоту в TikTok, YouTube, Instagram та Facebook."
+  >
+
+  <link
+    rel="canonical"
+    href="https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/publish.html"
+  >
+
+  <link
+    rel="icon"
+    href="images/brand/logo.webp"
+    type="image/webp"
+  >
+
+  <style>
+
+    :root{
+      --bg:#fbf3e8;
+      --card:#fffdf9;
+      --ink:#2f231b;
+      --muted:#746457;
+      --line:rgba(69,45,28,.14);
+      --dark:#1f1b18;
+      --soft:#f6eadb;
+      --green:#2e6b42;
+      --green-bg:#e8f2ea;
+      --yellow:#8a651d;
+      --yellow-bg:#fff4d8;
+      --gray:#70675f;
+      --gray-bg:#f2eee9;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      line-height:1.55;
+    }
+
+    a{
+      color:inherit;
+    }
+
+    .wrap{
+      width:min(
+        1100px,
+        calc(100% - 32px)
+      );
+      margin:0 auto;
+    }
+
+    header{
+      background:rgba(251,243,232,.96);
+      border-bottom:1px solid var(--line);
+    }
+
+    .head{
+      min-height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      font-weight:900;
+      color:var(--ink);
+    }
+
+    .brand img{
+      width:52px;
+      height:52px;
+      border-radius:50%;
+      object-fit:cover;
+    }
+
+    .home-link{
+      text-decoration:none;
+      font-weight:800;
+    }
+
+    main{
+      padding:54px 0 80px;
+    }
+
+    .hero{
+      text-align:center;
+      max-width:760px;
+      margin:0 auto 40px;
+    }
+
+    .eyebrow{
+      margin:0 0 10px;
+      font-size:.82rem;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    h1{
+      margin:0 0 14px;
+      font-size:
+        clamp(
+          2.2rem,
+          6vw,
+          4.2rem
+        );
+      line-height:1.04;
+    }
+
+    .hero p{
+      margin:0;
+      font-size:1.05rem;
+      color:var(--muted);
+    }
+
+    .platform-grid{
+      display:grid;
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+      gap:20px;
+    }
+
+    .platform-card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:28px;
+      min-height:300px;
+      display:flex;
+      flex-direction:column;
+      box-shadow:
+        0 14px 36px
+        rgba(65,42,23,.05);
+    }
+
+    .platform-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:22px;
+    }
+
+    .platform-name{
+      margin:0;
+      font-size:1.8rem;
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:.82rem;
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    .status.review{
+      background:var(--yellow-bg);
+      color:var(--yellow);
+    }
+
+    .status.ready{
+      background:var(--green-bg);
+      color:var(--green);
+    }
+
+    .status.wait{
+      background:var(--gray-bg);
+      color:var(--gray);
+    }
+
+    .platform-card p{
+      margin:
+        0
+        0
+        14px;
+      color:var(--muted);
+    }
+
+    .platform-list{
+      margin:
+        0
+        0
+        24px;
+      padding-left:20px;
+      color:var(--muted);
+    }
+
+    .platform-list li{
+      margin-bottom:7px;
+    }
+
+    .card-actions{
+      margin-top:auto;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .button{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:48px;
+      padding:12px 18px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:900;
+      border:1px solid var(--line);
+    }
+
+    .button.primary{
+      background:var(--dark);
+      color:#fff;
+      border-color:var(--dark);
+    }
+
+    .button.secondary{
+      background:var(--soft);
+      color:var(--ink);
+    }
+
+    .button.disabled{
+      background:#eee9e3;
+      color:#9a9189;
+      pointer-events:none;
+      cursor:not-allowed;
+    }
+
+    .info-box{
+      margin-top:26px;
+      padding:22px 24px;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:22px;
+      color:var(--muted);
+    }
+
+    .info-box strong{
+      color:var(--ink);
+    }
+
+    .legal{
+      margin-top:26px;
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:14px;
+      font-size:.94rem;
+    }
+
+    .legal a{
+      color:var(--muted);
+    }
+
+    footer{
+      border-top:1px solid var(--line);
+      padding:26px 0 38px;
+      color:var(--muted);
+      font-size:.92rem;
+    }
+
+    @media(max-width:760px){
+
+      .platform-grid{
+        grid-template-columns:1fr;
+      }
+
+      .platform-top{
+        flex-direction:column;
+      }
+
+      .head{
+        min-height:72px;
+      }
+
+      .platform-card{
+        min-height:auto;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+<header>
+
+  <div class="wrap head">
+
+    <a
+      class="brand"
+      href="./"
+    >
+
+      <img
+        src="images/brand/logo.webp"
+        alt="Точка Хрускоту"
+      >
+
+      <span>
+        Точка Хрускоту
+      </span>
+
+    </a>
+
+
+    <a
+      class="home-link"
+      href="./"
+    >
+      ← На головну
+    </a>
+
+  </div>
+
+</header>
+
+
+<main>
+
+<div class="wrap">
+
+
+  <section class="hero">
+
+    <p class="eyebrow">
+      Центр публікацій
+    </p>
+
+    <h1>
+      Опублікувати відео
+    </h1>
+
+    <p>
+      Оберіть платформу.
+      Для кожної соцмережі використовується
+      її офіційна авторизація та API.
+    </p>
+
+  </section>
+
+
+
+  <section class="platform-grid">
+
+
+    <!-- TIKTOK -->
+
+    <article class="platform-card">
+
+      <div class="platform-top">
+
+        <h2 class="platform-name">
+          TikTok
+        </h2>
+
+        <span class="status review">
+          Production review
+        </span>
+
+      </div>
+
+
+      <p>
+        Інтеграція TikTok уже пройшла
+        успішне Sandbox-тестування.
+        Production-застосунок зараз
+        перебуває на перевірці TikTok.
+      </p>
+
+
+      <ul class="platform-list">
+
+        <li>
+          Login Kit
+        </li>
+
+        <li>
+          Content Posting API
+        </li>
+
+        <li>
+          Direct Post
+        </li>
+
+        <li>
+          Тестове завантаження підтверджене
+          статусом PUBLISH_COMPLETE
+        </li>
+
+      </ul>
+
+
+      <div class="card-actions">
+
+        <a
+          class="button primary"
+          href="tiktok-share.html"
+        >
+          Відкрити TikTok-публікацію
+        </a>
+
+
+        <a
+          class="button secondary"
+          href="https://www.tiktok.com/@tockahruskotu"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Наш TikTok
+        </a>
+
+      </div>
+
+    </article>
+
+
+
+    <!-- YOUTUBE -->
+
+    <article class="platform-card">
+
+      <div class="platform-top">
+
+        <h2 class="platform-name">
+          YouTube
+        </h2>
+
+        <span class="status ready">
+          API підключено
+        </span>
+
+      </div>
+
+
+      <p>
+        Google OAuth та YouTube Data API v3
+        успішно підключені.
+        Тестове відео вже було реально
+        завантажене через API.
+      </p>
+
+
+      <ul class="platform-list">
+
+        <li>
+          Google OAuth 2.0
+        </li>
+
+        <li>
+          YouTube Data API v3
+        </li>
+
+        <li>
+          youtube.upload
+        </li>
+
+        <li>
+          Resumable upload працює
+        </li>
+
+      </ul>
+
+
+      <div class="card-actions">
+
+        <a
+          class="button primary"
+          href="youtube-share.html"
+        >
+          Відкрити YouTube-публікацію
+        </a>
+
+
+        <a
+          class="button secondary"
+          href="https://www.youtube.com/@ТочкаХрускоту"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Наш YouTube
+        </a>
+
+      </div>
+
+    </article>
+
+
+
+    <!-- INSTAGRAM -->
+
+    <article class="platform-card">
+
+      <div class="platform-top">
+
+        <h2 class="platform-name">
+          Instagram
+        </h2>
+
+        <span class="status wait">
+          Підключення
+        </span>
+
+      </div>
+
+
+      <p>
+        Instagram буде доданий до цього
+        самого центру після завершення
+        налаштування Meta API.
+      </p>
+
+
+      <ul class="platform-list">
+
+        <li>
+          Reels
+        </li>
+
+        <li>
+          окремий текст для Instagram
+        </li>
+
+        <li>
+          автоматизація публікацій
+        </li>
+
+      </ul>
+
+
+      <div class="card-actions">
+
+        <span class="button disabled">
+          Скоро буде доступно
+        </span>
+
+
+        <a
+          class="button secondary"
+          href="https://instagram.com/tockahruskotu"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Наш Instagram
+        </a>
+
+      </div>
+
+    </article>
+
+
+
+    <!-- FACEBOOK -->
+
+    <article class="platform-card">
+
+      <div class="platform-top">
+
+        <h2 class="platform-name">
+          Facebook
+        </h2>
+
+        <span class="status wait">
+          Підключення
+        </span>
+
+      </div>
+
+
+      <p>
+        Facebook також буде працювати
+        через цей центр після завершення
+        Meta API інтеграції.
+      </p>
+
+
+      <ul class="platform-list">
+
+        <li>
+          Facebook Page
+        </li>
+
+        <li>
+          відео та Reels
+        </li>
+
+        <li>
+          окремий текст для Facebook
+        </li>
+
+      </ul>
+
+
+      <div class="card-actions">
+
+        <span class="button disabled">
+          Скоро буде доступно
+        </span>
+
+
+        <a
+          class="button secondary"
+          href="https://www.facebook.com/tockahruskotu/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Наш Facebook
+        </a>
+
+      </div>
+
+    </article>
+
+
+  </section>
+
+
+
+  <div class="info-box">
+
+    <strong>
+      Як це працюватиме далі:
+    </strong>
+
+    зараз кожна платформа має
+    власну сторінку публікації.
+    Після підключення всіх API
+    ми зможемо зробити спільний режим:
+    вибрати одне відео,
+    відмітити TikTok, YouTube,
+    Instagram та Facebook
+    і підготувати окремий текст
+    для кожної платформи.
+
+  </div>
+
+
+
+  <div class="legal">
+
+    <a href="privacy.html">
+      Політика конфіденційності
+    </a>
+
+    <span>·</span>
+
+    <a href="terms.html">
+      Умови використання
+    </a>
+
+    <span>·</span>
+
+    <a href="mailto:tockahruskotu@gmail.com">
+      Контакт
+    </a>
+
+  </div>
+
+
+</div>
+
+</main>
+
+
+<footer>
+
+  <div class="wrap">
+
+    © 2026 Точка Хрускоту
+
+  </div>
+
+</footer>
+
+
+</body>
+
+</html>
