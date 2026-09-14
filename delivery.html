@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Доставка й оплата — Точка Хрускоту</title>
+
+  <meta
+    name="description"
+    content="Доставка Точки Хрускоту: Млинів, Дубно, Рівне, Нова пошта та Укрпошта по Україні. Умови доставки й оплати замовлень."
+  >
+
+  <meta name="theme-color" content="#fffaf5">
+
+  <link
+    rel="canonical"
+    href="https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/delivery.html"
+  >
+
+  <link
+    rel="icon"
+    href="images/brand/logo.webp"
+    type="image/webp"
+  >
+
+  <link
+    rel="stylesheet"
+    href="site-v2.css?v=20260914-5"
+  >
+
+
+  <!-- ======================================================
+       СТИЛІ СТОРІНКИ ДОСТАВКИ
+       ====================================================== -->
+
+  <style>
+
+    .delivery-hero {
+      padding: 46px 0 34px;
+    }
+
+    .delivery-hero-box {
+      padding: 38px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(
+          135deg,
+          #fff8f2 0%,
+          #fff1e5 100%
+        );
+    }
+
+    .delivery-hero h1 {
+      max-width: 800px;
+      margin: 0;
+      color: var(--brown);
+      font-size: clamp(38px, 5vw, 62px);
+      line-height: 1.03;
+      letter-spacing: -.035em;
+    }
+
+    .delivery-hero-text {
+      max-width: 760px;
+      margin: 16px 0 0;
+      color: var(--text-soft);
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+
+    /* ======================================================
+       КОРОТКІ ПЕРЕВАГИ
+       ====================================================== */
+
+    .delivery-summary {
+      padding: 6px 0 40px;
+    }
+
+    .delivery-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .delivery-summary-card {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+    }
+
+    .delivery-summary-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--brown);
+      font-size: 17px;
+    }
+
+    .delivery-summary-card p {
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+
+    /* ======================================================
+       ОСНОВНІ БЛОКИ
+       ====================================================== */
+
+    .delivery-main-section {
+      padding: 10px 0 60px;
+    }
+
+    .delivery-main-grid {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+      gap: 22px;
+    }
+
+    .delivery-card {
+      padding: 26px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .delivery-card.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .delivery-card-kicker {
+      margin: 0 0 6px;
+      color: var(--accent-dark);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .delivery-card h2 {
+      margin: 0 0 18px;
+      color: var(--brown);
+      font-size: 25px;
+      line-height: 1.2;
+    }
+
+    .delivery-card h3 {
+      margin: 22px 0 7px;
+      color: var(--brown);
+      font-size: 17px;
+    }
+
+    .delivery-card h3:first-of-type {
+      margin-top: 0;
+    }
+
+    .delivery-card p {
+      margin: 0 0 10px;
+      color: var(--text-soft);
+      line-height: 1.6;
+    }
+
+    .delivery-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .delivery-line {
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .delivery-line:first-of-type {
+      padding-top: 0;
+    }
+
+    .delivery-line:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .delivery-line strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--brown);
+      font-size: 16px;
+    }
+
+    .delivery-line span {
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+
+    /* ======================================================
+       2000 ГРН
+       ====================================================== */
+
+    .free-delivery-box {
+      margin-top: 20px;
+      padding: 18px 20px;
+      border: 1px solid #cadcc6;
+      border-radius: var(--radius-md);
+      background: var(--green-soft);
+    }
+
+    .free-delivery-box strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #3e583d;
+      font-size: 18px;
+    }
+
+    .free-delivery-box p {
+      margin: 0;
+      color: #4c684a;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .free-delivery-small {
+      margin-top: 7px !important;
+      font-size: 12px !important;
+    }
+
+
+    /* ======================================================
+       ТЕРМІНИ
+       ====================================================== */
+
+    .delivery-time-box {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .delivery-time-number {
+      min-width: 115px;
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: var(--surface-soft);
+      color: var(--brown);
+      text-align: center;
+    }
+
+    .delivery-time-number strong {
+      display: block;
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .delivery-time-number span {
+      display: block;
+      margin-top: 6px;
+      color: var(--text-soft);
+      font-size: 12px;
+    }
+
+    .delivery-time-text p {
+      margin: 0 0 7px;
+    }
+
+
+    /* ======================================================
+       ОПЛАТА
+       ====================================================== */
+
+    .payment-note {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: var(--surface-soft);
+    }
+
+    .payment-note strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--brown);
+    }
+
+    .payment-note p {
+      margin: 0;
+    }
+
+
+    /* ======================================================
+       CTA
+       ====================================================== */
+
+    .delivery-cta-section {
+      padding: 0 0 72px;
+    }
+
+    .delivery-cta {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 26px;
+      align-items: center;
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface-soft);
+    }
+
+    .delivery-cta h2 {
+      margin: 0;
+      color: var(--brown);
+      font-size: 26px;
+    }
+
+    .delivery-cta p {
+      max-width: 720px;
+      margin: 7px 0 0;
+      color: var(--text-soft);
+    }
+
+    .delivery-cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .delivery-secondary-button {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 18px;
+      border: 1px solid var(--border-strong);
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--brown);
+      font-weight: 800;
+    }
+
+
+    /* ======================================================
+       АДАПТИВ
+       ====================================================== */
+
+    @media (max-width: 900px) {
+
+      .delivery-summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .delivery-main-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .delivery-card.full-width {
+        grid-column: auto;
+      }
+
+      .delivery-cta {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+
+    @media (max-width: 640px) {
+
+      .delivery-hero {
+        padding-top: 28px;
+      }
+
+      .delivery-hero-box {
+        padding: 22px;
+        border-radius: 18px;
+      }
+
+      .delivery-hero h1 {
+        font-size: 38px;
+      }
+
+      .delivery-hero-text {
+        font-size: 16px;
+      }
+
+      .delivery-card {
+        padding: 20px;
+      }
+
+      .delivery-time-box {
+        grid-template-columns: 1fr;
+      }
+
+      .delivery-time-number {
+        width: 100%;
+      }
+
+      .delivery-cta {
+        padding: 20px;
+      }
+
+      .delivery-cta-actions {
+        flex-direction: column;
+      }
+
+      .delivery-cta-actions a {
+        width: 100%;
+      }
+
+    }
+
+  </style>
+
+
+  <!-- ======================================================
+       GOOGLE ANALYTICS 4
+       ====================================================== -->
+
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-BMMFC6QXD5"
+  ></script>
+
+  <script>
+    window.dataLayer =
+      window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag("js", new Date());
+
+    gtag(
+      "config",
+      "G-BMMFC6QXD5"
+    );
+  </script>
+
+</head>
+
+
+<body>
+
+  <!-- ======================================================
+       ЗАВАНТАЖЕННЯ
+       ====================================================== -->
+
+  <div
+    class="page-loader"
+    id="pageLoader"
+    aria-live="polite"
+  >
+
+    <div class="page-loader-card">
+
+      <img
+        src="images/brand/logo.webp"
+        alt=""
+        width="70"
+        height="70"
+      >
+
+      <strong>
+        Точка Хрускоту
+      </strong>
+
+      <span>
+        Завантажуємо...
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- ======================================================
+       ВЕРХНЯ СМУГА
+       ====================================================== -->
+
+  <div class="trust-bar">
+
+    <div class="container trust-bar-inner">
+
+      <a
+        class="trust-item trust-location"
+        href="contacts.html"
+      >
+        <span>
+          Млинів, Рівненська обл.
+        </span>
+      </a>
+
+
+      <a
+        class="trust-item trust-local-delivery"
+        href="delivery.html"
+      >
+        <span>
+          Млинів • Дубно • Рівне
+        </span>
+      </a>
+
+
+      <a
+        class="trust-item trust-ukraine"
+        href="delivery.html"
+      >
+        <span>
+          Доставка по Україні
+        </span>
+      </a>
+
+
+      <a
+        class="trust-item trust-phone"
+        href="tel:+380638330860"
+      >
+        <span>
+          +380 63 833 08 60
+        </span>
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <!-- ======================================================
+       ШАПКА
+       ====================================================== -->
+
+  <header
+    class="site-header"
+    id="siteHeader"
+  >
+
+    <div class="container header-inner">
+
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="Точка Хрускоту — головна"
+      >
+
+        <img
+          id="headerLogo"
+          src="images/brand/logo.webp"
+          alt="Точка Хрускоту"
+          width="64"
+          height="64"
+        >
+
+
+        <span class="brand-text">
+
+          <strong id="headerStoreName">
+            Точка Хрускоту
+          </strong>
+
+          <small>
+            Візьми. Вмочи. Хрусни.
+          </small>
+
+        </span>
+
+      </a>
+
+
+      <nav
+        class="desktop-nav"
+        aria-label="Головна навігація"
+      >
+
+        <a href="catalog.html">
+          Каталог
+        </a>
+
+        <a href="gifts.html">
+          Подарунки
+        </a>
+
+        <a
+          class="is-active"
+          href="delivery.html"
+        >
+          Доставка й оплата
+        </a>
+
+        <a href="reviews.html">
+          Відгуки
+        </a>
+
+        <a href="contacts.html">
+          Контакти
+        </a>
+
+      </nav>
+
+
+      <div class="header-actions">
+
+        <a
+          class="header-action-button"
+          href="catalog.html"
+        >
+          <span class="header-action-text">
+            Пошук
+          </span>
+        </a>
+
+
+        <button
+          class="header-action-button cart-button"
+          id="cartButton"
+          type="button"
+          aria-label="Відкрити кошик"
+        >
+
+          <span class="header-action-text">
+            Кошик
+          </span>
+
+          <span
+            class="cart-count"
+            id="cartCount"
+          >
+            0
+          </span>
+
+        </button>
+
+
+        <button
+          class="mobile-menu-button"
+          id="mobileMenuButton"
+          type="button"
+          aria-controls="mobileMenu"
+          aria-expanded="false"
+        >
+          <span>
+            Меню
+          </span>
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ======================================================
+       МОБІЛЬНЕ МЕНЮ
+       ====================================================== -->
+
+  <div
+    class="mobile-menu-overlay"
+    id="mobileMenuOverlay"
+    hidden
+  ></div>
+
+
+  <aside
+    class="mobile-menu"
+    id="mobileMenu"
+    aria-hidden="true"
+  >
+
+    <div class="mobile-menu-head">
+
+      <strong>
+        Меню
+      </strong>
+
+      <button
+        id="closeMobileMenu"
+        type="button"
+        aria-label="Закрити меню"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <nav
+      class="mobile-nav"
+      aria-label="Мобільна навігація"
+    >
+
+      <a href="catalog.html">
+        Каталог
+      </a>
+
+      <a href="gifts.html">
+        Подарунки
+      </a>
+
+      <a
+        class="is-active"
+        href="delivery.html"
+      >
+        Доставка й оплата
+      </a>
+
+      <a href="reviews.html">
+        Відгуки
+      </a>
+
+      <a href="contacts.html">
+        Контакти
+      </a>
+
+    </nav>
+
+
+    <div class="mobile-menu-contact">
+
+      <p>
+        <strong>
+          Млинів, Рівненська область
+        </strong>
+      </p>
+
+      <a href="tel:+380638330860">
+        +380 63 833 08 60
+      </a>
+
+      <a
+        href="https://t.me/tockahruskotu"
+        target="_blank"
+        rel="noopener"
+      >
+        Telegram
+      </a>
+
+      <a
+        href="https://instagram.com/tockahruskotu"
+        target="_blank"
+        rel="noopener"
+      >
+        Instagram
+      </a>
+
+    </div>
+
+  </aside>
+
+
+  <!-- ======================================================
+       ОСНОВНИЙ ВМІСТ
+       ====================================================== -->
+
+  <main>
+
+    <!-- Хлібні крихти -->
+
+    <div class="container breadcrumbs">
+
+      <a href="index.html">
+        Головна
+      </a>
+
+      <span>
+        ›
+      </span>
+
+      <span aria-current="page">
+        Доставка й оплата
+      </span>
+
+    </div>
+
+
+    <!-- ====================================================
+         HERO
+         ==================================================== -->
+
+    <section class="delivery-hero">
+
+      <div class="container">
+
+        <div class="delivery-hero-box">
+
+          <p class="section-kicker">
+            Просто й зрозуміло
+          </p>
+
+          <h1>
+            Доставка й оплата
+          </h1>
+
+          <p class="delivery-hero-text">
+            Готуємо замовлення у селищі Млинів
+            та доставляємо у Млинів, Дубно, Рівне
+            і по всій Україні.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         ШВИДКА ІНФОРМАЦІЯ
+         ==================================================== -->
+
+    <section class="delivery-summary">
+
+      <div class="container">
+
+        <div class="delivery-summary-grid">
+
+          <article class="delivery-summary-card">
+
+            <strong>
+              Млинів
+            </strong>
+
+            <p>
+              Безкоштовна локальна доставка.
+            </p>
+
+          </article>
+
+
+          <article class="delivery-summary-card">
+
+            <strong>
+              Дубно та Рівне
+            </strong>
+
+            <p>
+              Безкоштовна доставка
+              за попереднім погодженням
+              у дні наших маршрутів.
+            </p>
+
+          </article>
+
+
+          <article class="delivery-summary-card">
+
+            <strong>
+              По Україні
+            </strong>
+
+            <p>
+              Нова пошта або Укрпошта:
+              відділення, поштомат чи кур’єр.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         ОСНОВНІ УМОВИ
+         ==================================================== -->
+
+    <section class="delivery-main-section">
+
+      <div class="container delivery-main-grid">
+
+
+        <!-- Локальна доставка -->
+
+        <article class="delivery-card">
+
+          <p class="delivery-card-kicker">
+            Поруч із нами
+          </p>
+
+          <h2>
+            Млинів, Дубно, Рівне
+          </h2>
+
+
+          <div class="delivery-line">
+
+            <strong>
+              Млинів
+            </strong>
+
+            <span>
+              Безкоштовна локальна доставка.
+              Деталі та зручний час погодимо
+              після оформлення замовлення.
+            </span>
+
+          </div>
+
+
+          <div class="delivery-line">
+
+            <strong>
+              Дубно
+            </strong>
+
+            <span>
+              Безкоштовна доставка
+              за попереднім погодженням
+              у дні наших маршрутів.
+            </span>
+
+          </div>
+
+
+          <div class="delivery-line">
+
+            <strong>
+              Рівне
+            </strong>
+
+            <span>
+              Безкоштовна доставка
+              за попереднім погодженням
+              у дні наших маршрутів.
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- По Україні -->
+
+        <article class="delivery-card">
+
+          <p class="delivery-card-kicker">
+            По Україні
+          </p>
+
+          <h2>
+            Поштові перевізники
+          </h2>
+
+
+          <div class="delivery-line">
+
+            <strong>
+              Нова пошта
+            </strong>
+
+            <span>
+              У відділення / поштомат /
+              кур’єром за адресою.
+              Вартість — за тарифами перевізника.
+            </span>
+
+          </div>
+
+
+          <div class="delivery-line">
+
+            <strong>
+              Укрпошта
+            </strong>
+
+            <span>
+              У відділення / поштомат /
+              кур’єром за адресою.
+              Вартість — за тарифами перевізника.
+            </span>
+
+          </div>
+
+
+          <div class="free-delivery-box">
+
+            <strong>
+              Замовлення від 2000 грн
+            </strong>
+
+            <p>
+              Доставку у відділення або поштомат
+              оплачує «Точка Хрускоту».
+            </p>
+
+            <p class="free-delivery-small">
+              Кур’єрська доставка за адресою
+              оплачується за тарифами перевізника.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <!-- Виготовлення -->
+
+        <article class="delivery-card">
+
+          <p class="delivery-card-kicker">
+            Коли відправимо
+          </p>
+
+          <h2>
+            Термін виготовлення
+          </h2>
+
+
+          <div class="delivery-time-box">
+
+            <div class="delivery-time-number">
+
+              <strong>
+                1–3
+              </strong>
+
+              <span>
+                робочі дні
+              </span>
+
+            </div>
+
+
+            <div class="delivery-time-text">
+
+              <p>
+                Більшість наших товарів
+                готуємо під замовлення.
+              </p>
+
+              <p>
+                Якщо замовлення потрібне
+                до конкретної дати,
+                вкажіть її під час оформлення.
+              </p>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- Оплата -->
+
+        <article class="delivery-card">
+
+          <p class="delivery-card-kicker">
+            Оплата
+          </p>
+
+          <h2>
+            Після підтвердження
+          </h2>
+
+
+          <div class="payment-note">
+
+            <strong>
+              Спочатку підтвердимо замовлення
+            </strong>
+
+            <p>
+              Після оформлення ми зв’яжемося з вами,
+              уточнимо деталі замовлення
+              та надішлемо реквізити для оплати.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <!-- Подарунок -->
+
+        <article class="delivery-card full-width">
+
+          <p class="delivery-card-kicker">
+            Якщо це подарунок
+          </p>
+
+          <h2>
+            Достатньо однієї галочки
+          </h2>
+
+          <p>
+            Під час оформлення позначте
+            <strong>«Це подарунок»</strong>.
+            Після замовлення ми зв’яжемося з вами
+            та уточнимо всі деталі.
+          </p>
+
+          <p>
+            Можемо додати безкоштовну листівку,
+            не вкладати ціну, відправити замовлення
+            безпосередньо отримувачу
+            та допомогти організувати сюрприз.
+          </p>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         CTA
+         ==================================================== -->
+
+    <section class="delivery-cta-section">
+
+      <div class="container">
+
+        <div class="delivery-cta">
+
+          <div>
+
+            <h2>
+              Можна обирати смаколики
+            </h2>
+
+            <p>
+              У каталозі вказані актуальні товари й ціни.
+              Якщо виникне питання щодо доставки —
+              зв’яжіться з нами.
+            </p>
+
+          </div>
+
+
+          <div class="delivery-cta-actions">
+
+            <a
+              class="button button-primary"
+              href="catalog.html"
+            >
+              Перейти до каталогу
+            </a>
+
+            <a
+              class="delivery-secondary-button"
+              href="contacts.html"
+            >
+              Контакти
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ======================================================
+       КОШИК
+       ====================================================== -->
+
+  <div
+    class="cart-overlay"
+    id="cartOverlay"
+    hidden
+  ></div>
+
+
+  <aside
+    class="cart-panel"
+    id="cartPanel"
+    aria-hidden="true"
+    aria-label="Кошик"
+  >
+
+    <div class="cart-panel-head">
+
+      <div>
+
+        <p class="section-kicker">
+          Ваше замовлення
+        </p>
+
+        <h2>
+          Кошик
+        </h2>
+
+      </div>
+
+
+      <button
+        id="closeCartButton"
+        type="button"
+        aria-label="Закрити кошик"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div
+      class="cart-items"
+      id="cartItems"
+    ></div>
+
+
+    <div
+      class="cart-free-delivery"
+      id="cartProgress"
+    ></div>
+
+
+    <div
+      class="cart-suggestions"
+      id="cartSuggestions"
+    ></div>
+
+
+    <div class="cart-panel-footer">
+
+      <div class="cart-total-row">
+
+        <span>
+          Разом
+        </span>
+
+        <strong id="cartTotal">
+          0 грн
+        </strong>
+
+      </div>
+
+
+      <a
+        class="button button-primary checkout-link"
+        id="checkoutButton"
+        href="checkout.html"
+      >
+        Оформити замовлення
+      </a>
+
+
+      <button
+        class="continue-shopping-button"
+        id="continueShoppingButton"
+        type="button"
+      >
+        Продовжити покупки
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- ======================================================
+       ПОВІДОМЛЕННЯ
+       ====================================================== -->
+
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+
+  <!-- ======================================================
+       ФУТЕР
+       ====================================================== -->
+
+  <footer class="site-footer">
+
+    <div class="container footer-grid">
+
+
+      <div class="footer-column footer-brand">
+
+        <a
+          class="footer-logo-link"
+          href="index.html"
+        >
+
+          <img
+            id="footerLogo"
+            src="images/brand/logo.webp"
+            alt="Точка Хрускоту"
+            width="76"
+            height="76"
+            loading="lazy"
+          >
+
+        </a>
+
+
+        <strong id="footerStoreName">
+          Точка Хрускоту
+        </strong>
+
+
+        <p>
+          Домашнє виробництво.
+          Селище Млинів, Рівненська область.
+          Готуємо під замовлення
+          та доставляємо по Україні.
+        </p>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h2>
+          Покупцям
+        </h2>
+
+        <a href="catalog.html">
+          Каталог
+        </a>
+
+        <a href="gifts.html">
+          Подарунки
+        </a>
+
+        <a href="delivery.html">
+          Доставка й оплата
+        </a>
+
+        <a href="reviews.html">
+          Відгуки
+        </a>
+
+        <a href="contacts.html">
+          Контакти
+        </a>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h2>
+          Зв’язок
+        </h2>
+
+        <a href="tel:+380638330860">
+          +380 63 833 08 60
+        </a>
+
+        <a
+          href="https://t.me/tockahruskotu"
+          target="_blank"
+          rel="noopener"
+        >
+          Telegram
+        </a>
+
+        <a
+          href="https://instagram.com/tockahruskotu"
+          target="_blank"
+          rel="noopener"
+        >
+          Instagram
+        </a>
+
+        <a
+          id="footerGoogleProfile"
+          href="https://share.google/Fc4vC6bW6pVCzwFYW"
+          target="_blank"
+          rel="noopener"
+        >
+          Профіль у Google
+        </a>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h2>
+          Документи
+        </h2>
+
+        <a href="terms.html">
+          Умови замовлення
+        </a>
+
+        <a href="privacy.html">
+          Політика конфіденційності
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- СОЦМЕРЕЖІ -->
+
+    <div class="container footer-social-section">
+
+      <h2>
+        Ми в соцмережах
+      </h2>
+
+
+      <div class="footer-social-links">
+
+        <a
+          href="https://instagram.com/tockahruskotu"
+          target="_blank"
+          rel="noopener"
+        >
+          Instagram
+        </a>
+
+        <a
+          href="https://www.facebook.com/tockahruskotu/"
+          target="_blank"
+          rel="noopener"
+        >
+          Facebook
+        </a>
+
+        <a
+          href="https://www.tiktok.com/@tockahruskotu"
+          target="_blank"
+          rel="noopener"
+        >
+          TikTok
+        </a>
+
+        <a
+          href="https://www.youtube.com/@ТочкаХрускоту"
+          target="_blank"
+          rel="noopener"
+        >
+          YouTube
+        </a>
+
+        <a
+          href="https://t.me/tockahruskotu"
+          target="_blank"
+          rel="noopener"
+        >
+          Telegram
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- ПУБЛІКАЦІЯ ВІДЕО -->
+
+    <div class="container footer-publishing">
+
+      <span>
+        Публікація відео:
+      </span>
+
+      <a href="tiktok-share.html">
+        TikTok
+      </a>
+
+      <span>
+        |
+      </span>
+
+      <a href="youtube-share.html">
+        YouTube
+      </a>
+
+    </div>
+
+
+    <div class="container footer-bottom">
+
+      <span>
+        © Точка Хрускоту, 2026
+      </span>
+
+      <span>
+        Млинів • Дубно • Рівне • Доставка по Україні
+      </span>
+
+    </div>
+
+  </footer>
+
+
+  <noscript>
+
+    <div class="noscript-message">
+      Для роботи сторінки потрібно
+      увімкнути JavaScript у браузері.
+    </div>
+
+  </noscript>
+
+
+  <!-- ======================================================
+       Використовуємо спільну логіку магазину:
+       кошик, дані товарів, шапка, мобільне меню
+       ====================================================== -->
+
+  <script
+    src="site-v2.js?v=20260914-6"
+    defer
+  ></script>
+
+</body>
+</html>
