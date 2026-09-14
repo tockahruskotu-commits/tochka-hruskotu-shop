@@ -12,10 +12,13 @@
 
   <meta
     name="description"
-    content="Доставка Точки Хрускоту: Млинів, Дубно, Рівне, Нова пошта та Укрпошта по Україні. Умови доставки й оплати замовлень."
+    content="Доставка та оплата Точки Хрускоту. Млинів, Дубно, Рівне, Нова пошта, Укрпошта та оплата на рахунок."
   >
 
-  <meta name="theme-color" content="#fffaf5">
+  <meta
+    name="theme-color"
+    content="#fffaf5"
+  >
 
   <link
     rel="canonical"
@@ -30,13 +33,9 @@
 
   <link
     rel="stylesheet"
-    href="site-v2.css?v=20260914-5"
+    href="site-v2.css?v=20260914-12"
   >
 
-
-  <!-- ======================================================
-       СТИЛІ СТОРІНКИ ДОСТАВКИ
-       ====================================================== -->
 
   <style>
 
@@ -46,8 +45,10 @@
 
     .delivery-hero-box {
       padding: 38px;
+
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
+
       background:
         linear-gradient(
           135deg,
@@ -58,24 +59,35 @@
 
     .delivery-hero h1 {
       max-width: 800px;
+
       margin: 0;
+
       color: var(--brown);
-      font-size: clamp(38px, 5vw, 62px);
+
+      font-size: clamp(
+        38px,
+        5vw,
+        62px
+      );
+
       line-height: 1.03;
       letter-spacing: -.035em;
     }
 
     .delivery-hero-text {
       max-width: 760px;
+
       margin: 16px 0 0;
+
       color: var(--text-soft);
+
       font-size: 18px;
       line-height: 1.6;
     }
 
 
     /* ======================================================
-       КОРОТКІ ПЕРЕВАГИ
+       ШВИДКА ІНФОРМАЦІЯ
        ====================================================== */
 
     .delivery-summary {
@@ -84,27 +96,40 @@
 
     .delivery-summary-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(0, 1fr)
+        );
+
       gap: 12px;
     }
 
     .delivery-summary-card {
       padding: 20px;
+
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
+
       background: var(--surface);
     }
 
     .delivery-summary-card strong {
       display: block;
+
       margin-bottom: 6px;
+
       color: var(--brown);
+
       font-size: 17px;
     }
 
     .delivery-summary-card p {
       margin: 0;
+
       color: var(--text-soft);
+
       font-size: 13px;
       line-height: 1.55;
     }
@@ -120,17 +145,22 @@
 
     .delivery-main-grid {
       display: grid;
+
       grid-template-columns:
         minmax(0, 1fr)
         minmax(0, 1fr);
+
       gap: 22px;
     }
 
     .delivery-card {
       padding: 26px;
+
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
+
       background: var(--surface);
+
       box-shadow: var(--shadow-sm);
     }
 
@@ -140,7 +170,9 @@
 
     .delivery-card-kicker {
       margin: 0 0 6px;
+
       color: var(--accent-dark);
+
       font-size: 12px;
       font-weight: 900;
       letter-spacing: .08em;
@@ -149,24 +181,18 @@
 
     .delivery-card h2 {
       margin: 0 0 18px;
+
       color: var(--brown);
+
       font-size: 25px;
       line-height: 1.2;
     }
 
-    .delivery-card h3 {
-      margin: 22px 0 7px;
-      color: var(--brown);
-      font-size: 17px;
-    }
-
-    .delivery-card h3:first-of-type {
-      margin-top: 0;
-    }
-
     .delivery-card p {
       margin: 0 0 10px;
+
       color: var(--text-soft);
+
       line-height: 1.6;
     }
 
@@ -176,7 +202,9 @@
 
     .delivery-line {
       padding: 15px 0;
-      border-bottom: 1px solid var(--border);
+
+      border-bottom:
+        1px solid var(--border);
     }
 
     .delivery-line:first-of-type {
@@ -190,80 +218,104 @@
 
     .delivery-line strong {
       display: block;
+
       margin-bottom: 4px;
+
       color: var(--brown);
+
       font-size: 16px;
     }
 
     .delivery-line span {
       color: var(--text-soft);
+
       font-size: 14px;
       line-height: 1.55;
     }
 
 
     /* ======================================================
-       2000 ГРН
+       БЕЗКОШТОВНА ДОСТАВКА
        ====================================================== */
 
     .free-delivery-box {
       margin-top: 20px;
       padding: 18px 20px;
+
       border: 1px solid #cadcc6;
       border-radius: var(--radius-md);
+
       background: var(--green-soft);
     }
 
     .free-delivery-box strong {
       display: block;
+
       margin-bottom: 5px;
+
       color: #3e583d;
+
       font-size: 18px;
     }
 
     .free-delivery-box p {
       margin: 0;
+
       color: #4c684a;
+
       font-size: 14px;
       line-height: 1.55;
     }
 
     .free-delivery-small {
       margin-top: 7px !important;
+
       font-size: 12px !important;
     }
 
 
     /* ======================================================
-       ТЕРМІНИ
+       ТЕРМІН ВИГОТОВЛЕННЯ
        ====================================================== */
 
     .delivery-time-box {
       display: grid;
-      grid-template-columns: auto 1fr;
+
+      grid-template-columns:
+        auto 1fr;
+
       gap: 18px;
       align-items: center;
     }
 
     .delivery-time-number {
       min-width: 115px;
+
       padding: 18px;
+
       border-radius: var(--radius-md);
+
       background: var(--surface-soft);
+
       color: var(--brown);
+
       text-align: center;
     }
 
     .delivery-time-number strong {
       display: block;
+
       font-size: 32px;
       line-height: 1;
     }
 
     .delivery-time-number span {
       display: block;
+
       margin-top: 6px;
+
       color: var(--text-soft);
+
       font-size: 12px;
     }
 
@@ -276,20 +328,159 @@
        ОПЛАТА
        ====================================================== */
 
-    .payment-note {
-      padding: 18px;
+    .payment-card {
+      position: relative;
+    }
+
+    .payment-intro {
+      margin-bottom: 18px !important;
+    }
+
+    .payment-account-box {
+      padding: 20px;
+
+      border: 1px solid #ead7ca;
       border-radius: var(--radius-md);
+
+      background:
+        linear-gradient(
+          135deg,
+          #fffaf6,
+          #fff4ec
+        );
+    }
+
+    .payment-account-label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: var(--text-soft);
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .payment-iban {
+      display: block;
+
+      margin-bottom: 14px;
+
+      color: var(--brown);
+
+      font-size: clamp(
+        17px,
+        2.2vw,
+        22px
+      );
+
+      font-weight: 900;
+      line-height: 1.4;
+
+      word-break: break-all;
+      letter-spacing: .02em;
+    }
+
+    .copy-iban-button {
+      min-height: 44px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 9px 15px;
+
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+
+      background: var(--surface);
+
+      color: var(--brown);
+
+      font-weight: 850;
+
+      cursor: pointer;
+    }
+
+    .copy-iban-button:hover {
+      background: #fff;
+    }
+
+    .copy-iban-button.is-copied {
+      border-color: #a9c7a3;
+
+      background: var(--green-soft);
+
+      color: #3e583d;
+    }
+
+    .payment-message-box {
+      margin-top: 16px;
+
+      padding: 16px 18px;
+
+      border-radius: var(--radius-md);
+
       background: var(--surface-soft);
     }
 
-    .payment-note strong {
+    .payment-message-box strong {
       display: block;
+
       margin-bottom: 6px;
+
       color: var(--brown);
     }
 
-    .payment-note p {
+    .payment-message-box p {
       margin: 0;
+
+      color: var(--text-soft);
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .payment-important {
+      margin-top: 14px;
+
+      padding: 16px 18px;
+
+      border-left: 4px solid var(--accent);
+
+      border-radius:
+        0 var(--radius-md)
+        var(--radius-md) 0;
+
+      background: #fff8f2;
+    }
+
+    .payment-important strong {
+      color: var(--brown);
+    }
+
+    .payment-important p {
+      margin: 0;
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+
+    /* ======================================================
+       ПОДАРУНОК
+       ====================================================== */
+
+    .gift-note {
+      padding: 18px;
+
+      border-radius: var(--radius-md);
+
+      background: var(--surface-soft);
+    }
+
+    .gift-note strong {
+      color: var(--brown);
     }
 
 
@@ -303,24 +494,35 @@
 
     .delivery-cta {
       display: grid;
-      grid-template-columns: 1fr auto;
+
+      grid-template-columns:
+        1fr
+        auto;
+
       gap: 26px;
       align-items: center;
+
       padding: 28px;
+
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
+
       background: var(--surface-soft);
     }
 
     .delivery-cta h2 {
       margin: 0;
+
       color: var(--brown);
+
       font-size: 26px;
     }
 
     .delivery-cta p {
       max-width: 720px;
+
       margin: 7px 0 0;
+
       color: var(--text-soft);
     }
 
@@ -332,14 +534,20 @@
 
     .delivery-secondary-button {
       min-height: 48px;
+
       display: inline-flex;
       align-items: center;
       justify-content: center;
+
       padding: 11px 18px;
+
       border: 1px solid var(--border-strong);
       border-radius: 14px;
+
       background: var(--surface);
+
       color: var(--brown);
+
       font-weight: 800;
     }
 
@@ -377,6 +585,7 @@
 
       .delivery-hero-box {
         padding: 22px;
+
         border-radius: 18px;
       }
 
@@ -397,6 +606,18 @@
       }
 
       .delivery-time-number {
+        width: 100%;
+      }
+
+      .payment-account-box {
+        padding: 16px;
+      }
+
+      .payment-iban {
+        font-size: 16px;
+      }
+
+      .copy-iban-button {
         width: 100%;
       }
 
@@ -434,7 +655,10 @@
       dataLayer.push(arguments);
     }
 
-    gtag("js", new Date());
+    gtag(
+      "js",
+      new Date()
+    );
 
     gtag(
       "config",
@@ -556,7 +780,6 @@
           height="64"
         >
 
-
         <span class="brand-text">
 
           <strong id="headerStoreName">
@@ -608,6 +831,7 @@
         <a
           class="header-action-button"
           href="catalog.html"
+          aria-label="Пошук товарів"
         >
           <span class="header-action-text">
             Пошук
@@ -733,19 +957,28 @@
       </a>
 
       <a
+        href="viber://chat?number=%2B380638330860"
+        translate="no"
+      >
+        Viber
+      </a>
+
+      <a
         href="https://t.me/tockahruskotu"
         target="_blank"
         rel="noopener"
+        translate="no"
       >
         Telegram
       </a>
 
       <a
-        href="https://instagram.com/tockahruskotu"
+        href="https://wa.me/380638330860"
         target="_blank"
         rel="noopener"
+        translate="no"
       >
-        Instagram
+        WhatsApp
       </a>
 
     </div>
@@ -758,8 +991,6 @@
        ====================================================== -->
 
   <main>
-
-    <!-- Хлібні крихти -->
 
     <div class="container breadcrumbs">
 
@@ -810,7 +1041,7 @@
 
 
     <!-- ====================================================
-         ШВИДКА ІНФОРМАЦІЯ
+         КОРОТКО
          ==================================================== -->
 
     <section class="delivery-summary">
@@ -876,7 +1107,7 @@
       <div class="container delivery-main-grid">
 
 
-        <!-- Локальна доставка -->
+        <!-- ЛОКАЛЬНА ДОСТАВКА -->
 
         <article class="delivery-card">
 
@@ -936,7 +1167,7 @@
         </article>
 
 
-        <!-- По Україні -->
+        <!-- ПО УКРАЇНІ -->
 
         <article class="delivery-card">
 
@@ -1000,7 +1231,7 @@
         </article>
 
 
-        <!-- Виготовлення -->
+        <!-- ТЕРМІН -->
 
         <article class="delivery-card">
 
@@ -1048,29 +1279,73 @@
         </article>
 
 
-        <!-- Оплата -->
+        <!-- ОПЛАТА -->
 
-        <article class="delivery-card">
+        <article class="delivery-card payment-card">
 
           <p class="delivery-card-kicker">
             Оплата
           </p>
 
           <h2>
-            Після підтвердження
+            Оплата на рахунок
           </h2>
 
+          <p class="payment-intro">
+            Сплатити замовлення можна
+            за реквізитами нижче.
+          </p>
 
-          <div class="payment-note">
+
+          <div class="payment-account-box">
+
+            <span class="payment-account-label">
+              IBAN
+            </span>
+
+            <strong
+              class="payment-iban"
+              id="paymentIban"
+            >
+              UA033052990000026001000725967
+            </strong>
+
+            <button
+              class="copy-iban-button"
+              id="copyIbanButton"
+              type="button"
+            >
+              Скопіювати IBAN
+            </button>
+
+          </div>
+
+
+          <div class="payment-message-box">
 
             <strong>
-              Спочатку підтвердимо замовлення
+              Після оформлення замовлення
             </strong>
 
             <p>
-              Після оформлення ми зв’яжемося з вами,
-              уточнимо деталі замовлення
-              та надішлемо реквізити для оплати.
+              Ми зв’яжемося з вами,
+              підтвердимо деталі
+              та надішлемо реквізити
+              для оплати у повідомленні.
+            </p>
+
+          </div>
+
+
+          <div class="payment-important">
+
+            <p>
+              Якщо бажаєте оплатити самостійно
+              за реквізитами, вказаними на сайті,
+              перед оплатою перевірте дані отримувача
+              у вашому банківському застосунку
+              та <strong>обов’язково вкажіть номер замовлення
+              у призначенні платежу</strong>.
             </p>
 
           </div>
@@ -1078,7 +1353,7 @@
         </article>
 
 
-        <!-- Подарунок -->
+        <!-- ПОДАРУНОК -->
 
         <article class="delivery-card full-width">
 
@@ -1090,19 +1365,25 @@
             Достатньо однієї галочки
           </h2>
 
-          <p>
-            Під час оформлення позначте
-            <strong>«Це подарунок»</strong>.
-            Після замовлення ми зв’яжемося з вами
-            та уточнимо всі деталі.
-          </p>
 
-          <p>
-            Можемо додати безкоштовну листівку,
-            не вкладати ціну, відправити замовлення
-            безпосередньо отримувачу
-            та допомогти організувати сюрприз.
-          </p>
+          <div class="gift-note">
+
+            <p>
+              Під час оформлення позначте
+              <strong>«Це подарунок»</strong>.
+              Після замовлення ми зв’яжемося з вами
+              та уточнимо всі деталі.
+            </p>
+
+            <p>
+              Можемо додати безкоштовну листівку,
+              не вкладати ціну,
+              відправити замовлення
+              безпосередньо отримувачу
+              та допомогти організувати сюрприз.
+            </p>
+
+          </div>
 
         </article>
 
@@ -1129,8 +1410,8 @@
 
             <p>
               У каталозі вказані актуальні товари й ціни.
-              Якщо виникне питання щодо доставки —
-              зв’яжіться з нами.
+              Якщо виникне питання щодо доставки
+              або оплати — зв’яжіться з нами.
             </p>
 
           </div>
@@ -1262,10 +1543,6 @@
   </aside>
 
 
-  <!-- ======================================================
-       ПОВІДОМЛЕННЯ
-       ====================================================== -->
-
   <div
     class="toast"
     id="toast"
@@ -1357,28 +1634,28 @@
         </a>
 
         <a
+          href="viber://chat?number=%2B380638330860"
+          translate="no"
+        >
+          Viber
+        </a>
+
+        <a
           href="https://t.me/tockahruskotu"
           target="_blank"
           rel="noopener"
+          translate="no"
         >
           Telegram
         </a>
 
         <a
-          href="https://instagram.com/tockahruskotu"
+          href="https://wa.me/380638330860"
           target="_blank"
           rel="noopener"
+          translate="no"
         >
-          Instagram
-        </a>
-
-        <a
-          id="footerGoogleProfile"
-          href="https://share.google/Fc4vC6bW6pVCzwFYW"
-          target="_blank"
-          rel="noopener"
-        >
-          Профіль у Google
+          WhatsApp
         </a>
 
       </div>
@@ -1403,12 +1680,10 @@
     </div>
 
 
-    <!-- СОЦМЕРЕЖІ -->
-
     <div class="container footer-social-section">
 
       <h2>
-        Ми в соцмережах
+        Ми онлайн
       </h2>
 
 
@@ -1418,6 +1693,7 @@
           href="https://instagram.com/tockahruskotu"
           target="_blank"
           rel="noopener"
+          translate="no"
         >
           Instagram
         </a>
@@ -1426,6 +1702,7 @@
           href="https://www.facebook.com/tockahruskotu/"
           target="_blank"
           rel="noopener"
+          translate="no"
         >
           Facebook
         </a>
@@ -1434,6 +1711,7 @@
           href="https://www.tiktok.com/@tockahruskotu"
           target="_blank"
           rel="noopener"
+          translate="no"
         >
           TikTok
         </a>
@@ -1442,16 +1720,19 @@
           href="https://www.youtube.com/@ТочкаХрускоту"
           target="_blank"
           rel="noopener"
+          translate="no"
         >
           YouTube
         </a>
 
         <a
-          href="https://t.me/tockahruskotu"
+          id="footerGoogleProfile"
+          href="https://share.google/Fc4vC6bW6pVCzwFYW"
           target="_blank"
           rel="noopener"
+          translate="no"
         >
-          Telegram
+          Google
         </a>
 
       </div>
@@ -1459,15 +1740,16 @@
     </div>
 
 
-    <!-- ПУБЛІКАЦІЯ ВІДЕО -->
-
     <div class="container footer-publishing">
 
       <span>
         Публікація відео:
       </span>
 
-      <a href="tiktok-share.html">
+      <a
+        href="tiktok-share.html"
+        translate="no"
+      >
         TikTok
       </a>
 
@@ -1475,7 +1757,10 @@
         |
       </span>
 
-      <a href="youtube-share.html">
+      <a
+        href="youtube-share.html"
+        translate="no"
+      >
         YouTube
       </a>
 
@@ -1508,14 +1793,160 @@
 
 
   <!-- ======================================================
-       Використовуємо спільну логіку магазину:
-       кошик, дані товарів, шапка, мобільне меню
+       СПІЛЬНА ЛОГІКА САЙТУ
        ====================================================== -->
 
   <script
-    src="site-v2.js?v=20260914-6"
+    src="site-v2.js?v=20260914-12"
     defer
   ></script>
+
+
+  <!-- ======================================================
+       КОПІЮВАННЯ IBAN
+       ====================================================== -->
+
+  <script>
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function () {
+
+        const iban =
+          "UA033052990000026001000725967";
+
+        const button =
+          document.getElementById(
+            "copyIbanButton"
+          );
+
+
+        if (!button) {
+          return;
+        }
+
+
+        button.addEventListener(
+          "click",
+          async function () {
+
+            try {
+
+              if (
+                navigator.clipboard &&
+                window.isSecureContext
+              ) {
+
+                await navigator.clipboard.writeText(
+                  iban
+                );
+
+              } else {
+
+                const textarea =
+                  document.createElement(
+                    "textarea"
+                  );
+
+                textarea.value =
+                  iban;
+
+                textarea.setAttribute(
+                  "readonly",
+                  ""
+                );
+
+                textarea.style.position =
+                  "fixed";
+
+                textarea.style.opacity =
+                  "0";
+
+                document.body.appendChild(
+                  textarea
+                );
+
+                textarea.select();
+
+                document.execCommand(
+                  "copy"
+                );
+
+                textarea.remove();
+
+              }
+
+
+              button.textContent =
+                "IBAN скопійовано";
+
+              button.classList.add(
+                "is-copied"
+              );
+
+
+              if (
+                typeof window.gtag ===
+                "function"
+              ) {
+
+                window.gtag(
+                  "event",
+                  "copy_payment_iban",
+                  {
+                    payment_method:
+                      "bank_account"
+                  }
+                );
+
+              }
+
+
+              setTimeout(
+                function () {
+
+                  button.textContent =
+                    "Скопіювати IBAN";
+
+                  button.classList.remove(
+                    "is-copied"
+                  );
+
+                },
+                2200
+              );
+
+
+            } catch (error) {
+
+              console.error(
+                "Не вдалося скопіювати IBAN:",
+                error
+              );
+
+              button.textContent =
+                "Скопіюйте IBAN вручну";
+
+
+              setTimeout(
+                function () {
+
+                  button.textContent =
+                    "Скопіювати IBAN";
+
+                },
+                2500
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+  </script>
 
 </body>
 </html>
