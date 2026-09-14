@@ -1,14 +1,21 @@
 /* ==========================================================
    ТОЧКА ХРУСКОТУ — PRODUCT V2
    Універсальна сторінка товару
+   Кілька категорій, галерея, варіанти, соуси,
+   кошик, відгуки, питання, GA4
    ========================================================== */
 
 const STORE_API_URL =
   "https://script.google.com/macros/s/AKfycbzCgvAMAmqrsK-KsGcPMfx60kvQbZVJII91WVZKIn-KF7bFIA3HKdKe0JmaBu4RZtX31Q/exec";
 
-const CART_STORAGE_KEY = "tochka_hruskotu_cart_v3";
-const STORE_CACHE_KEY = "tochka_hruskotu_store_cache_v1";
-const STORE_REQUEST_TIMEOUT_MS = 12000;
+const CART_STORAGE_KEY =
+  "tochka_hruskotu_cart_v3";
+
+const STORE_CACHE_KEY =
+  "tochka_hruskotu_store_cache_v1";
+
+const STORE_REQUEST_TIMEOUT_MS =
+  12000;
 
 let store = null;
 let product = null;
@@ -26,99 +33,215 @@ let toastTimer = null;
    1. ЕЛЕМЕНТИ
    ========================================================== */
 
-const $ = selector => document.querySelector(selector);
+const $ = selector =>
+  document.querySelector(selector);
 
 const elements = {
-  pageLoader: $("#pageLoader"),
+  pageLoader:
+    $("#pageLoader"),
 
-  headerLogo: $("#headerLogo"),
-  footerLogo: $("#footerLogo"),
-  headerStoreName: $("#headerStoreName"),
-  footerStoreName: $("#footerStoreName"),
-  footerGoogleProfile: $("#footerGoogleProfile"),
+  headerLogo:
+    $("#headerLogo"),
 
-  breadcrumbProduct: $("#breadcrumbProduct"),
+  footerLogo:
+    $("#footerLogo"),
 
-  productLoading: $("#productLoading"),
-  productNotFound: $("#productNotFound"),
-  productPage: $("#productPage"),
+  headerStoreName:
+    $("#headerStoreName"),
 
-  productBadges: $("#productBadges"),
-  productMainImage: $("#productMainImage"),
-  mainImageButton: $("#mainImageButton"),
-  productThumbnails: $("#productThumbnails"),
+  footerStoreName:
+    $("#footerStoreName"),
 
-  productCategoryLink: $("#productCategoryLink"),
-  productName: $("#productName"),
-  productRatingLink: $("#productRatingLink"),
-  productRatingText: $("#productRatingText"),
-  productShortDescription: $("#productShortDescription"),
+  footerGoogleProfile:
+    $("#footerGoogleProfile"),
 
-  productPrice: $("#productPrice"),
-  productOldPrice: $("#productOldPrice"),
-  productPriceNote: $("#productPriceNote"),
+  breadcrumbProduct:
+    $("#breadcrumbProduct"),
 
-  variantGroup: $("#variantGroup"),
-  variantTitle: $("#variantTitle"),
-  variantButtons: $("#variantButtons"),
+  productLoading:
+    $("#productLoading"),
 
-  sauceGroup: $("#sauceGroup"),
-  sauceHelp: $("#sauceHelp"),
-  sauceButtons: $("#sauceButtons"),
+  productNotFound:
+    $("#productNotFound"),
 
-  decreaseQuantity: $("#decreaseQuantity"),
-  increaseQuantity: $("#increaseQuantity"),
-  productQuantity: $("#productQuantity"),
-  addProductToCart: $("#addProductToCart"),
+  productPage:
+    $("#productPage"),
 
-  productDetailsSection: $("#productDetailsSection"),
-  productDescription: $("#productDescription"),
+  productBadges:
+    $("#productBadges"),
 
-  ingredientsDetails: $("#ingredientsDetails"),
-  productIngredients: $("#productIngredients"),
-  productAllergens: $("#productAllergens"),
+  productMainImage:
+    $("#productMainImage"),
 
-  storageDetails: $("#storageDetails"),
-  productStorage: $("#productStorage"),
+  mainImageButton:
+    $("#mainImageButton"),
 
-  productCommunitySection: $("#productCommunitySection"),
-  productReviewList: $("#productReviewList"),
-  productReviewEmpty: $("#productReviewEmpty"),
-  productQuestionList: $("#productQuestionList"),
-  productQuestionEmpty: $("#productQuestionEmpty"),
-  leaveReviewButton: $("#leaveReviewButton"),
-  askQuestionButton: $("#askQuestionButton"),
+  productThumbnails:
+    $("#productThumbnails"),
 
-  relatedProductsSection: $("#relatedProductsSection"),
-  relatedProducts: $("#relatedProducts"),
+  productCategoryLink:
+    $("#productCategoryLink"),
 
-  mobileProductBar: $("#mobileProductBar"),
-  mobileProductPrice: $("#mobileProductPrice"),
-  mobileAddProduct: $("#mobileAddProduct"),
+  productName:
+    $("#productName"),
 
-  mobileMenuButton: $("#mobileMenuButton"),
-  mobileMenu: $("#mobileMenu"),
-  mobileMenuOverlay: $("#mobileMenuOverlay"),
-  closeMobileMenu: $("#closeMobileMenu"),
+  productRatingLink:
+    $("#productRatingLink"),
 
-  cartButton: $("#cartButton"),
-  cartCount: $("#cartCount"),
-  cartOverlay: $("#cartOverlay"),
-  cartPanel: $("#cartPanel"),
-  closeCartButton: $("#closeCartButton"),
-  cartItems: $("#cartItems"),
-  cartProgress: $("#cartProgress"),
-  cartSuggestions: $("#cartSuggestions"),
-  cartTotal: $("#cartTotal"),
-  checkoutButton: $("#checkoutButton"),
-  continueShoppingButton: $("#continueShoppingButton"),
+  productRatingText:
+    $("#productRatingText"),
 
-  toast: $("#toast")
+  productShortDescription:
+    $("#productShortDescription"),
+
+  productPrice:
+    $("#productPrice"),
+
+  productOldPrice:
+    $("#productOldPrice"),
+
+  productPriceNote:
+    $("#productPriceNote"),
+
+  variantGroup:
+    $("#variantGroup"),
+
+  variantTitle:
+    $("#variantTitle"),
+
+  variantButtons:
+    $("#variantButtons"),
+
+  sauceGroup:
+    $("#sauceGroup"),
+
+  sauceHelp:
+    $("#sauceHelp"),
+
+  sauceButtons:
+    $("#sauceButtons"),
+
+  decreaseQuantity:
+    $("#decreaseQuantity"),
+
+  increaseQuantity:
+    $("#increaseQuantity"),
+
+  productQuantity:
+    $("#productQuantity"),
+
+  addProductToCart:
+    $("#addProductToCart"),
+
+  productDetailsSection:
+    $("#productDetailsSection"),
+
+  productDescription:
+    $("#productDescription"),
+
+  ingredientsDetails:
+    $("#ingredientsDetails"),
+
+  productIngredients:
+    $("#productIngredients"),
+
+  productAllergens:
+    $("#productAllergens"),
+
+  storageDetails:
+    $("#storageDetails"),
+
+  productStorage:
+    $("#productStorage"),
+
+  productCommunitySection:
+    $("#productCommunitySection"),
+
+  productReviewList:
+    $("#productReviewList"),
+
+  productReviewEmpty:
+    $("#productReviewEmpty"),
+
+  productQuestionList:
+    $("#productQuestionList"),
+
+  productQuestionEmpty:
+    $("#productQuestionEmpty"),
+
+  leaveReviewButton:
+    $("#leaveReviewButton"),
+
+  askQuestionButton:
+    $("#askQuestionButton"),
+
+  relatedProductsSection:
+    $("#relatedProductsSection"),
+
+  relatedProducts:
+    $("#relatedProducts"),
+
+  mobileProductBar:
+    $("#mobileProductBar"),
+
+  mobileProductPrice:
+    $("#mobileProductPrice"),
+
+  mobileAddProduct:
+    $("#mobileAddProduct"),
+
+  mobileMenuButton:
+    $("#mobileMenuButton"),
+
+  mobileMenu:
+    $("#mobileMenu"),
+
+  mobileMenuOverlay:
+    $("#mobileMenuOverlay"),
+
+  closeMobileMenu:
+    $("#closeMobileMenu"),
+
+  cartButton:
+    $("#cartButton"),
+
+  cartCount:
+    $("#cartCount"),
+
+  cartOverlay:
+    $("#cartOverlay"),
+
+  cartPanel:
+    $("#cartPanel"),
+
+  closeCartButton:
+    $("#closeCartButton"),
+
+  cartItems:
+    $("#cartItems"),
+
+  cartProgress:
+    $("#cartProgress"),
+
+  cartSuggestions:
+    $("#cartSuggestions"),
+
+  cartTotal:
+    $("#cartTotal"),
+
+  checkoutButton:
+    $("#checkoutButton"),
+
+  continueShoppingButton:
+    $("#continueShoppingButton"),
+
+  toast:
+    $("#toast")
 };
 
 
 /* ==========================================================
-   2. ДОПОМІЖНІ ФУНКЦІЇ
+   2. БАЗОВІ ДОПОМІЖНІ ФУНКЦІЇ
    ========================================================== */
 
 function escapeHtml(value) {
@@ -134,76 +257,239 @@ function normalizeText(value) {
   return String(value ?? "")
     .toLocaleLowerCase("uk-UA")
     .replace(/[’']/g, "'")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
-function safeNumber(value, fallback = 0) {
-  const number = Number(value);
-  return Number.isFinite(number) ? number : fallback;
+function safeNumber(
+  value,
+  fallback = 0
+) {
+  const number =
+    Number(value);
+
+  return Number.isFinite(number)
+    ? number
+    : fallback;
 }
 
 function formatMoney(value) {
-  const currency = store?.settings?.currency || "грн";
+  const currency =
+    store?.settings?.currency ||
+    "грн";
 
   return (
-    new Intl.NumberFormat("uk-UA", {
-      maximumFractionDigits: 2
-    }).format(safeNumber(value)) +
+    new Intl.NumberFormat(
+      "uk-UA",
+      {
+        maximumFractionDigits: 2
+      }
+    ).format(
+      safeNumber(value)
+    ) +
     " " +
     currency
   );
 }
 
 function showToast(message) {
-  if (!elements.toast) return;
+  if (!elements.toast) {
+    return;
+  }
 
-  clearTimeout(toastTimer);
+  clearTimeout(
+    toastTimer
+  );
 
-  elements.toast.textContent = message;
-  elements.toast.classList.add("is-visible");
+  elements.toast.textContent =
+    message;
 
-  toastTimer = setTimeout(() => {
-    elements.toast.classList.remove("is-visible");
-  }, 2500);
+  elements.toast
+    .classList
+    .add(
+      "is-visible"
+    );
+
+  toastTimer =
+    setTimeout(() => {
+      elements.toast
+        .classList
+        .remove(
+          "is-visible"
+        );
+    }, 2500);
 }
 
 function hideLoader() {
-  elements.pageLoader?.classList.add("is-hidden");
+  elements.pageLoader
+    ?.classList
+    .add(
+      "is-hidden"
+    );
 }
 
 function getProductCode() {
-  const params = new URLSearchParams(window.location.search);
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
 
-  return String(params.get("code") || "")
+  return String(
+    params.get("code") || ""
+  )
     .trim()
     .toUpperCase();
 }
 
+
+/* ==========================================================
+   3. ПОШУК ТОВАРІВ І КАТЕГОРІЙ
+   ========================================================== */
+
 function findProduct(code) {
   return (
-    (store?.products || []).find(
-      item =>
+    (store?.products || [])
+      .find(item =>
         String(item.code || "")
           .trim()
           .toUpperCase() ===
         String(code || "")
           .trim()
           .toUpperCase()
-    ) || null
+      ) ||
+    null
   );
 }
 
 function findCategory(code) {
   return (
-    (store?.categories || []).find(
-      category => category.code === code
-    ) || null
+    (store?.categories || [])
+      .find(category =>
+        String(
+          category.code || ""
+        )
+          .trim()
+          .toUpperCase() ===
+        String(code || "")
+          .trim()
+          .toUpperCase()
+      ) ||
+    null
   );
 }
 
+
+/* ==========================================================
+   4. КІЛЬКА КАТЕГОРІЙ
+   Приклад:
+   MINI-WAFFLES;GIFT-SETS
+   ========================================================== */
+
+function productCategoryCodes(item) {
+  const raw =
+    String(
+      item?.categoryCode || ""
+    ).trim();
+
+  if (!raw) {
+    return [];
+  }
+
+  return [
+    ...new Set(
+      raw
+        .split(/[;,|]+/)
+        .map(code =>
+          code
+            .trim()
+            .toUpperCase()
+        )
+        .filter(Boolean)
+    )
+  ];
+}
+
+function productHasCategory(
+  item,
+  categoryCode
+) {
+  const wanted =
+    String(
+      categoryCode || ""
+    )
+      .trim()
+      .toUpperCase();
+
+  if (!wanted) {
+    return false;
+  }
+
+  return productCategoryCodes(
+    item
+  ).includes(wanted);
+}
+
+function primaryCategoryCode(item) {
+  return (
+    productCategoryCodes(
+      item
+    )[0] ||
+    ""
+  );
+}
+
+function productCategoryNames(item) {
+  return productCategoryCodes(item)
+    .map(code => {
+      const category =
+        findCategory(code);
+
+      return (
+        category?.name ||
+        code
+      );
+    })
+    .filter(Boolean);
+}
+
+function primaryCategoryName(item) {
+  return (
+    productCategoryNames(
+      item
+    )[0] ||
+    ""
+  );
+}
+
+function productsShareCategory(
+  firstProduct,
+  secondProduct
+) {
+  const first =
+    productCategoryCodes(
+      firstProduct
+    );
+
+  const second =
+    productCategoryCodes(
+      secondProduct
+    );
+
+  return first.some(code =>
+    second.includes(code)
+  );
+}
+
+
+/* ==========================================================
+   5. ФОТО ТА ПОСИЛАННЯ
+   ========================================================== */
+
 function productPhotos(item) {
   const photos =
-    Array.isArray(item?.photos)
+    Array.isArray(
+      item?.photos
+    )
       ? item.photos.filter(Boolean)
       : [];
 
@@ -211,23 +497,36 @@ function productPhotos(item) {
     ? photos
     : [
         store?.settings?.logo ||
-          "images/brand/logo.webp"
+        "images/brand/logo.webp"
       ];
 }
 
 function productUrl(item) {
-  return `product.html?code=${encodeURIComponent(item.code)}`;
+  return (
+    `product.html?code=` +
+    encodeURIComponent(
+      item.code
+    )
+  );
 }
 
+
+/* ==========================================================
+   6. ВАРІАНТИ І ЦІНА
+   ========================================================== */
+
 function selectedVariant() {
-  if (!product?.variants?.length) {
+  if (
+    !product?.variants?.length
+  ) {
     return null;
   }
 
   return (
     product.variants.find(
       variant =>
-        variant.value === selectedVariantValue
+        variant.value ===
+        selectedVariantValue
     ) ||
     product.variants[0] ||
     null
@@ -235,7 +534,8 @@ function selectedVariant() {
 }
 
 function currentUnitPrice() {
-  const variant = selectedVariant();
+  const variant =
+    selectedVariant();
 
   if (variant) {
     return safeNumber(
@@ -254,7 +554,8 @@ function currentUnitPrice() {
 }
 
 function currentRegularPrice() {
-  const variant = selectedVariant();
+  const variant =
+    selectedVariant();
 
   if (variant) {
     return safeNumber(
@@ -270,20 +571,21 @@ function currentRegularPrice() {
 }
 
 function currentSaleActive() {
-  const variant = selectedVariant();
+  const variant =
+    selectedVariant();
 
   if (variant) {
     return Boolean(
       variant.saleActive &&
-        currentRegularPrice() >
-          currentUnitPrice()
+      currentRegularPrice() >
+        currentUnitPrice()
     );
   }
 
   return Boolean(
     product?.saleActive &&
-      currentRegularPrice() >
-        currentUnitPrice()
+    currentRegularPrice() >
+      currentUnitPrice()
   );
 }
 
@@ -296,26 +598,48 @@ function currentSaleUntil() {
 }
 
 function formatDateUk(value) {
-  if (!value) return "";
+  if (!value) {
+    return "";
+  }
 
-  const date = new Date(`${value}T12:00:00`);
+  const date =
+    new Date(
+      `${value}T12:00:00`
+    );
 
-  if (Number.isNaN(date.getTime())) {
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
     return value;
   }
 
-  return new Intl.DateTimeFormat(
-    "uk-UA",
-    {
-      day: "numeric",
-      month: "long",
-      year: "numeric"
-    }
-  ).format(date);
+  return (
+    new Intl.DateTimeFormat(
+      "uk-UA",
+      {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }
+    ).format(date)
+  );
 }
 
-function trackGa4Event(eventName, params = {}) {
-  if (typeof window.gtag !== "function") {
+
+/* ==========================================================
+   7. GA4
+   ========================================================== */
+
+function trackGa4Event(
+  eventName,
+  params = {}
+) {
+  if (
+    typeof window.gtag !==
+    "function"
+  ) {
     return;
   }
 
@@ -337,26 +661,60 @@ function ga4ProductItem(
   item,
   itemQuantity = 1
 ) {
-  const category =
-    findCategory(item.categoryCode);
+  const categories =
+    productCategoryNames(
+      item
+    );
 
-  return {
-    item_id: item.code,
-    item_name: item.name,
-    item_category:
-      category?.name ||
-      item.categoryCode ||
-      "",
-    item_variant:
-      selectedVariantValue || "",
-    price: currentUnitPrice(),
-    quantity: itemQuantity
+  const result = {
+    item_id:
+      item.code,
+
+    item_name:
+      item.name,
+
+    price:
+      item === product
+        ? currentUnitPrice()
+        : safeNumber(
+            item.effectivePrice ??
+              item.regularPrice,
+            0
+          ),
+
+    quantity:
+      itemQuantity
   };
+
+  if (categories[0]) {
+    result.item_category =
+      categories[0];
+  }
+
+  if (categories[1]) {
+    result.item_category2 =
+      categories[1];
+  }
+
+  if (categories[2]) {
+    result.item_category3 =
+      categories[2];
+  }
+
+  if (
+    item === product &&
+    selectedVariantValue
+  ) {
+    result.item_variant =
+      selectedVariantValue;
+  }
+
+  return result;
 }
 
 
 /* ==========================================================
-   3. КЕШ І ЗАВАНТАЖЕННЯ
+   8. КЕШ
    ========================================================== */
 
 function readCachedStore() {
@@ -375,7 +733,8 @@ function readCachedStore() {
 
     if (
       !cached ||
-      typeof cached !== "object" ||
+      typeof cached !==
+        "object" ||
       !cached.data
     ) {
       return null;
@@ -397,7 +756,8 @@ function saveCachedStore(data) {
     localStorage.setItem(
       STORE_CACHE_KEY,
       JSON.stringify({
-        savedAt: Date.now(),
+        savedAt:
+          Date.now(),
         data
       })
     );
@@ -409,13 +769,19 @@ function saveCachedStore(data) {
   }
 }
 
+
+/* ==========================================================
+   9. ЗАВАНТАЖЕННЯ МАГАЗИНУ
+   ========================================================== */
+
 async function fetchStore() {
   const controller =
     new AbortController();
 
   const timer =
     setTimeout(
-      () => controller.abort(),
+      () =>
+        controller.abort(),
       STORE_REQUEST_TIMEOUT_MS
     );
 
@@ -426,7 +792,8 @@ async function fetchStore() {
         {
           method: "GET",
           redirect: "follow",
-          signal: controller.signal
+          signal:
+            controller.signal
         }
       );
 
@@ -442,13 +809,15 @@ async function fetchStore() {
     if (!result?.success) {
       throw new Error(
         result?.error ||
-          "Не вдалося завантажити товар."
+        "Не вдалося завантажити товар."
       );
     }
 
     return result;
   } finally {
-    clearTimeout(timer);
+    clearTimeout(
+      timer
+    );
   }
 }
 
@@ -474,14 +843,18 @@ async function loadStore() {
     const fresh =
       await fetchStore();
 
-    saveCachedStore(fresh);
+    saveCachedStore(
+      fresh
+    );
 
     renderStore(
       fresh,
       true
     );
   } catch (error) {
-    console.error(error);
+    console.error(
+      error
+    );
 
     if (!hasCache) {
       showProductNotFound(
@@ -495,7 +868,7 @@ async function loadStore() {
 
 
 /* ==========================================================
-   4. НАЛАШТУВАННЯ САЙТУ
+   10. НАЛАШТУВАННЯ САЙТУ
    ========================================================== */
 
 function applySettings() {
@@ -506,23 +879,33 @@ function applySettings() {
     settings.storeName ||
     "Точка Хрускоту";
 
-  if (elements.headerStoreName) {
-    elements.headerStoreName.textContent =
+  if (
+    elements.headerStoreName
+  ) {
+    elements.headerStoreName
+      .textContent =
       storeName;
   }
 
-  if (elements.footerStoreName) {
-    elements.footerStoreName.textContent =
+  if (
+    elements.footerStoreName
+  ) {
+    elements.footerStoreName
+      .textContent =
       storeName;
   }
 
   if (settings.logo) {
-    if (elements.headerLogo) {
+    if (
+      elements.headerLogo
+    ) {
       elements.headerLogo.src =
         settings.logo;
     }
 
-    if (elements.footerLogo) {
+    if (
+      elements.footerLogo
+    ) {
       elements.footerLogo.src =
         settings.logo;
     }
@@ -532,14 +915,16 @@ function applySettings() {
     settings.googleProfile &&
     elements.footerGoogleProfile
   ) {
-    elements.footerGoogleProfile.href =
+    elements
+      .footerGoogleProfile
+      .href =
       settings.googleProfile;
   }
 }
 
 
 /* ==========================================================
-   5. ОСНОВНИЙ РЕНДЕР ТОВАРУ
+   11. ГОЛОВНИЙ РЕНДЕР
    ========================================================== */
 
 function renderStore(
@@ -563,7 +948,9 @@ function renderStore(
   }
 
   const found =
-    findProduct(code);
+    findProduct(
+      code
+    );
 
   if (!found) {
     showProductNotFound(
@@ -574,14 +961,17 @@ function renderStore(
     return;
   }
 
-  product = found;
+  product =
+    found;
 
   if (
     product.variants?.length &&
     !selectedVariantValue
   ) {
     selectedVariantValue =
-      product.variants[0].value || "";
+      product.variants[0]
+        ?.value ||
+      "";
   }
 
   const sauceCount =
@@ -599,7 +989,10 @@ function renderStore(
   ) {
     selectedSauces =
       Array.from(
-        { length: sauceCount },
+        {
+          length:
+            sauceCount
+        },
         () => ""
       );
   }
@@ -608,21 +1001,21 @@ function renderStore(
   renderCart();
 
   if (fresh) {
-    /*
-      Свіжі дані можуть містити нові
-      відгуки, ціни або фото.
-    */
     renderCommunity();
   }
 }
 
 function showProductNotFound(message) {
-  if (elements.productLoading) {
+  if (
+    elements.productLoading
+  ) {
     elements.productLoading.hidden =
       true;
   }
 
-  if (elements.productPage) {
+  if (
+    elements.productPage
+  ) {
     elements.productPage.hidden =
       true;
   }
@@ -648,16 +1041,20 @@ function showProductNotFound(message) {
       true;
   }
 
-  if (elements.productNotFound) {
+  if (
+    elements.productNotFound
+  ) {
     elements.productNotFound.hidden =
       false;
 
     const paragraph =
-      elements.productNotFound.querySelector(
-        "p"
-      );
+      elements.productNotFound
+        .querySelector("p");
 
-    if (paragraph && message) {
+    if (
+      paragraph &&
+      message
+    ) {
       paragraph.textContent =
         message;
     }
@@ -665,7 +1062,9 @@ function showProductNotFound(message) {
 }
 
 function renderProduct() {
-  if (!product) return;
+  if (!product) {
+    return;
+  }
 
   elements.productLoading.hidden =
     true;
@@ -682,9 +1081,11 @@ function renderProduct() {
   elements.productCommunitySection.hidden =
     false;
 
-  document.body.classList.add(
-    "has-mobile-product-bar"
-  );
+  document.body
+    .classList
+    .add(
+      "has-mobile-product-bar"
+    );
 
   elements.mobileProductBar.hidden =
     false;
@@ -705,8 +1106,12 @@ function renderProduct() {
   trackGa4Event(
     "view_item",
     {
-      currency: "UAH",
-      value: currentUnitPrice(),
+      currency:
+        "UAH",
+
+      value:
+        currentUnitPrice(),
+
       items: [
         ga4ProductItem(
           product,
@@ -719,7 +1124,7 @@ function renderProduct() {
 
 
 /* ==========================================================
-   6. SEO ТА ОСНОВНІ ДАНІ
+   12. SEO
    ========================================================== */
 
 function renderSeo() {
@@ -735,7 +1140,7 @@ function renderSeo() {
     product.fullDescription ||
     `${product.name} від Точки Хрускоту.`;
 
-  let meta =
+  const meta =
     document.querySelector(
       'meta[name="description"]'
     );
@@ -748,10 +1153,15 @@ function renderSeo() {
   }
 }
 
+
+/* ==========================================================
+   13. НАЗВА ТА КАТЕГОРІЇ
+   ========================================================== */
+
 function renderBasicInfo() {
-  const category =
-    findCategory(
-      product.categoryCode
+  const categoryNames =
+    productCategoryNames(
+      product
     );
 
   elements.breadcrumbProduct.textContent =
@@ -764,9 +1174,17 @@ function renderBasicInfo() {
     product.shortDescription ||
     "";
 
-  elements.productCategoryLink.textContent =
-    category?.name ||
-    "Каталог";
+  if (
+    categoryNames.length
+  ) {
+    elements.productCategoryLink.textContent =
+      categoryNames.join(
+        " • "
+      );
+  } else {
+    elements.productCategoryLink.textContent =
+      "Каталог";
+  }
 
   elements.productCategoryLink.href =
     "catalog.html";
@@ -776,22 +1194,27 @@ function renderBasicInfo() {
 
 
 /* ==========================================================
-   7. ФОТО
+   14. ГАЛЕРЕЯ
    ========================================================== */
 
 function renderGallery() {
   const photos =
-    productPhotos(product);
+    productPhotos(
+      product
+    );
 
   if (
     selectedPhotoIndex >=
     photos.length
   ) {
-    selectedPhotoIndex = 0;
+    selectedPhotoIndex =
+      0;
   }
 
   const currentPhoto =
-    photos[selectedPhotoIndex];
+    photos[
+      selectedPhotoIndex
+    ];
 
   elements.productMainImage.src =
     currentPhoto;
@@ -801,7 +1224,9 @@ function renderGallery() {
       selectedPhotoIndex + 1
     }`;
 
-  if (photos.length <= 1) {
+  if (
+    photos.length <= 1
+  ) {
     elements.productThumbnails.hidden =
       true;
 
@@ -817,10 +1242,14 @@ function renderGallery() {
   elements.productThumbnails.innerHTML =
     photos
       .map(
-        (photo, index) => `
+        (
+          photo,
+          index
+        ) => `
           <button
             class="product-thumbnail${
-              index === selectedPhotoIndex
+              index ===
+              selectedPhotoIndex
                 ? " is-active"
                 : ""
             }"
@@ -829,7 +1258,9 @@ function renderGallery() {
             aria-label="Фото ${index + 1}"
           >
             <img
-              src="${escapeHtml(photo)}"
+              src="${escapeHtml(
+                photo
+              )}"
               alt=""
               loading="lazy"
             >
@@ -841,7 +1272,9 @@ function renderGallery() {
 
 function changePhoto(index) {
   const photos =
-    productPhotos(product);
+    productPhotos(
+      product
+    );
 
   if (!photos.length) {
     return;
@@ -869,34 +1302,42 @@ function changePhoto(index) {
 
 
 /* ==========================================================
-   8. ПОЗНАЧКИ
+   15. ПОЗНАЧКИ
    ========================================================== */
 
 function renderBadges() {
   const badges = [];
 
-  if (product.saleActive) {
-    badges.push(
-      `<span class="product-page-badge sale">
+  if (
+    product.saleActive
+  ) {
+    badges.push(`
+      <span class="product-page-badge sale">
         Акція
-      </span>`
-    );
+      </span>
+    `);
   }
 
-  if (product.isNew) {
-    badges.push(
-      `<span class="product-page-badge new">
+  if (
+    product.isNew
+  ) {
+    badges.push(`
+      <span class="product-page-badge new">
         Новинка
-      </span>`
-    );
+      </span>
+    `);
   }
 
-  if (product.badge) {
-    badges.push(
-      `<span class="product-page-badge">
-        ${escapeHtml(product.badge)}
-      </span>`
-    );
+  if (
+    product.badge
+  ) {
+    badges.push(`
+      <span class="product-page-badge">
+        ${escapeHtml(
+          product.badge
+        )}
+      </span>
+    `);
   }
 
   elements.productBadges.innerHTML =
@@ -907,7 +1348,7 @@ function renderBadges() {
 
 
 /* ==========================================================
-   9. ЦІНА
+   16. ЦІНА
    ========================================================== */
 
 function renderPrice() {
@@ -921,11 +1362,14 @@ function renderPrice() {
     currentSaleActive();
 
   elements.productPrice.textContent =
-    formatMoney(price);
+    formatMoney(
+      price
+    );
 
   elements.mobileProductPrice.textContent =
     formatMoney(
-      price * quantity
+      price *
+      quantity
     );
 
   if (
@@ -936,14 +1380,18 @@ function renderPrice() {
       false;
 
     elements.productOldPrice.textContent =
-      formatMoney(regular);
+      formatMoney(
+        regular
+      );
 
     const until =
       currentSaleUntil();
 
     elements.productPriceNote.textContent =
       until
-        ? `Акційна ціна до ${formatDateUk(until)}`
+        ? `Акційна ціна до ${formatDateUk(
+            until
+          )}`
         : "Акційна ціна";
   } else {
     elements.productOldPrice.hidden =
@@ -960,12 +1408,14 @@ function renderPrice() {
 
 
 /* ==========================================================
-   10. ВАРІАНТИ
+   17. ВАРІАНТИ
    ========================================================== */
 
 function renderVariants() {
   const variants =
-    Array.isArray(product.variants)
+    Array.isArray(
+      product.variants
+    )
       ? product.variants
       : [];
 
@@ -1013,7 +1463,7 @@ function renderVariants() {
             ${escapeHtml(
               formatMoney(
                 variant.effectivePrice ??
-                  variant.regularPrice
+                variant.regularPrice
               )
             )}
           </button>
@@ -1024,12 +1474,14 @@ function renderVariants() {
 
 
 /* ==========================================================
-   11. СОУСИ
+   18. СОУСИ
    ========================================================== */
 
 function renderSauces() {
   const sauces =
-    Array.isArray(product.sauces)
+    Array.isArray(
+      product.sauces
+    )
       ? product.sauces
       : [];
 
@@ -1065,20 +1517,24 @@ function renderSauces() {
 
   elements.sauceButtons.innerHTML =
     Array.from(
-      { length: count },
+      {
+        length:
+          count
+      },
       (_, slotIndex) => {
-
         const current =
           selectedSauces[
             slotIndex
-          ] || "";
+          ] ||
+          "";
 
         return `
           <div
             style="
               width:100%;
               margin-bottom:${
-                slotIndex + 1 < count
+                slotIndex + 1 <
+                count
                   ? "12px"
                   : "0"
               };
@@ -1096,7 +1552,9 @@ function renderSauces() {
                       font-weight:800;
                     "
                   >
-                    Соус ${slotIndex + 1}
+                    Соус ${
+                      slotIndex + 1
+                    }
                   </div>
                 `
                 : ""
@@ -1115,7 +1573,8 @@ function renderSauces() {
                   sauce => `
                     <button
                       class="product-option-button${
-                        current === sauce
+                        current ===
+                        sauce
                           ? " is-selected"
                           : ""
                       }"
@@ -1143,7 +1602,7 @@ function renderSauces() {
 
 
 /* ==========================================================
-   12. КІЛЬКІСТЬ І КНОПКИ
+   19. КІЛЬКІСТЬ
    ========================================================== */
 
 function renderQuantity() {
@@ -1170,21 +1629,27 @@ function saucesAreComplete() {
   return (
     selectedSauces.length ===
       required &&
-    selectedSauces.every(Boolean)
+    selectedSauces.every(
+      Boolean
+    )
   );
 }
 
 function updateAddButtons() {
-  if (!product) return;
+  if (!product) {
+    return;
+  }
 
   const available =
-    product.available !== false;
+    product.available !==
+    false;
 
   const complete =
     saucesAreComplete();
 
   const enabled =
-    available && complete;
+    available &&
+    complete;
 
   const total =
     currentUnitPrice() *
@@ -1227,15 +1692,19 @@ function updateAddButtons() {
   }
 
   elements.addProductToCart.textContent =
-    `Додати в кошик · ${formatMoney(total)}`;
+    `Додати в кошик · ${formatMoney(
+      total
+    )}`;
 
   elements.mobileAddProduct.textContent =
-    `У кошик · ${formatMoney(total)}`;
+    `У кошик · ${formatMoney(
+      total
+    )}`;
 }
 
 
 /* ==========================================================
-   13. ДЕТАЛЬНА ІНФОРМАЦІЯ
+   20. ДЕТАЛЬНА ІНФОРМАЦІЯ
    ========================================================== */
 
 function paragraphHtml(value) {
@@ -1247,24 +1716,33 @@ function paragraphHtml(value) {
     return "";
   }
 
-  return `<p>${escapeHtml(text).replace(
-    /\n/g,
-    "<br>"
-  )}</p>`;
+  return `
+    <p>
+      ${escapeHtml(text)
+        .replace(
+          /\n/g,
+          "<br>"
+        )}
+    </p>
+  `;
 }
 
 function renderDetails() {
   elements.productDescription.innerHTML =
     paragraphHtml(
       product.fullDescription ||
-        product.shortDescription
+      product.shortDescription
     );
 
   const hasIngredients =
-    Boolean(product.ingredients);
+    Boolean(
+      product.ingredients
+    );
 
   const hasAllergens =
-    Boolean(product.allergens);
+    Boolean(
+      product.allergens
+    );
 
   elements.ingredientsDetails.hidden =
     !(
@@ -1279,7 +1757,9 @@ function renderDetails() {
     elements.productIngredients.innerHTML =
       `
         <p>
-          <strong>Склад:</strong>
+          <strong>
+            Склад:
+          </strong>
           ${escapeHtml(
             product.ingredients
           )}
@@ -1297,7 +1777,9 @@ function renderDetails() {
     elements.productAllergens.innerHTML =
       `
         <p>
-          <strong>Алергени:</strong>
+          <strong>
+            Алергени:
+          </strong>
           ${escapeHtml(
             product.allergens
           )}
@@ -1308,37 +1790,52 @@ function renderDetails() {
       true;
   }
 
-  const storageParts = [];
+  const storageParts =
+    [];
 
-  if (product.weight) {
-    storageParts.push(
-      `<p>
-        <strong>Вага / комплектація:</strong>
-        ${escapeHtml(product.weight)}
-      </p>`
-    );
+  if (
+    product.weight
+  ) {
+    storageParts.push(`
+      <p>
+        <strong>
+          Вага / комплектація:
+        </strong>
+        ${escapeHtml(
+          product.weight
+        )}
+      </p>
+    `);
   }
 
-  if (product.shelfLife) {
-    storageParts.push(
-      `<p>
-        <strong>Термін придатності:</strong>
+  if (
+    product.shelfLife
+  ) {
+    storageParts.push(`
+      <p>
+        <strong>
+          Термін придатності:
+        </strong>
         ${escapeHtml(
           product.shelfLife
         )}
-      </p>`
-    );
+      </p>
+    `);
   }
 
-  if (product.storage) {
-    storageParts.push(
-      `<p>
-        <strong>Умови зберігання:</strong>
+  if (
+    product.storage
+  ) {
+    storageParts.push(`
+      <p>
+        <strong>
+          Умови зберігання:
+        </strong>
         ${escapeHtml(
           product.storage
         )}
-      </p>`
-    );
+      </p>
+    `);
   }
 
   elements.storageDetails.hidden =
@@ -1350,7 +1847,7 @@ function renderDetails() {
 
 
 /* ==========================================================
-   14. ВІДГУКИ ТА ПИТАННЯ
+   21. ВІДГУКИ І ПИТАННЯ
    ========================================================== */
 
 function isQuestionFeedback(item) {
@@ -1361,7 +1858,9 @@ function isQuestionFeedback(item) {
 
   return (
     type === "question" ||
-    type.includes("питан")
+    type.includes(
+      "питан"
+    )
   );
 }
 
@@ -1371,12 +1870,14 @@ function productFeedback() {
   ).filter(item => {
     return (
       String(
-        item?.productCode || ""
+        item?.productCode ||
+        ""
       )
         .trim()
         .toUpperCase() ===
       String(
-        product?.code || ""
+        product?.code ||
+        ""
       )
         .trim()
         .toUpperCase()
@@ -1410,13 +1911,14 @@ function ratingAverage() {
           0
         )
       )
-      .filter(
-        value =>
-          value >= 1 &&
-          value <= 5
+      .filter(value =>
+        value >= 1 &&
+        value <= 5
       );
 
-  if (!ratings.length) {
+  if (
+    !ratings.length
+  ) {
     return 0;
   }
 
@@ -1425,8 +1927,41 @@ function ratingAverage() {
       (sum, value) =>
         sum + value,
       0
-    ) / ratings.length
+    ) /
+    ratings.length
   );
+}
+
+function reviewWord(count) {
+  const value =
+    Math.abs(
+      Number(count)
+    ) % 100;
+
+  const last =
+    value % 10;
+
+  if (
+    value > 10 &&
+    value < 20
+  ) {
+    return "відгуків";
+  }
+
+  if (
+    last === 1
+  ) {
+    return "відгук";
+  }
+
+  if (
+    last >= 2 &&
+    last <= 4
+  ) {
+    return "відгуки";
+  }
+
+  return "відгуків";
 }
 
 function renderRatingSummary() {
@@ -1452,44 +1987,20 @@ function renderRatingSummary() {
   elements.productRatingText.textContent =
     `${average
       .toFixed(1)
-      .replace(".", ",")} · ${
+      .replace(
+        ".",
+        ","
+      )} · ${
       reviews.length
     } ${reviewWord(
       reviews.length
     )}`;
 }
 
-function reviewWord(count) {
-  const value =
-    Math.abs(Number(count)) %
-    100;
-
-  const last =
-    value % 10;
-
-  if (
-    value > 10 &&
-    value < 20
-  ) {
-    return "відгуків";
-  }
-
-  if (last === 1) {
-    return "відгук";
-  }
-
-  if (
-    last >= 2 &&
-    last <= 4
-  ) {
-    return "відгуки";
-  }
-
-  return "відгуків";
-}
-
 function renderCommunity() {
-  if (!product) return;
+  if (!product) {
+    return;
+  }
 
   const reviews =
     productReviews();
@@ -1549,7 +2060,7 @@ function renderCommunity() {
             <strong>
               ${escapeHtml(
                 review.name ||
-                  "Покупець"
+                "Покупець"
               )}
             </strong>
 
@@ -1572,7 +2083,8 @@ function renderCommunity() {
 
             <p>
               ${escapeHtml(
-                review.text || ""
+                review.text ||
+                ""
               )}
             </p>
 
@@ -1583,7 +2095,9 @@ function renderCommunity() {
                     <strong>
                       Точка Хрускоту:
                     </strong>
-                    ${escapeHtml(answer)}
+                    ${escapeHtml(
+                      answer
+                    )}
                   </div>
                 `
                 : ""
@@ -1608,13 +2122,14 @@ function renderCommunity() {
             <strong>
               ${escapeHtml(
                 question.name ||
-                  "Покупець"
+                "Покупець"
               )}
             </strong>
 
             <p>
               ${escapeHtml(
-                question.text || ""
+                question.text ||
+                ""
               )}
             </p>
 
@@ -1625,7 +2140,9 @@ function renderCommunity() {
                     <strong>
                       Точка Хрускоту:
                     </strong>
-                    ${escapeHtml(answer)}
+                    ${escapeHtml(
+                      answer
+                    )}
                   </div>
                 `
                 : ""
@@ -1641,7 +2158,7 @@ function renderCommunity() {
 
 
 /* ==========================================================
-   15. СХОЖІ ТОВАРИ
+   22. СХОЖІ ТОВАРИ
    ========================================================== */
 
 function relatedProductList() {
@@ -1652,63 +2169,157 @@ function relatedProductList() {
       ? product.relatedProductCodes
       : [];
 
-  let related =
-    codes
-      .map(findProduct)
-      .filter(Boolean)
-      .filter(
-        item =>
-          item.code !== product.code
-      );
+  let related = [];
 
-  if (!related.length) {
+  /*
+    1. Спочатку використовуємо
+       товари "З цим купують",
+       якщо вони задані.
+  */
+
+  if (codes.length) {
     related =
-      (store?.products || [])
-        .filter(
-          item =>
-            item.code !==
-              product.code &&
-            item.categoryCode ===
-              product.categoryCode
+      codes
+        .map(
+          findProduct
+        )
+        .filter(Boolean)
+        .filter(item =>
+          item.code !==
+          product.code
         );
   }
 
-  return related.slice(0, 4);
+  /*
+    2. Якщо "З цим купують"
+       не вистачає до 4,
+       додаємо товари з головної
+       категорії товару.
+  */
+
+  const primaryCode =
+    primaryCategoryCode(
+      product
+    );
+
+  if (
+    related.length < 4 &&
+    primaryCode
+  ) {
+    const samePrimary =
+      (store?.products || [])
+        .filter(item =>
+          item.code !==
+            product.code &&
+          productHasCategory(
+            item,
+            primaryCode
+          )
+        )
+        .filter(item =>
+          !related.some(
+            existing =>
+              existing.code ===
+              item.code
+          )
+        );
+
+    related.push(
+      ...samePrimary
+    );
+  }
+
+  /*
+    3. Якщо й цього мало —
+       товари, що мають хоча б
+       одну спільну категорію.
+  */
+
+  if (
+    related.length < 4
+  ) {
+    const shared =
+      (store?.products || [])
+        .filter(item =>
+          item.code !==
+            product.code &&
+          productsShareCategory(
+            product,
+            item
+          )
+        )
+        .filter(item =>
+          !related.some(
+            existing =>
+              existing.code ===
+              item.code
+          )
+        );
+
+    related.push(
+      ...shared
+    );
+  }
+
+  return related
+    .slice(0, 4);
+}
+
+function relatedProductPrice(item) {
+  if (
+    Array.isArray(
+      item.variants
+    ) &&
+    item.variants.length
+  ) {
+    const prices =
+      item.variants
+        .map(variant =>
+          safeNumber(
+            variant.effectivePrice ??
+            variant.regularPrice,
+            0
+          )
+        )
+        .filter(value =>
+          value > 0
+        );
+
+    if (
+      prices.length
+    ) {
+      return Math.min(
+        ...prices
+      );
+    }
+  }
+
+  return safeNumber(
+    item.effectivePrice ??
+    item.regularPrice,
+    0
+  );
 }
 
 function relatedProductCard(item) {
   const image =
-    productPhotos(item)[0];
+    productPhotos(
+      item
+    )[0];
 
   const hasChoices =
     Boolean(
       item.variants?.length ||
-        safeNumber(
-          item.sauceCount,
-          0
-        ) > 0
+      safeNumber(
+        item.sauceCount,
+        0
+      ) > 0
     );
 
   const price =
-    item.variants?.length
-      ? Math.min(
-          ...item.variants
-            .map(variant =>
-              safeNumber(
-                variant.effectivePrice,
-                0
-              )
-            )
-            .filter(
-              value =>
-                value > 0
-            )
-        )
-      : safeNumber(
-          item.effectivePrice ??
-            item.regularPrice,
-          0
-        );
+    relatedProductPrice(
+      item
+    );
 
   return `
     <article class="product-card">
@@ -1717,11 +2328,15 @@ function relatedProductCard(item) {
 
         <a
           href="${escapeHtml(
-            productUrl(item)
+            productUrl(
+              item
+            )
           )}"
         >
           <img
-            src="${escapeHtml(image)}"
+            src="${escapeHtml(
+              image
+            )}"
             alt="${escapeHtml(
               item.name
             )}"
@@ -1731,19 +2346,25 @@ function relatedProductCard(item) {
 
       </div>
 
+
       <div class="product-card-body">
 
         <h3 class="product-card-title">
+
           <a
             href="${escapeHtml(
-              productUrl(item)
+              productUrl(
+                item
+              )
             )}"
           >
             ${escapeHtml(
               item.name
             )}
           </a>
+
         </h3>
+
 
         ${
           item.shortDescription
@@ -1757,17 +2378,23 @@ function relatedProductCard(item) {
             : ""
         }
 
+
         <div class="product-card-price-row">
+
           <span class="product-card-price">
             ${
               item.variants?.length
                 ? "від "
                 : ""
             }${escapeHtml(
-              formatMoney(price)
+              formatMoney(
+                price
+              )
             )}
           </span>
+
         </div>
+
 
         <div class="product-card-actions">
 
@@ -1777,7 +2404,9 @@ function relatedProductCard(item) {
                 <a
                   class="product-card-button"
                   href="${escapeHtml(
-                    productUrl(item)
+                    productUrl(
+                      item
+                    )
                   )}"
                 >
                   Обрати варіант
@@ -1808,7 +2437,9 @@ function renderRelatedProducts() {
   const related =
     relatedProductList();
 
-  if (!related.length) {
+  if (
+    !related.length
+  ) {
     elements.relatedProductsSection.hidden =
       true;
 
@@ -1828,7 +2459,7 @@ function renderRelatedProducts() {
 
 
 /* ==========================================================
-   16. КОШИК
+   23. КОШИК
    ========================================================== */
 
 function loadCart() {
@@ -1845,7 +2476,9 @@ function loadCart() {
     const parsed =
       JSON.parse(raw);
 
-    return Array.isArray(parsed)
+    return Array.isArray(
+      parsed
+    )
       ? parsed
       : [];
   } catch (error) {
@@ -1862,7 +2495,9 @@ function saveCart() {
   try {
     localStorage.setItem(
       CART_STORAGE_KEY,
-      JSON.stringify(cart)
+      JSON.stringify(
+        cart
+      )
     );
   } catch (error) {
     console.error(
@@ -1895,13 +2530,13 @@ function cartTotal() {
         item.price,
         0
       ) *
-        Math.max(
-          0,
-          safeNumber(
-            item.quantity,
-            0
-          )
-        ),
+      Math.max(
+        0,
+        safeNumber(
+          item.quantity,
+          0
+        )
+      ),
     0
   );
 }
@@ -1909,12 +2544,15 @@ function cartTotal() {
 function addCurrentProductToCart() {
   if (
     !product ||
-    product.available === false
+    product.available ===
+      false
   ) {
     return;
   }
 
-  if (!saucesAreComplete()) {
+  if (
+    !saucesAreComplete()
+  ) {
     showToast(
       safeNumber(
         product.sauceCount,
@@ -1924,10 +2562,13 @@ function addCurrentProductToCart() {
         : "Оберіть соус."
     );
 
-    elements.sauceGroup?.scrollIntoView({
-      behavior: "smooth",
-      block: "center"
-    });
+    elements.sauceGroup
+      ?.scrollIntoView({
+        behavior:
+          "smooth",
+        block:
+          "center"
+      });
 
     return;
   }
@@ -1936,7 +2577,9 @@ function addCurrentProductToCart() {
     selectedVariant();
 
   const sauces =
-    [...selectedSauces];
+    [
+      ...selectedSauces
+    ];
 
   const price =
     currentUnitPrice();
@@ -1958,22 +2601,35 @@ function addCurrentProductToCart() {
       safeNumber(
         existing.quantity,
         1
-      ) + quantity;
+      ) +
+      quantity;
   } else {
     cart.push({
       cartItemId,
-      code: product.code,
-      name: product.name,
+
+      code:
+        product.code,
+
+      name:
+        product.name,
+
       photo:
-        productPhotos(product)[0],
+        productPhotos(
+          product
+        )[0],
+
       price,
+
       variantType:
         product.variantType ||
         variant?.type ||
         "",
+
       variantValue:
         selectedVariantValue,
+
       sauces,
+
       quantity
     });
   }
@@ -1984,10 +2640,13 @@ function addCurrentProductToCart() {
   trackGa4Event(
     "add_to_cart",
     {
-      currency: "UAH",
+      currency:
+        "UAH",
+
       value:
         price *
         quantity,
+
       items: [
         ga4ProductItem(
           product,
@@ -2006,7 +2665,9 @@ function addCurrentProductToCart() {
 
 function addSimpleRelatedProduct(code) {
   const item =
-    findProduct(code);
+    findProduct(
+      code
+    );
 
   if (!item) {
     return;
@@ -2015,24 +2676,24 @@ function addSimpleRelatedProduct(code) {
   const hasChoices =
     Boolean(
       item.variants?.length ||
-        safeNumber(
-          item.sauceCount,
-          0
-        ) > 0
+      safeNumber(
+        item.sauceCount,
+        0
+      ) > 0
     );
 
   if (hasChoices) {
     window.location.href =
-      productUrl(item);
+      productUrl(
+        item
+      );
 
     return;
   }
 
   const price =
-    safeNumber(
-      item.effectivePrice ??
-        item.regularPrice,
-      0
+    relatedProductPrice(
+      item
     );
 
   const id =
@@ -2046,24 +2707,64 @@ function addSimpleRelatedProduct(code) {
     );
 
   if (existing) {
-    existing.quantity += 1;
+    existing.quantity =
+      safeNumber(
+        existing.quantity,
+        1
+      ) +
+      1;
   } else {
     cart.push({
-      cartItemId: id,
-      code: item.code,
-      name: item.name,
+      cartItemId:
+        id,
+
+      code:
+        item.code,
+
+      name:
+        item.name,
+
       photo:
-        productPhotos(item)[0],
+        productPhotos(
+          item
+        )[0],
+
       price,
-      variantType: "",
-      variantValue: "",
-      sauces: [],
-      quantity: 1
+
+      variantType:
+        "",
+
+      variantValue:
+        "",
+
+      sauces:
+        [],
+
+      quantity:
+        1
     });
   }
 
   saveCart();
   renderCart();
+
+  trackGa4Event(
+    "add_to_cart",
+    {
+      currency:
+        "UAH",
+
+      value:
+        price,
+
+      items: [
+        ga4ProductItem(
+          item,
+          1
+        )
+      ]
+    }
+  );
 
   showToast(
     "Товар додано до кошика"
@@ -2083,15 +2784,20 @@ function changeCartQuantity(
         cartItemId
     );
 
-  if (!item) return;
+  if (!item) {
+    return;
+  }
 
   item.quantity =
     safeNumber(
       item.quantity,
       1
-    ) + change;
+    ) +
+    change;
 
-  if (item.quantity <= 0) {
+  if (
+    item.quantity <= 0
+  ) {
     cart =
       cart.filter(
         entry =>
@@ -2119,11 +2825,56 @@ function removeCartItem(
 }
 
 function getFreeDeliveryThreshold() {
-  return safeNumber(
-    store?.settings
-      ?.freeDeliveryFrom,
-    2000
-  );
+  const settings =
+    store?.settings ||
+    {};
+
+  const fromSettings =
+    [
+      settings.freeDeliveryFrom,
+      settings.freeDeliveryThreshold,
+      settings.freeDeliveryFromAmount
+    ]
+      .map(value =>
+        safeNumber(
+          value,
+          0
+        )
+      )
+      .find(value =>
+        value > 0
+      );
+
+  if (fromSettings) {
+    return fromSettings;
+  }
+
+  const fromDelivery =
+    (
+      store?.deliveryMethods ||
+      []
+    )
+      .map(method =>
+        safeNumber(
+          method.freeFrom ??
+          method.freeDeliveryFrom ??
+          method.freeFromAmount,
+          0
+        )
+      )
+      .filter(value =>
+        value > 0
+      );
+
+  if (
+    fromDelivery.length
+  ) {
+    return Math.min(
+      ...fromDelivery
+    );
+  }
+
+  return 2000;
 }
 
 function renderFreeDeliveryProgress() {
@@ -2133,7 +2884,9 @@ function renderFreeDeliveryProgress() {
   const threshold =
     getFreeDeliveryThreshold();
 
-  if (!cart.length) {
+  if (
+    !cart.length
+  ) {
     elements.cartProgress.hidden =
       true;
 
@@ -2146,7 +2899,10 @@ function renderFreeDeliveryProgress() {
   elements.cartProgress.hidden =
     false;
 
-  if (total >= threshold) {
+  if (
+    total >=
+    threshold
+  ) {
     elements.cartProgress.innerHTML = `
       <strong>
         Доставку у відділення або поштомат беремо на себе.
@@ -2164,15 +2920,19 @@ function renderFreeDeliveryProgress() {
   }
 
   const remaining =
-    threshold - total;
+    threshold -
+    total;
 
   const percent =
     Math.min(
       100,
       Math.max(
         0,
-        (total / threshold) *
-          100
+        (
+          total /
+          threshold
+        ) *
+        100
       )
     );
 
@@ -2198,7 +2958,9 @@ function renderFreeDeliveryProgress() {
 }
 
 function renderCart() {
-  if (!elements.cartItems) {
+  if (
+    !elements.cartItems
+  ) {
     return;
   }
 
@@ -2212,9 +2974,13 @@ function renderCart() {
     count;
 
   elements.cartTotal.textContent =
-    formatMoney(total);
+    formatMoney(
+      total
+    );
 
-  if (!cart.length) {
+  if (
+    !cart.length
+  ) {
     elements.cartItems.innerHTML = `
       <div class="cart-empty">
 
@@ -2232,25 +2998,31 @@ function renderCart() {
     elements.cartProgress.hidden =
       true;
 
-    elements.checkoutButton.classList.add(
-      "is-disabled"
-    );
+    elements.checkoutButton
+      .classList
+      .add(
+        "is-disabled"
+      );
 
-    elements.checkoutButton.setAttribute(
-      "aria-disabled",
-      "true"
-    );
+    elements.checkoutButton
+      .setAttribute(
+        "aria-disabled",
+        "true"
+      );
 
     return;
   }
 
-  elements.checkoutButton.classList.remove(
-    "is-disabled"
-  );
+  elements.checkoutButton
+    .classList
+    .remove(
+      "is-disabled"
+    );
 
-  elements.checkoutButton.removeAttribute(
-    "aria-disabled"
-  );
+  elements.checkoutButton
+    .removeAttribute(
+      "aria-disabled"
+    );
 
   elements.cartItems.innerHTML =
     cart
@@ -2266,10 +3038,18 @@ function renderCart() {
             itemProduct
           )[0];
 
+        const sauces =
+          Array.isArray(
+            item.sauces
+          )
+            ? item.sauces
+            : [];
+
         return `
           <div class="cart-item">
 
             <div class="cart-item-image">
+
               <img
                 src="${escapeHtml(
                   image
@@ -2277,17 +3057,20 @@ function renderCart() {
                 alt=""
                 loading="lazy"
               >
+
             </div>
+
 
             <div>
 
               <p class="cart-item-name">
                 ${escapeHtml(
                   item.name ||
-                    itemProduct?.name ||
-                    "Товар"
+                  itemProduct?.name ||
+                  "Товар"
                 )}
               </p>
+
 
               ${
                 item.variantValue
@@ -2295,7 +3078,7 @@ function renderCart() {
                     <div class="cart-item-variant">
                       ${escapeHtml(
                         item.variantType ||
-                          "Варіант"
+                        "Варіант"
                       )}:
                       ${escapeHtml(
                         item.variantValue
@@ -2305,17 +3088,18 @@ function renderCart() {
                   : ""
               }
 
+
               ${
-                item.sauces?.length
+                sauces.length
                   ? `
                     <div class="cart-item-variant">
                       Соус${
-                        item.sauces.length >
+                        sauces.length >
                         1
                           ? "и"
                           : ""
                       }:
-                      ${item.sauces
+                      ${sauces
                         .map(
                           escapeHtml
                         )
@@ -2325,6 +3109,7 @@ function renderCart() {
                   : ""
               }
 
+
               <div class="cart-item-price">
                 ${escapeHtml(
                   formatMoney(
@@ -2332,13 +3117,14 @@ function renderCart() {
                       item.price,
                       0
                     ) *
-                      safeNumber(
-                        item.quantity,
-                        1
-                      )
+                    safeNumber(
+                      item.quantity,
+                      1
+                    )
                   )
                 )}
               </div>
+
 
               <div class="cart-item-controls">
 
@@ -2375,6 +3161,7 @@ function renderCart() {
 
             </div>
 
+
             <button
               class="cart-item-remove"
               type="button"
@@ -2396,7 +3183,7 @@ function renderCart() {
 
 
 /* ==========================================================
-   17. ВІДКРИТТЯ КОШИКА
+   24. ВІДКРИТТЯ КОШИКА
    ========================================================== */
 
 function openCart() {
@@ -2405,39 +3192,51 @@ function openCart() {
   elements.cartOverlay.hidden =
     false;
 
-  elements.cartPanel.classList.add(
-    "is-open"
-  );
+  elements.cartPanel
+    .classList
+    .add(
+      "is-open"
+    );
 
-  elements.cartPanel.setAttribute(
-    "aria-hidden",
-    "false"
-  );
+  elements.cartPanel
+    .setAttribute(
+      "aria-hidden",
+      "false"
+    );
 
-  document.body.classList.add(
-    "cart-open"
-  );
+  document.body
+    .classList
+    .add(
+      "cart-open"
+    );
 }
 
 function closeCart() {
-  elements.cartPanel.classList.remove(
-    "is-open"
-  );
+  elements.cartPanel
+    .classList
+    .remove(
+      "is-open"
+    );
 
-  elements.cartPanel.setAttribute(
-    "aria-hidden",
-    "true"
-  );
+  elements.cartPanel
+    .setAttribute(
+      "aria-hidden",
+      "true"
+    );
 
-  document.body.classList.remove(
-    "cart-open"
-  );
+  document.body
+    .classList
+    .remove(
+      "cart-open"
+    );
 
   setTimeout(() => {
     if (
-      !elements.cartPanel.classList.contains(
-        "is-open"
-      )
+      !elements.cartPanel
+        .classList
+        .contains(
+          "is-open"
+        )
     ) {
       elements.cartOverlay.hidden =
         true;
@@ -2447,7 +3246,7 @@ function closeCart() {
 
 
 /* ==========================================================
-   18. МОБІЛЬНЕ МЕНЮ
+   25. МОБІЛЬНЕ МЕНЮ
    ========================================================== */
 
 function openMobileMenu() {
@@ -2456,49 +3255,63 @@ function openMobileMenu() {
   elements.mobileMenuOverlay.hidden =
     false;
 
-  elements.mobileMenu.classList.add(
-    "is-open"
-  );
+  elements.mobileMenu
+    .classList
+    .add(
+      "is-open"
+    );
 
-  elements.mobileMenu.setAttribute(
-    "aria-hidden",
-    "false"
-  );
+  elements.mobileMenu
+    .setAttribute(
+      "aria-hidden",
+      "false"
+    );
 
-  elements.mobileMenuButton.setAttribute(
-    "aria-expanded",
-    "true"
-  );
+  elements.mobileMenuButton
+    .setAttribute(
+      "aria-expanded",
+      "true"
+    );
 
-  document.body.classList.add(
-    "menu-open"
-  );
+  document.body
+    .classList
+    .add(
+      "menu-open"
+    );
 }
 
 function closeMobileMenu() {
-  elements.mobileMenu.classList.remove(
-    "is-open"
-  );
+  elements.mobileMenu
+    .classList
+    .remove(
+      "is-open"
+    );
 
-  elements.mobileMenu.setAttribute(
-    "aria-hidden",
-    "true"
-  );
+  elements.mobileMenu
+    .setAttribute(
+      "aria-hidden",
+      "true"
+    );
 
-  elements.mobileMenuButton.setAttribute(
-    "aria-expanded",
-    "false"
-  );
+  elements.mobileMenuButton
+    .setAttribute(
+      "aria-expanded",
+      "false"
+    );
 
-  document.body.classList.remove(
-    "menu-open"
-  );
+  document.body
+    .classList
+    .remove(
+      "menu-open"
+    );
 
   setTimeout(() => {
     if (
-      !elements.mobileMenu.classList.contains(
-        "is-open"
-      )
+      !elements.mobileMenu
+        .classList
+        .contains(
+          "is-open"
+        )
     ) {
       elements.mobileMenuOverlay.hidden =
         true;
@@ -2508,8 +3321,7 @@ function closeMobileMenu() {
 
 
 /* ==========================================================
-   19. ФОРМА ВІДГУКУ / ПИТАННЯ
-   Створюється JS — не треба міняти product.html
+   26. ФОРМА ВІДГУКУ / ПИТАННЯ
    ========================================================== */
 
 function ensureFeedbackModal() {
@@ -2633,9 +3445,10 @@ function ensureFeedbackModal() {
     }
   `;
 
-  document.head.appendChild(
-    style
-  );
+  document.head
+    .appendChild(
+      style
+    );
 
   const overlay =
     document.createElement(
@@ -2672,10 +3485,12 @@ function ensureFeedbackModal() {
 
       </div>
 
+
       <p
         class="feedback-dynamic-product"
         id="feedbackDynamicProduct"
       ></p>
+
 
       <form id="feedbackDynamicForm">
 
@@ -2683,6 +3498,7 @@ function ensureFeedbackModal() {
           id="feedbackDynamicType"
           type="hidden"
         >
+
 
         <div class="feedback-dynamic-field">
 
@@ -2700,6 +3516,7 @@ function ensureFeedbackModal() {
 
         </div>
 
+
         <div
           class="feedback-dynamic-field"
           id="feedbackDynamicRatingField"
@@ -2709,9 +3526,8 @@ function ensureFeedbackModal() {
             Оцінка
           </label>
 
-          <select
-            id="feedbackDynamicRating"
-          >
+          <select id="feedbackDynamicRating">
+
             <option value="">
               Оберіть оцінку
             </option>
@@ -2735,9 +3551,11 @@ function ensureFeedbackModal() {
             <option value="1">
               1 — не сподобалося
             </option>
+
           </select>
 
         </div>
+
 
         <div class="feedback-dynamic-field">
 
@@ -2756,6 +3574,7 @@ function ensureFeedbackModal() {
 
         </div>
 
+
         <button
           class="feedback-dynamic-submit"
           id="feedbackDynamicSubmit"
@@ -2763,6 +3582,7 @@ function ensureFeedbackModal() {
         >
           Надіслати
         </button>
+
 
         <div
           class="feedback-dynamic-status"
@@ -2775,9 +3595,10 @@ function ensureFeedbackModal() {
     </div>
   `;
 
-  document.body.appendChild(
-    overlay
-  );
+  document.body
+    .appendChild(
+      overlay
+    );
 
   $("#feedbackDynamicClose")
     ?.addEventListener(
@@ -2789,7 +3610,8 @@ function ensureFeedbackModal() {
     "click",
     event => {
       if (
-        event.target === overlay
+        event.target ===
+        overlay
       ) {
         closeFeedbackModal();
       }
@@ -2804,7 +3626,9 @@ function ensureFeedbackModal() {
 }
 
 function openFeedbackModal(type) {
-  if (!product) return;
+  if (!product) {
+    return;
+  }
 
   ensureFeedbackModal();
 
@@ -2812,7 +3636,8 @@ function openFeedbackModal(type) {
     $("#feedbackDynamicOverlay");
 
   const isReview =
-    type === "review";
+    type ===
+    "review";
 
   $("#feedbackDynamicType").value =
     type;
@@ -2871,19 +3696,19 @@ function openFeedbackModal(type) {
   document.body.style.overflow =
     "hidden";
 
-  setTimeout(
-    () =>
-      $("#feedbackDynamicName")
-        ?.focus(),
-    100
-  );
+  setTimeout(() => {
+    $("#feedbackDynamicName")
+      ?.focus();
+  }, 100);
 }
 
 function closeFeedbackModal() {
   const overlay =
     $("#feedbackDynamicOverlay");
 
-  if (!overlay) return;
+  if (!overlay) {
+    return;
+  }
 
   overlay.classList.remove(
     "is-open"
@@ -2901,16 +3726,22 @@ async function sendFeedbackPayload(
 
   body.set(
     "payload",
-    JSON.stringify(payload)
+    JSON.stringify(
+      payload
+    )
   );
 
   const response =
     await fetch(
       STORE_API_URL,
       {
-        method: "POST",
+        method:
+          "POST",
+
         body,
-        redirect: "follow"
+
+        redirect:
+          "follow"
       }
     );
 
@@ -2926,33 +3757,37 @@ async function sendFeedbackPayload(
   if (!result?.success) {
     throw new Error(
       result?.error ||
-        "Не вдалося передати повідомлення."
+      "Не вдалося передати повідомлення."
     );
   }
 
   return result;
 }
 
-async function submitFeedback(
-  event
-) {
+async function submitFeedback(event) {
   event.preventDefault();
 
   const type =
     $("#feedbackDynamicType")
-      ?.value || "";
+      ?.value ||
+    "";
 
   const name =
     $("#feedbackDynamicName")
-      ?.value.trim() || "";
+      ?.value
+      .trim() ||
+    "";
 
   const rating =
     $("#feedbackDynamicRating")
-      ?.value || "";
+      ?.value ||
+    "";
 
   const text =
     $("#feedbackDynamicText")
-      ?.value.trim() || "";
+      ?.value
+      .trim() ||
+    "";
 
   const status =
     $("#feedbackDynamicStatus");
@@ -2960,7 +3795,9 @@ async function submitFeedback(
   const button =
     $("#feedbackDynamicSubmit");
 
-  if (name.length < 2) {
+  if (
+    name.length < 2
+  ) {
     status.textContent =
       "Вкажіть, будь ласка, ваше ім’я.";
 
@@ -2983,7 +3820,9 @@ async function submitFeedback(
     return;
   }
 
-  if (text.length < 5) {
+  if (
+    text.length < 5
+  ) {
     status.textContent =
       type === "review"
         ? "Напишіть кілька слів про враження."
@@ -3008,20 +3847,32 @@ async function submitFeedback(
     "Передаємо повідомлення...";
 
   const payload = {
-    action: "feedback",
-    feedbackType: type,
+    action:
+      "feedback",
+
+    feedbackType:
+      type,
+
     name,
+
     rating:
       type === "review"
         ? Number(rating)
         : "",
+
     text,
-    contact: "",
+
+    contact:
+      "",
+
     productCode:
       product.code,
+
     productName:
       product.name,
-    website: ""
+
+    website:
+      ""
   };
 
   try {
@@ -3049,7 +3900,9 @@ async function submitFeedback(
       1800
     );
   } catch (error) {
-    console.error(error);
+    console.error(
+      error
+    );
 
     status.className =
       "feedback-dynamic-status is-error";
@@ -3070,333 +3923,455 @@ async function submitFeedback(
 
 
 /* ==========================================================
-   20. ПОДІЇ
+   27. ПОДІЇ ГАЛЕРЕЇ
    ========================================================== */
 
-elements.productThumbnails?.addEventListener(
-  "click",
-  event => {
-    const button =
-      event.target.closest(
-        "[data-photo-index]"
-      );
+elements.productThumbnails
+  ?.addEventListener(
+    "click",
+    event => {
+      const button =
+        event.target.closest(
+          "[data-photo-index]"
+        );
 
-    if (!button) return;
+      if (!button) {
+        return;
+      }
 
-    changePhoto(
-      safeNumber(
-        button.dataset.photoIndex,
-        0
-      )
-    );
-  }
-);
-
-elements.variantButtons?.addEventListener(
-  "click",
-  event => {
-    const button =
-      event.target.closest(
-        "[data-variant]"
-      );
-
-    if (!button) return;
-
-    selectedVariantValue =
-      button.dataset.variant ||
-      "";
-
-    renderVariants();
-    renderPrice();
-    updateAddButtons();
-  }
-);
-
-elements.sauceButtons?.addEventListener(
-  "click",
-  event => {
-    const button =
-      event.target.closest(
-        "[data-sauce]"
-      );
-
-    if (!button) return;
-
-    const slot =
-      safeNumber(
-        button.dataset.sauceSlot,
-        0
-      );
-
-    selectedSauces[slot] =
-      button.dataset.sauce ||
-      "";
-
-    renderSauces();
-    updateAddButtons();
-  }
-);
-
-elements.decreaseQuantity?.addEventListener(
-  "click",
-  () => {
-    quantity =
-      Math.max(
-        1,
-        quantity - 1
-      );
-
-    renderQuantity();
-    updateAddButtons();
-  }
-);
-
-elements.increaseQuantity?.addEventListener(
-  "click",
-  () => {
-    quantity += 1;
-
-    renderQuantity();
-    updateAddButtons();
-  }
-);
-
-elements.addProductToCart?.addEventListener(
-  "click",
-  addCurrentProductToCart
-);
-
-elements.mobileAddProduct?.addEventListener(
-  "click",
-  addCurrentProductToCart
-);
-
-elements.cartButton?.addEventListener(
-  "click",
-  openCart
-);
-
-elements.closeCartButton?.addEventListener(
-  "click",
-  closeCart
-);
-
-elements.cartOverlay?.addEventListener(
-  "click",
-  closeCart
-);
-
-elements.continueShoppingButton?.addEventListener(
-  "click",
-  closeCart
-);
-
-elements.cartItems?.addEventListener(
-  "click",
-  event => {
-    const step =
-      event.target.closest(
-        "[data-cart-change]"
-      );
-
-    if (step) {
-      changeCartQuantity(
-        step.dataset.cartItem,
+      changePhoto(
         safeNumber(
-          step.dataset.cartChange,
+          button.dataset.photoIndex,
           0
         )
       );
-
-      return;
     }
-
-    const remove =
-      event.target.closest(
-        "[data-cart-remove]"
-      );
-
-    if (remove) {
-      removeCartItem(
-        remove.dataset.cartRemove
-      );
-    }
-  }
-);
-
-elements.relatedProducts?.addEventListener(
-  "click",
-  event => {
-    const add =
-      event.target.closest(
-        "[data-related-add]"
-      );
-
-    if (!add) return;
-
-    addSimpleRelatedProduct(
-      add.dataset.relatedAdd
-    );
-  }
-);
-
-elements.mobileMenuButton?.addEventListener(
-  "click",
-  openMobileMenu
-);
-
-elements.closeMobileMenu?.addEventListener(
-  "click",
-  closeMobileMenu
-);
-
-elements.mobileMenuOverlay?.addEventListener(
-  "click",
-  closeMobileMenu
-);
-
-elements.leaveReviewButton?.addEventListener(
-  "click",
-  () =>
-    openFeedbackModal(
-      "review"
-    )
-);
-
-elements.askQuestionButton?.addEventListener(
-  "click",
-  () =>
-    openFeedbackModal(
-      "question"
-    )
-);
-
-elements.checkoutButton?.addEventListener(
-  "click",
-  event => {
-    if (!cart.length) {
-      event.preventDefault();
-      return;
-    }
-
-    trackGa4Event(
-      "begin_checkout",
-      {
-        currency: "UAH",
-        value: cartTotal(),
-        items:
-          cart.map(item => {
-            const itemProduct =
-              findProduct(
-                item.code
-              );
-
-            return {
-              item_id:
-                item.code,
-              item_name:
-                item.name ||
-                itemProduct?.name ||
-                item.code,
-              item_category:
-                findCategory(
-                  itemProduct?.categoryCode
-                )?.name || "",
-              item_variant:
-                item.variantValue ||
-                "",
-              price:
-                safeNumber(
-                  item.price,
-                  0
-                ),
-              quantity:
-                safeNumber(
-                  item.quantity,
-                  1
-                )
-            };
-          })
-      }
-    );
-  }
-);
+  );
 
 
 /* ==========================================================
-   21. СВАЙП ФОТО НА ТЕЛЕФОНІ
+   28. ПОДІЇ ВАРІАНТІВ
    ========================================================== */
 
-let touchStartX = null;
+elements.variantButtons
+  ?.addEventListener(
+    "click",
+    event => {
+      const button =
+        event.target.closest(
+          "[data-variant]"
+        );
 
-elements.mainImageButton?.addEventListener(
-  "touchstart",
-  event => {
-    touchStartX =
-      event.touches?.[0]
-        ?.clientX ?? null;
-  },
-  {
-    passive: true
-  }
-);
+      if (!button) {
+        return;
+      }
 
-elements.mainImageButton?.addEventListener(
-  "touchend",
-  event => {
-    if (
-      touchStartX === null
-    ) {
-      return;
+      selectedVariantValue =
+        button.dataset.variant ||
+        "";
+
+      renderVariants();
+      renderPrice();
+      updateAddButtons();
     }
-
-    const endX =
-      event.changedTouches?.[0]
-        ?.clientX;
-
-    if (
-      typeof endX !== "number"
-    ) {
-      touchStartX = null;
-      return;
-    }
-
-    const distance =
-      endX - touchStartX;
-
-    touchStartX = null;
-
-    if (
-      Math.abs(distance) <
-      45
-    ) {
-      return;
-    }
-
-    if (distance < 0) {
-      changePhoto(
-        selectedPhotoIndex + 1
-      );
-    } else {
-      changePhoto(
-        selectedPhotoIndex - 1
-      );
-    }
-  },
-  {
-    passive: true
-  }
-);
+  );
 
 
 /* ==========================================================
-   22. КЛАВІАТУРА
+   29. ПОДІЇ СОУСІВ
+   ========================================================== */
+
+elements.sauceButtons
+  ?.addEventListener(
+    "click",
+    event => {
+      const button =
+        event.target.closest(
+          "[data-sauce]"
+        );
+
+      if (!button) {
+        return;
+      }
+
+      const slot =
+        safeNumber(
+          button.dataset.sauceSlot,
+          0
+        );
+
+      selectedSauces[
+        slot
+      ] =
+        button.dataset.sauce ||
+        "";
+
+      renderSauces();
+      updateAddButtons();
+    }
+  );
+
+
+/* ==========================================================
+   30. КІЛЬКІСТЬ
+   ========================================================== */
+
+elements.decreaseQuantity
+  ?.addEventListener(
+    "click",
+    () => {
+      quantity =
+        Math.max(
+          1,
+          quantity - 1
+        );
+
+      renderQuantity();
+      updateAddButtons();
+    }
+  );
+
+elements.increaseQuantity
+  ?.addEventListener(
+    "click",
+    () => {
+      quantity += 1;
+
+      renderQuantity();
+      updateAddButtons();
+    }
+  );
+
+
+/* ==========================================================
+   31. ДОДАВАННЯ В КОШИК
+   ========================================================== */
+
+elements.addProductToCart
+  ?.addEventListener(
+    "click",
+    addCurrentProductToCart
+  );
+
+elements.mobileAddProduct
+  ?.addEventListener(
+    "click",
+    addCurrentProductToCart
+  );
+
+
+/* ==========================================================
+   32. КОШИК
+   ========================================================== */
+
+elements.cartButton
+  ?.addEventListener(
+    "click",
+    openCart
+  );
+
+elements.closeCartButton
+  ?.addEventListener(
+    "click",
+    closeCart
+  );
+
+elements.cartOverlay
+  ?.addEventListener(
+    "click",
+    closeCart
+  );
+
+elements.continueShoppingButton
+  ?.addEventListener(
+    "click",
+    closeCart
+  );
+
+elements.cartItems
+  ?.addEventListener(
+    "click",
+    event => {
+      const step =
+        event.target.closest(
+          "[data-cart-change]"
+        );
+
+      if (step) {
+        changeCartQuantity(
+          step.dataset.cartItem,
+
+          safeNumber(
+            step.dataset.cartChange,
+            0
+          )
+        );
+
+        return;
+      }
+
+      const remove =
+        event.target.closest(
+          "[data-cart-remove]"
+        );
+
+      if (remove) {
+        removeCartItem(
+          remove.dataset.cartRemove
+        );
+      }
+    }
+  );
+
+
+/* ==========================================================
+   33. СХОЖІ ТОВАРИ
+   ========================================================== */
+
+elements.relatedProducts
+  ?.addEventListener(
+    "click",
+    event => {
+      const add =
+        event.target.closest(
+          "[data-related-add]"
+        );
+
+      if (!add) {
+        return;
+      }
+
+      addSimpleRelatedProduct(
+        add.dataset.relatedAdd
+      );
+    }
+  );
+
+
+/* ==========================================================
+   34. МОБІЛЬНЕ МЕНЮ
+   ========================================================== */
+
+elements.mobileMenuButton
+  ?.addEventListener(
+    "click",
+    openMobileMenu
+  );
+
+elements.closeMobileMenu
+  ?.addEventListener(
+    "click",
+    closeMobileMenu
+  );
+
+elements.mobileMenuOverlay
+  ?.addEventListener(
+    "click",
+    closeMobileMenu
+  );
+
+
+/* ==========================================================
+   35. ВІДГУКИ / ПИТАННЯ
+   ========================================================== */
+
+elements.leaveReviewButton
+  ?.addEventListener(
+    "click",
+    () =>
+      openFeedbackModal(
+        "review"
+      )
+  );
+
+elements.askQuestionButton
+  ?.addEventListener(
+    "click",
+    () =>
+      openFeedbackModal(
+        "question"
+      )
+  );
+
+
+/* ==========================================================
+   36. CHECKOUT + GA4
+   ========================================================== */
+
+elements.checkoutButton
+  ?.addEventListener(
+    "click",
+    event => {
+      if (
+        !cart.length
+      ) {
+        event.preventDefault();
+        return;
+      }
+
+      trackGa4Event(
+        "begin_checkout",
+        {
+          currency:
+            "UAH",
+
+          value:
+            cartTotal(),
+
+          items:
+            cart.map(item => {
+              const itemProduct =
+                findProduct(
+                  item.code
+                );
+
+              const categories =
+                productCategoryNames(
+                  itemProduct
+                );
+
+              const result = {
+                item_id:
+                  item.code,
+
+                item_name:
+                  item.name ||
+                  itemProduct?.name ||
+                  item.code,
+
+                item_variant:
+                  item.variantValue ||
+                  "",
+
+                price:
+                  safeNumber(
+                    item.price,
+                    0
+                  ),
+
+                quantity:
+                  safeNumber(
+                    item.quantity,
+                    1
+                  )
+              };
+
+              if (
+                categories[0]
+              ) {
+                result.item_category =
+                  categories[0];
+              }
+
+              if (
+                categories[1]
+              ) {
+                result.item_category2 =
+                  categories[1];
+              }
+
+              return result;
+            })
+        }
+      );
+    }
+  );
+
+
+/* ==========================================================
+   37. СВАЙП ФОТО НА ТЕЛЕФОНІ
+   ========================================================== */
+
+let touchStartX =
+  null;
+
+elements.mainImageButton
+  ?.addEventListener(
+    "touchstart",
+    event => {
+      touchStartX =
+        event.touches?.[0]
+          ?.clientX ??
+        null;
+    },
+    {
+      passive:
+        true
+    }
+  );
+
+elements.mainImageButton
+  ?.addEventListener(
+    "touchend",
+    event => {
+      if (
+        touchStartX ===
+        null
+      ) {
+        return;
+      }
+
+      const endX =
+        event.changedTouches?.[0]
+          ?.clientX;
+
+      if (
+        typeof endX !==
+        "number"
+      ) {
+        touchStartX =
+          null;
+
+        return;
+      }
+
+      const distance =
+        endX -
+        touchStartX;
+
+      touchStartX =
+        null;
+
+      if (
+        Math.abs(
+          distance
+        ) < 45
+      ) {
+        return;
+      }
+
+      if (
+        distance < 0
+      ) {
+        changePhoto(
+          selectedPhotoIndex +
+          1
+        );
+      } else {
+        changePhoto(
+          selectedPhotoIndex -
+          1
+        );
+      }
+    },
+    {
+      passive:
+        true
+    }
+  );
+
+
+/* ==========================================================
+   38. ESC
    ========================================================== */
 
 document.addEventListener(
   "keydown",
   event => {
-    if (event.key !== "Escape") {
+    if (
+      event.key !==
+      "Escape"
+    ) {
       return;
     }
 
@@ -3408,7 +4383,7 @@ document.addEventListener(
 
 
 /* ==========================================================
-   23. СИНХРОНІЗАЦІЯ КОШИКА МІЖ ВКЛАДКАМИ
+   39. СИНХРОНІЗАЦІЯ КОШИКА
    ========================================================== */
 
 window.addEventListener(
@@ -3430,7 +4405,7 @@ window.addEventListener(
 
 
 /* ==========================================================
-   24. СТАРТ
+   40. СТАРТ
    ========================================================== */
 
 renderCart();
