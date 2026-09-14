@@ -1,0 +1,4403 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Оформлення замовлення — Точка Хрускоту</title>
+
+  <meta
+    name="description"
+    content="Оформлення замовлення у Точці Хрускоту. Доставка у Млинові, Дубно, Рівному та по Україні."
+  >
+
+  <meta
+    name="theme-color"
+    content="#fffaf5"
+  >
+
+  <link
+    rel="canonical"
+    href="https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/checkout.html"
+  >
+
+  <link
+    rel="icon"
+    href="images/brand/logo.webp"
+    type="image/webp"
+  >
+
+  <link
+    rel="stylesheet"
+    href="site-v2.css?v=20260914-13"
+  >
+
+
+  <style>
+
+    /* ======================================================
+       СТОРІНКА
+       ====================================================== */
+
+    .checkout-page {
+      padding: 38px 0 74px;
+    }
+
+    .checkout-intro {
+      margin-bottom: 28px;
+    }
+
+    .checkout-intro h1 {
+      margin: 0;
+
+      color: var(--brown);
+
+      font-size: clamp(
+        36px,
+        5vw,
+        56px
+      );
+
+      line-height: 1.05;
+      letter-spacing: -.035em;
+    }
+
+    .checkout-intro p {
+      max-width: 760px;
+
+      margin: 12px 0 0;
+
+      color: var(--text-soft);
+
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+
+    /* ======================================================
+       ДВІ КОЛОНКИ
+       ====================================================== */
+
+    .checkout-layout {
+      display: grid;
+
+      grid-template-columns:
+        minmax(0, 1.2fr)
+        minmax(310px, .8fr);
+
+      gap: 24px;
+      align-items: start;
+    }
+
+
+    /* ======================================================
+       ФОРМА
+       ====================================================== */
+
+    .checkout-form-card {
+      padding: 28px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+
+      background: var(--surface);
+
+      box-shadow: var(--shadow-sm);
+    }
+
+    .checkout-section {
+      padding: 0 0 27px;
+      margin-bottom: 27px;
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+    .checkout-section:last-of-type {
+      margin-bottom: 20px;
+      padding-bottom: 0;
+
+      border-bottom: 0;
+    }
+
+    .checkout-section-heading {
+      margin-bottom: 17px;
+    }
+
+    .checkout-section-heading span {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: 31px;
+      height: 31px;
+
+      margin-right: 8px;
+
+      border-radius: 50%;
+
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .checkout-section-heading h2 {
+      display: inline;
+
+      margin: 0;
+
+      color: var(--brown);
+
+      font-size: 22px;
+    }
+
+    .checkout-section-heading p {
+      margin: 8px 0 0;
+
+      color: var(--text-soft);
+
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+
+    /* ======================================================
+       ПОЛЯ
+       ====================================================== */
+
+    .checkout-fields-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0, 1fr)
+        );
+
+      gap: 14px;
+    }
+
+    .checkout-field {
+      min-width: 0;
+    }
+
+    .checkout-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .checkout-field[hidden] {
+      display: none !important;
+    }
+
+    .checkout-field label {
+      display: block;
+
+      margin-bottom: 6px;
+
+      color: var(--brown);
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .checkout-field input,
+    .checkout-field select,
+    .checkout-field textarea {
+      width: 100%;
+      min-height: 48px;
+
+      padding: 11px 13px;
+
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+
+      background: #fff;
+      color: var(--text);
+
+      font: inherit;
+
+      outline: none;
+    }
+
+    .checkout-field textarea {
+      min-height: 108px;
+
+      resize: vertical;
+    }
+
+    .checkout-field input:focus,
+    .checkout-field select:focus,
+    .checkout-field textarea:focus {
+      border-color: var(--accent);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(184, 113, 72, .09);
+    }
+
+    .field-note {
+      margin: 6px 0 0;
+
+      color: var(--text-soft);
+
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .delivery-note,
+    .payment-note {
+      margin-top: 11px;
+      padding: 12px 14px;
+
+      border-radius: 11px;
+
+      background: var(--surface-soft);
+
+      color: var(--text-soft);
+
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .delivery-note:empty,
+    .payment-note:empty {
+      display: none;
+    }
+
+
+    /* ======================================================
+       ЧЕКБОКСИ
+       ====================================================== */
+
+    .checkout-options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .checkout-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+
+      padding: 15px;
+
+      border: 1px solid var(--border);
+      border-radius: 13px;
+
+      background: var(--surface-soft);
+
+      cursor: pointer;
+    }
+
+    .checkout-option input {
+      width: 19px;
+      height: 19px;
+
+      margin: 2px 0 0;
+
+      flex: 0 0 auto;
+
+      accent-color: var(--accent);
+    }
+
+    .checkout-option strong {
+      display: block;
+
+      color: var(--brown);
+
+      font-size: 14px;
+    }
+
+    .checkout-option span {
+      display: block;
+
+      margin-top: 3px;
+
+      color: var(--text-soft);
+
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .gift-simple-note {
+      margin-top: 11px;
+      padding: 14px 16px;
+
+      border: 1px solid #ead7ca;
+      border-radius: 12px;
+
+      background: #fff8f2;
+
+      color: var(--text-soft);
+
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .gift-simple-note[hidden] {
+      display: none;
+    }
+
+    .certificate-field {
+      margin-top: 12px;
+    }
+
+    .certificate-field[hidden] {
+      display: none;
+    }
+
+
+    /* ======================================================
+       IBAN
+       ====================================================== */
+
+    .checkout-iban {
+      margin-top: 12px;
+      padding: 15px;
+
+      border: 1px solid #ead7ca;
+      border-radius: 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #fffaf6,
+          #fff4ec
+        );
+    }
+
+    .checkout-iban[hidden] {
+      display: none;
+    }
+
+    .checkout-iban small {
+      display: block;
+
+      margin-bottom: 5px;
+
+      color: var(--text-soft);
+
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .checkout-iban strong {
+      display: block;
+
+      color: var(--brown);
+
+      font-size: 16px;
+      line-height: 1.4;
+
+      word-break: break-all;
+    }
+
+    .checkout-iban p {
+      margin: 8px 0 12px;
+
+      color: var(--text-soft);
+
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .copy-checkout-iban {
+      min-height: 40px;
+
+      padding: 8px 13px;
+
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+
+      background: #fff;
+
+      color: var(--brown);
+
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+
+    /* ======================================================
+       КНОПКА / СТАТУС
+       ====================================================== */
+
+    .checkout-submit {
+      width: 100%;
+      min-height: 55px;
+
+      border: 0;
+      border-radius: 14px;
+
+      background: var(--accent);
+      color: #fff;
+
+      font-size: 16px;
+      font-weight: 900;
+
+      cursor: pointer;
+    }
+
+    .checkout-submit:hover {
+      filter: brightness(.98);
+    }
+
+    .checkout-submit:disabled {
+      opacity: .55;
+
+      cursor: not-allowed;
+    }
+
+    .checkout-legal {
+      margin: 11px 0 0;
+
+      color: var(--text-soft);
+
+      font-size: 11px;
+      line-height: 1.5;
+
+      text-align: center;
+    }
+
+    .checkout-legal a {
+      color: var(--brown);
+
+      text-decoration: underline;
+    }
+
+    .order-status {
+      margin-top: 13px;
+      padding: 0;
+
+      color: var(--text-soft);
+
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .order-status:empty {
+      display: none;
+    }
+
+    .order-status.is-error,
+    .order-status.is-success,
+    .order-status.is-loading {
+      display: block;
+
+      padding: 13px 15px;
+
+      border-radius: 11px;
+    }
+
+    .order-status.is-error {
+      background: #fff0ee;
+      color: #8b3831;
+    }
+
+    .order-status.is-success {
+      background: var(--green-soft);
+      color: #3e583d;
+    }
+
+    .order-status.is-loading {
+      background: var(--surface-soft);
+      color: var(--brown);
+    }
+
+
+    /* ======================================================
+       ПІДСУМОК
+       ====================================================== */
+
+    .checkout-summary {
+      position: sticky;
+      top: 105px;
+
+      padding: 23px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+
+      background: var(--surface);
+
+      box-shadow: var(--shadow-sm);
+    }
+
+    .checkout-summary h2 {
+      margin: 0;
+
+      color: var(--brown);
+
+      font-size: 23px;
+    }
+
+    .checkout-summary-subtitle {
+      margin: 6px 0 18px;
+
+      color: var(--text-soft);
+
+      font-size: 12px;
+    }
+
+    .checkout-summary-items {
+      display: grid;
+      gap: 13px;
+    }
+
+    .checkout-summary-item {
+      display: grid;
+
+      grid-template-columns:
+        60px 1fr auto;
+
+      gap: 10px;
+      align-items: start;
+    }
+
+    .checkout-summary-photo {
+      width: 60px;
+      height: 60px;
+
+      overflow: hidden;
+
+      border-radius: 10px;
+
+      background: var(--surface-soft);
+    }
+
+    .checkout-summary-photo img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+    .checkout-summary-item-text strong {
+      display: block;
+
+      color: var(--brown);
+
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .checkout-summary-item-text span {
+      display: block;
+
+      margin-top: 3px;
+
+      color: var(--text-soft);
+
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .checkout-summary-price {
+      color: var(--brown);
+
+      font-size: 12px;
+      font-weight: 850;
+
+      white-space: nowrap;
+    }
+
+    .checkout-summary-divider {
+      height: 1px;
+
+      margin: 18px 0;
+
+      background: var(--border);
+    }
+
+    .checkout-total-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+
+      margin: 8px 0;
+
+      color: var(--text-soft);
+
+      font-size: 13px;
+    }
+
+    .checkout-total-line strong {
+      color: var(--brown);
+    }
+
+    .checkout-total-line.final {
+      margin-top: 15px;
+
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .checkout-progress {
+      margin-top: 16px;
+      padding: 13px;
+
+      border-radius: 11px;
+
+      background: var(--surface-soft);
+
+      color: var(--text-soft);
+
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .checkout-edit-cart {
+      display: inline-flex;
+
+      margin-top: 15px;
+
+      color: var(--accent-dark);
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+
+    /* ======================================================
+       ПОРОЖНІЙ КОШИК
+       ====================================================== */
+
+    .checkout-empty {
+      padding: 42px 24px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+
+      background: var(--surface);
+
+      text-align: center;
+    }
+
+    .checkout-empty[hidden] {
+      display: none;
+    }
+
+    .checkout-empty h2 {
+      margin: 0;
+
+      color: var(--brown);
+
+      font-size: 27px;
+    }
+
+    .checkout-empty p {
+      margin: 9px auto 18px;
+
+      max-width: 500px;
+
+      color: var(--text-soft);
+    }
+
+
+    /* ======================================================
+       УСПІШНЕ ЗАМОВЛЕННЯ
+       ====================================================== */
+
+    .checkout-success {
+      max-width: 760px;
+
+      margin: 0 auto;
+
+      padding: 36px;
+
+      border: 1px solid #cddfc8;
+      border-radius: var(--radius-xl);
+
+      background:
+        linear-gradient(
+          135deg,
+          #f7fff4,
+          #fffdf9
+        );
+
+      text-align: center;
+    }
+
+    .checkout-success[hidden] {
+      display: none;
+    }
+
+    .checkout-success h2 {
+      margin: 0;
+
+      color: var(--brown);
+
+      font-size: clamp(
+        30px,
+        5vw,
+        43px
+      );
+    }
+
+    .checkout-success-number {
+      display: inline-block;
+
+      margin: 18px 0 8px;
+      padding: 10px 16px;
+
+      border-radius: 12px;
+
+      background: #fff;
+
+      color: var(--brown);
+
+      font-size: 19px;
+      font-weight: 900;
+    }
+
+    .checkout-success p {
+      max-width: 610px;
+
+      margin: 9px auto;
+
+      color: var(--text-soft);
+
+      line-height: 1.6;
+    }
+
+    .success-payment-box {
+      max-width: 590px;
+
+      margin: 20px auto 0;
+      padding: 18px;
+
+      border: 1px solid #ead7ca;
+      border-radius: 13px;
+
+      background: #fff;
+    }
+
+    .success-payment-box strong {
+      display: block;
+
+      color: var(--brown);
+    }
+
+    .success-payment-box .success-iban {
+      margin: 7px 0;
+
+      font-size: 15px;
+
+      word-break: break-all;
+    }
+
+    .checkout-success-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 9px;
+
+      margin-top: 23px;
+    }
+
+
+    /* ======================================================
+       АДАПТИВ
+       ====================================================== */
+
+    @media (max-width: 900px) {
+
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .checkout-summary {
+        position: static;
+
+        order: -1;
+      }
+
+    }
+
+
+    @media (max-width: 640px) {
+
+      .checkout-page {
+        padding-top: 25px;
+      }
+
+      .checkout-form-card,
+      .checkout-summary {
+        padding: 19px;
+      }
+
+      .checkout-fields-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .checkout-field.full {
+        grid-column: auto;
+      }
+
+      .checkout-summary-item {
+        grid-template-columns:
+          52px 1fr;
+      }
+
+      .checkout-summary-photo {
+        width: 52px;
+        height: 52px;
+      }
+
+      .checkout-summary-price {
+        grid-column: 2;
+      }
+
+      .checkout-success {
+        padding: 24px 18px;
+      }
+
+      .checkout-success-actions {
+        flex-direction: column;
+      }
+
+      .checkout-success-actions a {
+        width: 100%;
+      }
+
+    }
+
+  </style>
+
+
+  <!-- ======================================================
+       GOOGLE ANALYTICS
+       ====================================================== -->
+
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-BMMFC6QXD5"
+  ></script>
+
+  <script>
+    window.dataLayer =
+      window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag(
+      "js",
+      new Date()
+    );
+
+    gtag(
+      "config",
+      "G-BMMFC6QXD5"
+    );
+  </script>
+
+</head>
+
+
+<body>
+
+  <!-- ======================================================
+       ЗАВАНТАЖЕННЯ
+       ====================================================== -->
+
+  <div
+    class="page-loader"
+    id="pageLoader"
+    aria-live="polite"
+  >
+
+    <div class="page-loader-card">
+
+      <img
+        src="images/brand/logo.webp"
+        alt=""
+        width="70"
+        height="70"
+      >
+
+      <strong>
+        Точка Хрускоту
+      </strong>
+
+      <span>
+        Завантажуємо...
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- ======================================================
+       ВЕРХНЯ СМУГА
+       ====================================================== -->
+
+  <div class="trust-bar">
+
+    <div class="container trust-bar-inner">
+
+      <a
+        class="trust-item trust-location"
+        href="contacts.html"
+      >
+        <span>
+          Млинів, Рівненська обл.
+        </span>
+      </a>
+
+      <a
+        class="trust-item trust-local-delivery"
+        href="delivery.html"
+      >
+        <span>
+          Млинів • Дубно • Рівне
+        </span>
+      </a>
+
+      <a
+        class="trust-item trust-ukraine"
+        href="delivery.html"
+      >
+        <span>
+          Доставка по Україні
+        </span>
+      </a>
+
+      <a
+        class="trust-item trust-phone"
+        href="tel:+380638330860"
+      >
+        <span>
+          +380 63 833 08 60
+        </span>
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <!-- ======================================================
+       ШАПКА
+       ====================================================== -->
+
+  <header
+    class="site-header"
+    id="siteHeader"
+  >
+
+    <div class="container header-inner">
+
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="Точка Хрускоту — головна"
+      >
+
+        <img
+          id="headerLogo"
+          src="images/brand/logo.webp"
+          alt="Точка Хрускоту"
+          width="64"
+          height="64"
+        >
+
+        <span class="brand-text">
+
+          <strong id="headerStoreName">
+            Точка Хрускоту
+          </strong>
+
+          <small>
+            Візьми. Вмочи. Хрусни.
+          </small>
+
+        </span>
+
+      </a>
+
+
+      <nav
+        class="desktop-nav"
+        aria-label="Головна навігація"
+      >
+
+        <a href="catalog.html">
+          Каталог
+        </a>
+
+        <a href="gifts.html">
+          Подарунки
+        </a>
+
+        <a href="delivery.html">
+          Доставка й оплата
+        </a>
+
+        <a href="reviews.html">
+          Відгуки
+        </a>
+
+        <a href="contacts.html">
+          Контакти
+        </a>
+
+      </nav>
+
+
+      <div class="header-actions">
+
+        <a
+          class="header-action-button"
+          href="catalog.html"
+        >
+          Пошук
+        </a>
+
+
+        <button
+          class="header-action-button cart-button"
+          id="cartButton"
+          type="button"
+        >
+
+          <span>
+            Кошик
+          </span>
+
+          <span
+            class="cart-count"
+            id="cartCount"
+          >
+            0
+          </span>
+
+        </button>
+
+
+        <button
+          class="mobile-menu-button"
+          id="mobileMenuButton"
+          type="button"
+          aria-controls="mobileMenu"
+          aria-expanded="false"
+        >
+          Меню
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ======================================================
+       МОБІЛЬНЕ МЕНЮ
+       ====================================================== -->
+
+  <div
+    class="mobile-menu-overlay"
+    id="mobileMenuOverlay"
+    hidden
+  ></div>
+
+
+  <aside
+    class="mobile-menu"
+    id="mobileMenu"
+    aria-hidden="true"
+  >
+
+    <div class="mobile-menu-head">
+
+      <strong>
+        Меню
+      </strong>
+
+      <button
+        id="closeMobileMenu"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <nav class="mobile-nav">
+
+      <a href="catalog.html">
+        Каталог
+      </a>
+
+      <a href="gifts.html">
+        Подарунки
+      </a>
+
+      <a href="delivery.html">
+        Доставка й оплата
+      </a>
+
+      <a href="reviews.html">
+        Відгуки
+      </a>
+
+      <a href="contacts.html">
+        Контакти
+      </a>
+
+    </nav>
+
+
+    <div class="mobile-menu-contact">
+
+      <strong>
+        Млинів, Рівненська область
+      </strong>
+
+      <a href="tel:+380638330860">
+        +380 63 833 08 60
+      </a>
+
+      <a
+        href="viber://chat?number=%2B380638330860"
+        translate="no"
+      >
+        Viber
+      </a>
+
+      <a
+        href="https://t.me/tockahruskotu"
+        target="_blank"
+        rel="noopener"
+        translate="no"
+      >
+        Telegram
+      </a>
+
+      <a
+        href="https://wa.me/380638330860"
+        target="_blank"
+        rel="noopener"
+        translate="no"
+      >
+        WhatsApp
+      </a>
+
+    </div>
+
+  </aside>
+
+
+  <!-- ======================================================
+       ОСНОВНИЙ ВМІСТ
+       ====================================================== -->
+
+  <main>
+
+    <div class="container breadcrumbs">
+
+      <a href="index.html">
+        Головна
+      </a>
+
+      <span>
+        ›
+      </span>
+
+      <a href="catalog.html">
+        Каталог
+      </a>
+
+      <span>
+        ›
+      </span>
+
+      <span aria-current="page">
+        Оформлення
+      </span>
+
+    </div>
+
+
+    <section class="checkout-page">
+
+      <div class="container">
+
+
+        <div class="checkout-intro">
+
+          <p class="section-kicker">
+            Майже готово
+          </p>
+
+          <h1>
+            Оформлення замовлення
+          </h1>
+
+          <p>
+            Залиште основні дані.
+            Після оформлення ми зв’яжемося з вами,
+            підтвердимо деталі та надішлемо
+            реквізити для оплати у повідомленні.
+          </p>
+
+        </div>
+
+
+        <!-- ПОРОЖНІЙ КОШИК -->
+
+        <div
+          class="checkout-empty"
+          id="checkoutEmpty"
+          hidden
+        >
+
+          <h2>
+            Кошик поки порожній
+          </h2>
+
+          <p>
+            Додайте щось смачненьке,
+            а потім повертайтеся сюди
+            для оформлення.
+          </p>
+
+          <a
+            class="button button-primary"
+            href="catalog.html"
+          >
+            Перейти до каталогу
+          </a>
+
+        </div>
+
+
+        <!-- ОСНОВНИЙ CHECKOUT -->
+
+        <div
+          class="checkout-layout"
+          id="checkoutContent"
+        >
+
+
+          <!-- ==============================================
+               ФОРМА
+               ============================================== -->
+
+          <form
+            class="checkout-form-card"
+            id="checkoutForm"
+            novalidate
+          >
+
+
+            <!-- ПОКУПЕЦЬ -->
+
+            <section class="checkout-section">
+
+              <div class="checkout-section-heading">
+
+                <span>
+                  1
+                </span>
+
+                <h2>
+                  Ваші дані
+                </h2>
+
+              </div>
+
+
+              <div class="checkout-fields-grid">
+
+
+                <div class="checkout-field">
+
+                  <label for="customerName">
+                    Ім’я *
+                  </label>
+
+                  <input
+                    id="customerName"
+                    name="customerName"
+                    type="text"
+                    autocomplete="given-name"
+                    required
+                  >
+
+                </div>
+
+
+                <div class="checkout-field">
+
+                  <label for="customerSurname">
+                    Прізвище *
+                  </label>
+
+                  <input
+                    id="customerSurname"
+                    name="customerSurname"
+                    type="text"
+                    autocomplete="family-name"
+                    required
+                  >
+
+                </div>
+
+
+                <div class="checkout-field full">
+
+                  <label for="customerPhone">
+                    Телефон *
+                  </label>
+
+                  <input
+                    id="customerPhone"
+                    name="customerPhone"
+                    type="tel"
+                    autocomplete="tel"
+                    inputmode="tel"
+                    placeholder="+380..."
+                    required
+                  >
+
+                  <p class="field-note">
+                    Потрібен для підтвердження замовлення.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </section>
+
+
+            <!-- ДОСТАВКА -->
+
+            <section class="checkout-section">
+
+              <div class="checkout-section-heading">
+
+                <span>
+                  2
+                </span>
+
+                <h2>
+                  Доставка
+                </h2>
+
+              </div>
+
+
+              <div class="checkout-fields-grid">
+
+
+                <div class="checkout-field full">
+
+                  <label for="deliveryMethod">
+                    Спосіб доставки *
+                  </label>
+
+                  <select
+                    id="deliveryMethod"
+                    name="deliveryMethod"
+                    required
+                  >
+
+                    <option value="">
+                      Завантажуємо варіанти...
+                    </option>
+
+                  </select>
+
+                </div>
+
+
+                <div
+                  class="checkout-field"
+                  id="regionField"
+                  hidden
+                >
+
+                  <label for="customerRegion">
+                    Область *
+                  </label>
+
+                  <input
+                    id="customerRegion"
+                    name="customerRegion"
+                    type="text"
+                    autocomplete="address-level1"
+                  >
+
+                </div>
+
+
+                <div
+                  class="checkout-field"
+                  id="cityField"
+                  hidden
+                >
+
+                  <label for="customerCity">
+                    Місто / населений пункт *
+                  </label>
+
+                  <input
+                    id="customerCity"
+                    name="customerCity"
+                    type="text"
+                    autocomplete="address-level2"
+                  >
+
+                </div>
+
+
+                <div
+                  class="checkout-field full"
+                  id="branchField"
+                  hidden
+                >
+
+                  <label
+                    for="deliveryBranch"
+                    id="deliveryBranchLabel"
+                  >
+                    Відділення / поштомат *
+                  </label>
+
+                  <input
+                    id="deliveryBranch"
+                    name="deliveryBranch"
+                    type="text"
+                  >
+
+                </div>
+
+
+                <div class="checkout-field full">
+
+                  <div
+                    class="delivery-note"
+                    id="deliveryNote"
+                  ></div>
+
+                </div>
+
+
+                <div class="checkout-field full">
+
+                  <label for="desiredDate">
+                    Бажана дата отримання
+                  </label>
+
+                  <input
+                    id="desiredDate"
+                    name="desiredDate"
+                    type="date"
+                  >
+
+                  <p class="field-note">
+                    Необов’язково.
+                    Якщо замовлення потрібне до певної дати —
+                    вкажіть її тут.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </section>
+
+
+            <!-- ОПЛАТА -->
+
+            <section class="checkout-section">
+
+              <div class="checkout-section-heading">
+
+                <span>
+                  3
+                </span>
+
+                <h2>
+                  Оплата
+                </h2>
+
+              </div>
+
+
+              <div class="checkout-field">
+
+                <label for="paymentMethod">
+                  Спосіб оплати *
+                </label>
+
+                <select
+                  id="paymentMethod"
+                  name="paymentMethod"
+                  required
+                >
+
+                  <option value="">
+                    Спочатку оберіть доставку
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              <div
+                class="payment-note"
+                id="paymentNote"
+              ></div>
+
+
+              <div
+                class="checkout-iban"
+                id="checkoutIban"
+                hidden
+              >
+
+                <small>
+                  IBAN
+                </small>
+
+                <strong>
+                  UA033052990000026001000725967
+                </strong>
+
+                <p>
+                  Спочатку оформіть замовлення,
+                  щоб отримати його номер.
+                  При самостійній оплаті
+                  обов’язково вкажіть номер замовлення
+                  у призначенні платежу.
+                </p>
+
+                <button
+                  class="copy-checkout-iban"
+                  id="copyCheckoutIban"
+                  type="button"
+                >
+                  Скопіювати IBAN
+                </button>
+
+              </div>
+
+            </section>
+
+
+            <!-- ДОДАТКОВО -->
+
+            <section class="checkout-section">
+
+              <div class="checkout-section-heading">
+
+                <span>
+                  4
+                </span>
+
+                <h2>
+                  Додатково
+                </h2>
+
+                <p>
+                  Лише якщо це потрібно для вашого замовлення.
+                </p>
+
+              </div>
+
+
+              <div class="checkout-options">
+
+
+                <label class="checkout-option">
+
+                  <input
+                    id="isGift"
+                    name="isGift"
+                    type="checkbox"
+                  >
+
+                  <span>
+
+                    <strong>
+                      Це подарунок
+                    </strong>
+
+                    <span>
+                      Після оформлення ми зв’яжемося
+                      з вами та узгодимо всі деталі подарунка.
+                    </span>
+
+                  </span>
+
+                </label>
+
+
+                <div
+                  class="gift-simple-note"
+                  id="giftSimpleNote"
+                  hidden
+                >
+                  Можемо додати безкоштовну листівку,
+                  не вкладати інформацію про вартість,
+                  відправити подарунок безпосередньо отримувачу
+                  та допомогти організувати сюрприз.
+                  Усі деталі уточнимо особисто.
+                </div>
+
+
+                <label class="checkout-option">
+
+                  <input
+                    id="hasCertificate"
+                    name="hasCertificate"
+                    type="checkbox"
+                  >
+
+                  <span>
+
+                    <strong>
+                      Є подарунковий сертифікат
+                    </strong>
+
+                    <span>
+                      Позначте, якщо хочете використати
+                      сертифікат для цього замовлення.
+                    </span>
+
+                  </span>
+
+                </label>
+
+
+                <div
+                  class="checkout-field certificate-field"
+                  id="certificateCodeField"
+                  hidden
+                >
+
+                  <label for="certificateCode">
+                    Код сертифіката *
+                  </label>
+
+                  <input
+                    id="certificateCode"
+                    name="certificateCode"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="Введіть код сертифіката"
+                  >
+
+                </div>
+
+              </div>
+
+            </section>
+
+
+            <!-- КОМЕНТАР -->
+
+            <section class="checkout-section">
+
+              <div class="checkout-section-heading">
+
+                <span>
+                  5
+                </span>
+
+                <h2>
+                  Коментар
+                </h2>
+
+              </div>
+
+
+              <div class="checkout-field">
+
+                <label for="customerComment">
+                  Коментар до замовлення
+                </label>
+
+                <textarea
+                  id="customerComment"
+                  name="customerComment"
+                  placeholder="Наприклад: зателефонувати після 17:00 або інше важливе уточнення"
+                ></textarea>
+
+              </div>
+
+            </section>
+
+
+            <button
+              class="checkout-submit"
+              id="submitOrderButton"
+              type="submit"
+            >
+              Підтвердити замовлення
+            </button>
+
+
+            <div
+              class="order-status"
+              id="orderStatus"
+              aria-live="polite"
+            ></div>
+
+
+            <p class="checkout-legal">
+              Натискаючи «Підтвердити замовлення»,
+              ви погоджуєтесь з
+              <a href="terms.html" target="_blank">
+                умовами замовлення
+              </a>
+              та
+              <a href="privacy.html" target="_blank">
+                політикою конфіденційності
+              </a>.
+            </p>
+
+          </form>
+
+
+          <!-- ==============================================
+               ПІДСУМОК
+               ============================================== -->
+
+          <aside class="checkout-summary">
+
+            <h2>
+              Ваше замовлення
+            </h2>
+
+            <p class="checkout-summary-subtitle">
+              Перевірте товари перед підтвердженням.
+            </p>
+
+
+            <div
+              class="checkout-summary-items"
+              id="checkoutSummaryItems"
+            ></div>
+
+
+            <div class="checkout-summary-divider"></div>
+
+
+            <div class="checkout-total-line">
+
+              <span>
+                Сума товарів
+              </span>
+
+              <strong id="checkoutSubtotal">
+                0 грн
+              </strong>
+
+            </div>
+
+
+            <div class="checkout-total-line">
+
+              <span>
+                Доставка
+              </span>
+
+              <strong id="checkoutDeliveryPrice">
+                —
+              </strong>
+
+            </div>
+
+
+            <div class="checkout-total-line final">
+
+              <span>
+                Разом
+              </span>
+
+              <strong id="checkoutTotal">
+                0 грн
+              </strong>
+
+            </div>
+
+
+            <div
+              class="checkout-progress"
+              id="checkoutProgress"
+            ></div>
+
+
+            <a
+              class="checkout-edit-cart"
+              href="catalog.html"
+            >
+              ← Повернутися до покупок
+            </a>
+
+          </aside>
+
+        </div>
+
+
+        <!-- ==================================================
+             УСПІШНЕ ЗАМОВЛЕННЯ
+             ================================================== -->
+
+        <section
+          class="checkout-success"
+          id="checkoutSuccess"
+          hidden
+        >
+
+          <p class="section-kicker">
+            Замовлення прийнято
+          </p>
+
+          <h2>
+            Дякуємо за замовлення
+          </h2>
+
+
+          <div
+            class="checkout-success-number"
+            id="successOrderNumber"
+          ></div>
+
+
+          <p>
+            Ми зв’яжемося з вами,
+            підтвердимо деталі
+            та надішлемо реквізити
+            для оплати у повідомленні.
+          </p>
+
+
+          <div
+            class="success-payment-box"
+            id="successPaymentBox"
+            hidden
+          >
+
+            <strong>
+              Якщо бажаєте оплатити самостійно
+            </strong>
+
+            <div class="success-iban">
+              UA033052990000026001000725967
+            </div>
+
+            <p id="successPaymentPurpose">
+            </p>
+
+          </div>
+
+
+          <div class="checkout-success-actions">
+
+            <a
+              class="button button-primary"
+              href="catalog.html"
+            >
+              Повернутися до каталогу
+            </a>
+
+            <a
+              class="button button-secondary"
+              href="index.html"
+            >
+              На головну
+            </a>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ======================================================
+       КОШИК
+       ====================================================== -->
+
+  <div
+    class="cart-overlay"
+    id="cartOverlay"
+    hidden
+  ></div>
+
+
+  <aside
+    class="cart-panel"
+    id="cartPanel"
+    aria-hidden="true"
+  >
+
+    <div class="cart-panel-head">
+
+      <div>
+
+        <p class="section-kicker">
+          Ваше замовлення
+        </p>
+
+        <h2>
+          Кошик
+        </h2>
+
+      </div>
+
+      <button
+        id="closeCartButton"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div
+      class="cart-items"
+      id="cartItems"
+    ></div>
+
+
+    <div
+      class="cart-free-delivery"
+      id="cartProgress"
+    ></div>
+
+
+    <div
+      class="cart-suggestions"
+      id="cartSuggestions"
+    ></div>
+
+
+    <div class="cart-panel-footer">
+
+      <div class="cart-total-row">
+
+        <span>
+          Разом
+        </span>
+
+        <strong id="cartTotal">
+          0 грн
+        </strong>
+
+      </div>
+
+
+      <a
+        class="button button-primary checkout-link"
+        id="checkoutButton"
+        href="checkout.html"
+      >
+        Оформити замовлення
+      </a>
+
+
+      <button
+        class="continue-shopping-button"
+        id="continueShoppingButton"
+        type="button"
+      >
+        Продовжити покупки
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+
+  <!-- ======================================================
+       ФУТЕР
+       ====================================================== -->
+
+  <footer class="site-footer">
+
+    <div class="container footer-grid">
+
+
+      <div class="footer-column footer-brand">
+
+        <a href="index.html">
+
+          <img
+            id="footerLogo"
+            src="images/brand/logo.webp"
+            alt="Точка Хрускоту"
+            width="76"
+            height="76"
+            loading="lazy"
+          >
+
+        </a>
+
+        <strong id="footerStoreName">
+          Точка Хрускоту
+        </strong>
+
+        <p>
+          Домашнє виробництво.
+          Селище Млинів, Рівненська область.
+          Готуємо під замовлення
+          та доставляємо по Україні.
+        </p>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h2>
+          Покупцям
+        </h2>
+
+        <a href="catalog.html">
+          Каталог
+        </a>
+
+        <a href="gifts.html">
+          Подарунки
+        </a>
+
+        <a href="delivery.html">
+          Доставка й оплата
+        </a>
+
+        <a href="reviews.html">
+          Відгуки
+        </a>
+
+        <a href="contacts.html">
+          Контакти
+        </a>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h2>
+          Зв’язок
+        </h2>
+
+        <a href="tel:+380638330860">
+          +380 63 833 08 60
+        </a>
+
+        <a
+          href="viber://chat?number=%2B380638330860"
+          translate="no"
+        >
+          Viber
+        </a>
+
+        <a
+          href="https://t.me/tockahruskotu"
+          target="_blank"
+          rel="noopener"
+          translate="no"
+        >
+          Telegram
+        </a>
+
+        <a
+          href="https://wa.me/380638330860"
+          target="_blank"
+          rel="noopener"
+          translate="no"
+        >
+          WhatsApp
+        </a>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h2>
+          Документи
+        </h2>
+
+        <a href="terms.html">
+          Умови замовлення
+        </a>
+
+        <a href="privacy.html">
+          Політика конфіденційності
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div class="container footer-social-section">
+
+      <h2>
+        Ми онлайн
+      </h2>
+
+      <div class="footer-social-links">
+
+        <a
+          href="https://instagram.com/tockahruskotu"
+          target="_blank"
+          rel="noopener"
+          translate="no"
+        >
+          Instagram
+        </a>
+
+        <a
+          href="https://www.facebook.com/tockahruskotu/"
+          target="_blank"
+          rel="noopener"
+          translate="no"
+        >
+          Facebook
+        </a>
+
+        <a
+          href="https://www.tiktok.com/@tockahruskotu"
+          target="_blank"
+          rel="noopener"
+          translate="no"
+        >
+          TikTok
+        </a>
+
+        <a
+          href="https://www.youtube.com/@ТочкаХрускоту"
+          target="_blank"
+          rel="noopener"
+          translate="no"
+        >
+          YouTube
+        </a>
+
+        <a
+          href="https://share.google/Fc4vC6bW6pVCzwFYW"
+          target="_blank"
+          rel="noopener"
+          translate="no"
+        >
+          Google
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div class="container footer-publishing">
+
+      <span>
+        Публікація відео:
+      </span>
+
+      <a
+        href="tiktok-share.html"
+        translate="no"
+      >
+        TikTok
+      </a>
+
+      <span>
+        |
+      </span>
+
+      <a
+        href="youtube-share.html"
+        translate="no"
+      >
+        YouTube
+      </a>
+
+    </div>
+
+
+    <div class="container footer-bottom">
+
+      <span>
+        © Точка Хрускоту, 2026
+      </span>
+
+      <span>
+        Млинів • Дубно • Рівне • Доставка по Україні
+      </span>
+
+    </div>
+
+  </footer>
+
+
+  <!-- ======================================================
+       СПІЛЬНА ЛОГІКА САЙТУ
+       ====================================================== -->
+
+  <script
+    src="site-v2.js?v=20260914-13"
+    defer
+  ></script>
+
+
+  <!-- ======================================================
+       CHECKOUT
+       ====================================================== -->
+
+  <script>
+
+    (function () {
+
+      "use strict";
+
+
+      const CHECKOUT_API_URL =
+        "https://script.google.com/macros/s/AKfycbzCgvAMAmqrsK-KsGcPMfx60kvQbZVJII91WVZKIn-KF7bFIA3HKdKe0JmaBu4RZtX31Q/exec";
+
+
+      const CART_KEY_CURRENT =
+        "tochka_hruskotu_cart_v3";
+
+      const CART_KEY_OLD =
+        "tochka_hruskotu_cart_v4";
+
+      const REQUEST_KEY =
+        "tochka_hruskotu_request_id_checkout_v1";
+
+      const IBAN =
+        "UA033052990000026001000725967";
+
+
+      let checkoutStore = null;
+      let checkoutCart = [];
+      let isSubmitting = false;
+
+
+      const fallbackDelivery = [
+
+        {
+          code: "NOVA_POSHTA",
+          name: "Нова пошта",
+          requireRegion: true,
+          requireCity: true,
+          requireBranch: true,
+          branchLabel: "Відділення або поштомат",
+          branchPlaceholder:
+            "Наприклад: відділення №1 або поштомат №12345",
+          note:
+            "Вартість доставки — за тарифами перевізника.",
+          freeDeliveryFrom: 2000
+        },
+
+        {
+          code: "UKRPOSHTA_PRIORITY",
+          name: "Укрпошта — Пріоритетний",
+          requireRegion: true,
+          requireCity: true,
+          requireBranch: true,
+          branchLabel: "Поштовий індекс або відділення",
+          branchPlaceholder:
+            "Наприклад: 35100 або відділення №1",
+          note:
+            "Вартість доставки — за тарифами перевізника.",
+          freeDeliveryFrom: 2000
+        },
+
+        {
+          code: "LOCAL_MLYNIV",
+          name: "Млинів — локальна доставка",
+          requireRegion: false,
+          requireCity: false,
+          requireBranch: false,
+          note:
+            "Безкоштовна локальна доставка у селищі Млинів."
+        },
+
+        {
+          code: "LOCAL_DUBNO",
+          name: "Дубно — доставка нашим маршрутом",
+          requireRegion: false,
+          requireCity: false,
+          requireBranch: false,
+          note:
+            "Безкоштовно за попереднім погодженням у дні наших маршрутів."
+        },
+
+        {
+          code: "LOCAL_RIVNE",
+          name: "Рівне — доставка нашим маршрутом",
+          requireRegion: false,
+          requireCity: false,
+          requireBranch: false,
+          note:
+            "Безкоштовно за попереднім погодженням у дні наших маршрутів."
+        },
+
+        {
+          code: "PICKUP",
+          name: "Самовивіз у Млинові",
+          requireRegion: false,
+          requireCity: false,
+          requireBranch: false,
+          note:
+            "Безкоштовно. Місце і час узгодимо після підтвердження готовності."
+        }
+
+      ];
+
+
+      const fallbackPayments = [
+
+        {
+          code: "IBAN_FOP",
+          name: "Оплата на рахунок",
+          note:
+            "Після оформлення ми зв’яжемося з вами, підтвердимо деталі та надішлемо реквізити для оплати у повідомленні.",
+          forPostalDelivery: true,
+          forPickup: true
+        },
+
+        {
+          code: "CASH_PICKUP",
+          name: "Готівкою при самовивозі",
+          note:
+            "Оплата готівкою під час самовивозу.",
+          forPostalDelivery: false,
+          forPickup: true
+        }
+
+      ];
+
+
+      function $(id) {
+        return document.getElementById(id);
+      }
+
+
+      function escapeHtml(value) {
+
+        return String(
+          value ?? ""
+        )
+          .replaceAll(
+            "&",
+            "&amp;"
+          )
+          .replaceAll(
+            "<",
+            "&lt;"
+          )
+          .replaceAll(
+            ">",
+            "&gt;"
+          )
+          .replaceAll(
+            '"',
+            "&quot;"
+          )
+          .replaceAll(
+            "'",
+            "&#039;"
+          );
+
+      }
+
+
+      function formatMoney(value) {
+
+        return new Intl.NumberFormat(
+          "uk-UA",
+          {
+            maximumFractionDigits: 2
+          }
+        ).format(
+          Number(value) || 0
+        ) + " грн";
+
+      }
+
+
+      function readJson(key) {
+
+        try {
+
+          const raw =
+            localStorage.getItem(key);
+
+          if (raw === null) {
+            return null;
+          }
+
+          return JSON.parse(raw);
+
+        } catch (error) {
+
+          console.warn(
+            "Не вдалося прочитати:",
+            key,
+            error
+          );
+
+          return null;
+
+        }
+
+      }
+
+
+      function readCart() {
+
+        const current =
+          readJson(
+            CART_KEY_CURRENT
+          );
+
+
+        if (
+          Array.isArray(current)
+        ) {
+          return current;
+        }
+
+
+        const old =
+          readJson(
+            CART_KEY_OLD
+          );
+
+
+        return Array.isArray(old)
+          ? old
+          : [];
+
+      }
+
+
+      function saveEmptyCart() {
+
+        localStorage.setItem(
+          CART_KEY_CURRENT,
+          "[]"
+        );
+
+
+        if (
+          localStorage.getItem(
+            CART_KEY_OLD
+          ) !== null
+        ) {
+
+          localStorage.setItem(
+            CART_KEY_OLD,
+            "[]"
+          );
+
+        }
+
+      }
+
+
+      function cartTotal() {
+
+        return checkoutCart.reduce(
+          function (
+            sum,
+            item
+          ) {
+
+            return sum +
+              (
+                Number(
+                  item.price
+                ) || 0
+              ) *
+              (
+                Number(
+                  item.quantity
+                ) || 0
+              );
+
+          },
+          0
+        );
+
+      }
+
+
+      function getRequestId() {
+
+        let id =
+          sessionStorage.getItem(
+            REQUEST_KEY
+          );
+
+
+        if (!id) {
+
+          if (
+            window.crypto &&
+            typeof window.crypto.randomUUID ===
+              "function"
+          ) {
+
+            id =
+              window.crypto.randomUUID();
+
+          } else {
+
+            id =
+              "ORDER-" +
+              Date.now() +
+              "-" +
+              Math.random()
+                .toString(36)
+                .slice(2);
+
+          }
+
+
+          sessionStorage.setItem(
+            REQUEST_KEY,
+            id
+          );
+
+        }
+
+
+        return id;
+
+      }
+
+
+      function clearRequestId() {
+
+        sessionStorage.removeItem(
+          REQUEST_KEY
+        );
+
+      }
+
+
+      function setStatus(
+        type,
+        message
+      ) {
+
+        const box =
+          $("orderStatus");
+
+
+        box.className =
+          "order-status" +
+          (
+            type
+              ? " is-" + type
+              : ""
+          );
+
+
+        box.textContent =
+          message || "";
+
+      }
+
+
+      function booleanValue(
+        value,
+        fallback
+      ) {
+
+        if (
+          typeof value ===
+          "boolean"
+        ) {
+          return value;
+        }
+
+
+        const text =
+          String(
+            value ?? ""
+          )
+            .trim()
+            .toLowerCase();
+
+
+        if (
+          [
+            "так",
+            "true",
+            "1",
+            "yes"
+          ].includes(text)
+        ) {
+          return true;
+        }
+
+
+        if (
+          [
+            "ні",
+            "false",
+            "0",
+            "no"
+          ].includes(text)
+        ) {
+          return false;
+        }
+
+
+        return fallback;
+
+      }
+
+
+      function activeItems(
+        items
+      ) {
+
+        return (
+          Array.isArray(items)
+            ? items
+            : []
+        ).filter(
+          function (item) {
+
+            if (
+              item.active ===
+              undefined
+            ) {
+              return true;
+            }
+
+            return booleanValue(
+              item.active,
+              true
+            );
+
+          }
+        );
+
+      }
+
+
+      function deliveryMethods() {
+
+        const items =
+          activeItems(
+            checkoutStore
+              ?.deliveryMethods
+          );
+
+
+        return items.length
+          ? items
+          : fallbackDelivery;
+
+      }
+
+
+      function paymentMethods() {
+
+        let items =
+          activeItems(
+            checkoutStore
+              ?.paymentMethods
+          );
+
+
+        items =
+          items.filter(
+            function (item) {
+
+              return ![
+                "CARD_FOP",
+                "CONTACT_SELLER"
+              ].includes(
+                item.code
+              );
+
+            }
+          );
+
+
+        return items.length
+          ? items
+          : fallbackPayments;
+
+      }
+
+
+      function selectedDelivery() {
+
+        return deliveryMethods()
+          .find(
+            function (item) {
+
+              return item.code ===
+                $("deliveryMethod").value;
+
+            }
+          ) || null;
+
+      }
+
+
+      function isPostalDelivery(
+        code
+      ) {
+
+        return [
+          "NOVA_POSHTA",
+          "UKRPOSHTA_PRIORITY"
+        ].includes(code);
+
+      }
+
+
+      function isLocalDelivery(
+        code
+      ) {
+
+        return [
+          "LOCAL_MLYNIV",
+          "LOCAL_DUBNO",
+          "LOCAL_RIVNE",
+          "PICKUP"
+        ].includes(code);
+
+      }
+
+
+      function populateDelivery() {
+
+        const select =
+          $("deliveryMethod");
+
+
+        select.innerHTML =
+          '<option value="">' +
+          "Оберіть спосіб доставки" +
+          "</option>" +
+          deliveryMethods()
+            .map(
+              function (item) {
+
+                return (
+                  '<option value="' +
+                  escapeHtml(
+                    item.code
+                  ) +
+                  '">' +
+                  escapeHtml(
+                    item.name
+                  ) +
+                  "</option>"
+                );
+
+              }
+            )
+            .join("");
+
+      }
+
+
+      function updateDeliveryFields() {
+
+        const method =
+          selectedDelivery();
+
+
+        const regionField =
+          $("regionField");
+
+        const cityField =
+          $("cityField");
+
+        const branchField =
+          $("branchField");
+
+
+        const regionInput =
+          $("customerRegion");
+
+        const cityInput =
+          $("customerCity");
+
+        const branchInput =
+          $("deliveryBranch");
+
+
+        const needRegion =
+          Boolean(
+            method
+          ) &&
+          booleanValue(
+            method.requireRegion,
+            false
+          );
+
+
+        const needCity =
+          Boolean(
+            method
+          ) &&
+          booleanValue(
+            method.requireCity,
+            false
+          );
+
+
+        const needBranch =
+          Boolean(
+            method
+          ) &&
+          booleanValue(
+            method.requireBranch,
+            false
+          );
+
+
+        regionField.hidden =
+          !needRegion;
+
+        cityField.hidden =
+          !needCity;
+
+        branchField.hidden =
+          !needBranch;
+
+
+        regionInput.required =
+          needRegion;
+
+        cityInput.required =
+          needCity;
+
+        branchInput.required =
+          needBranch;
+
+
+        if (!needRegion) {
+          regionInput.value = "";
+        }
+
+        if (!needCity) {
+          cityInput.value = "";
+        }
+
+        if (!needBranch) {
+          branchInput.value = "";
+        }
+
+
+        if (method) {
+
+          $("deliveryBranchLabel")
+            .textContent =
+              (
+                method.branchLabel ||
+                "Відділення / поштомат"
+              ) +
+              (
+                needBranch
+                  ? " *"
+                  : ""
+              );
+
+
+          branchInput.placeholder =
+            method.branchPlaceholder ||
+            "";
+
+
+          $("deliveryNote")
+            .textContent =
+              method.note || "";
+
+        } else {
+
+          $("deliveryNote")
+            .textContent = "";
+
+        }
+
+
+        populatePayment();
+        renderDeliveryPrice();
+
+      }
+
+
+      function populatePayment() {
+
+        const delivery =
+          selectedDelivery();
+
+        const select =
+          $("paymentMethod");
+
+
+        if (!delivery) {
+
+          select.innerHTML =
+            '<option value="">' +
+            "Спочатку оберіть доставку" +
+            "</option>";
+
+          $("paymentNote")
+            .textContent = "";
+
+          $("checkoutIban")
+            .hidden = true;
+
+          return;
+
+        }
+
+
+        const pickup =
+          delivery.code ===
+          "PICKUP";
+
+
+        let allowed =
+          paymentMethods()
+            .filter(
+              function (item) {
+
+                if (pickup) {
+
+                  return booleanValue(
+                    item.forPickup,
+                    true
+                  );
+
+                }
+
+
+                return booleanValue(
+                  item.forPostalDelivery,
+                  true
+                );
+
+              }
+            );
+
+
+        if (!pickup) {
+
+          allowed =
+            allowed.filter(
+              function (item) {
+
+                return item.code !==
+                  "CASH_PICKUP";
+
+              }
+            );
+
+        }
+
+
+        select.innerHTML =
+          '<option value="">' +
+          "Оберіть спосіб оплати" +
+          "</option>" +
+          allowed
+            .map(
+              function (item) {
+
+                const name =
+                  item.code ===
+                  "IBAN_FOP"
+                    ? "Оплата на рахунок"
+                    : item.name;
+
+
+                return (
+                  '<option value="' +
+                  escapeHtml(
+                    item.code
+                  ) +
+                  '">' +
+                  escapeHtml(
+                    name
+                  ) +
+                  "</option>"
+                );
+
+              }
+            )
+            .join("");
+
+
+        updatePaymentNote();
+
+      }
+
+
+      function updatePaymentNote() {
+
+        const code =
+          $("paymentMethod").value;
+
+
+        const item =
+          paymentMethods()
+            .find(
+              function (payment) {
+
+                return payment.code ===
+                  code;
+
+              }
+            );
+
+
+        $("paymentNote")
+          .textContent =
+            item?.note || "";
+
+
+        $("checkoutIban")
+          .hidden =
+            code !==
+            "IBAN_FOP";
+
+      }
+
+
+      function getProductFromStore(
+        code
+      ) {
+
+        return (
+          checkoutStore
+            ?.products ||
+          []
+        ).find(
+          function (product) {
+
+            return product.code ===
+              code;
+
+          }
+        ) || null;
+
+      }
+
+
+      function itemPhoto(
+        item
+      ) {
+
+        if (item.photo) {
+          return item.photo;
+        }
+
+
+        const product =
+          getProductFromStore(
+            item.code
+          );
+
+
+        if (
+          Array.isArray(
+            product?.photos
+          ) &&
+          product.photos[0]
+        ) {
+          return product.photos[0];
+        }
+
+
+        return "images/brand/logo.webp";
+
+      }
+
+
+      function renderSummary() {
+
+        checkoutCart =
+          readCart();
+
+
+        const empty =
+          checkoutCart.length ===
+          0;
+
+
+        $("checkoutEmpty")
+          .hidden =
+            !empty;
+
+
+        $("checkoutContent")
+          .hidden =
+            empty;
+
+
+        if (empty) {
+
+          $("pageLoader")
+            ?.classList
+            .add(
+              "is-hidden"
+            );
+
+          return;
+
+        }
+
+
+        $("checkoutSummaryItems")
+          .innerHTML =
+            checkoutCart
+              .map(
+                function (item) {
+
+                  const extras = [];
+
+
+                  if (
+                    item.variantValue
+                  ) {
+
+                    extras.push(
+                      escapeHtml(
+                        (
+                          item.variantType ||
+                          "Варіант"
+                        ) +
+                        ": " +
+                        item.variantValue
+                      )
+                    );
+
+                  }
+
+
+                  if (
+                    Array.isArray(
+                      item.sauces
+                    ) &&
+                    item.sauces.length
+                  ) {
+
+                    extras.push(
+                      "Соус: " +
+                      item.sauces
+                        .map(
+                          escapeHtml
+                        )
+                        .join(
+                          ", "
+                        )
+                    );
+
+                  }
+
+
+                  extras.push(
+                    "Кількість: " +
+                    (
+                      Number(
+                        item.quantity
+                      ) || 1
+                    )
+                  );
+
+
+                  return (
+                    '<div class="checkout-summary-item">' +
+
+                    '<div class="checkout-summary-photo">' +
+                    '<img src="' +
+                    escapeHtml(
+                      itemPhoto(item)
+                    ) +
+                    '" alt="">' +
+                    "</div>" +
+
+                    '<div class="checkout-summary-item-text">' +
+                    "<strong>" +
+                    escapeHtml(
+                      item.name ||
+                      item.code
+                    ) +
+                    "</strong>" +
+                    "<span>" +
+                    extras.join(
+                      "<br>"
+                    ) +
+                    "</span>" +
+                    "</div>" +
+
+                    '<div class="checkout-summary-price">' +
+                    formatMoney(
+                      (
+                        Number(
+                          item.price
+                        ) || 0
+                      ) *
+                      (
+                        Number(
+                          item.quantity
+                        ) || 0
+                      )
+                    ) +
+                    "</div>" +
+
+                    "</div>"
+                  );
+
+                }
+              )
+              .join("");
+
+
+        const total =
+          cartTotal();
+
+
+        $("checkoutSubtotal")
+          .textContent =
+            formatMoney(total);
+
+
+        $("checkoutTotal")
+          .textContent =
+            formatMoney(total);
+
+
+        renderDeliveryPrice();
+
+
+        const threshold =
+          Number(
+            checkoutStore
+              ?.settings
+              ?.freeDeliveryFrom
+          ) || 2000;
+
+
+        if (
+          total >= threshold
+        ) {
+
+          $("checkoutProgress")
+            .textContent =
+              "Для поштового замовлення від " +
+              formatMoney(
+                threshold
+              ) +
+              " доставка у відділення або поштомат — за наш рахунок.";
+
+        } else {
+
+          $("checkoutProgress")
+            .textContent =
+              "До безкоштовної доставки у відділення або поштомат залишилося " +
+              formatMoney(
+                threshold -
+                total
+              ) +
+              ".";
+
+        }
+
+
+        const count =
+          checkoutCart.reduce(
+            function (
+              sum,
+              item
+            ) {
+
+              return sum +
+                (
+                  Number(
+                    item.quantity
+                  ) || 0
+                );
+
+            },
+            0
+          );
+
+
+        if ($("cartCount")) {
+          $("cartCount")
+            .textContent =
+              count;
+        }
+
+      }
+
+
+      function renderDeliveryPrice() {
+
+        const method =
+          selectedDelivery();
+
+
+        if (!method) {
+
+          $("checkoutDeliveryPrice")
+            .textContent = "—";
+
+          return;
+
+        }
+
+
+        if (
+          isLocalDelivery(
+            method.code
+          )
+        ) {
+
+          $("checkoutDeliveryPrice")
+            .textContent =
+              "Безкоштовно";
+
+          return;
+
+        }
+
+
+        if (
+          isPostalDelivery(
+            method.code
+          )
+        ) {
+
+          const freeFrom =
+            Number(
+              method.freeDeliveryFrom
+            ) || 2000;
+
+
+          if (
+            cartTotal() >=
+            freeFrom
+          ) {
+
+            $("checkoutDeliveryPrice")
+              .textContent =
+                "0 грн*";
+
+          } else {
+
+            $("checkoutDeliveryPrice")
+              .textContent =
+                "За тарифами";
+
+          }
+
+          return;
+
+        }
+
+
+        $("checkoutDeliveryPrice")
+          .textContent =
+            "Уточнимо";
+
+      }
+
+
+      function toggleGift() {
+
+        $("giftSimpleNote")
+          .hidden =
+            !$("isGift").checked;
+
+      }
+
+
+      function toggleCertificate() {
+
+        const checked =
+          $("hasCertificate")
+            .checked;
+
+
+        $("certificateCodeField")
+          .hidden =
+            !checked;
+
+
+        $("certificateCode")
+          .required =
+            checked;
+
+
+        if (!checked) {
+
+          $("certificateCode")
+            .value = "";
+
+        }
+
+      }
+
+
+      function phoneIsValid() {
+
+        const digits =
+          $("customerPhone")
+            .value
+            .replace(
+              /\D/g,
+              ""
+            );
+
+
+        return digits.length >= 10;
+
+      }
+
+
+      function createPayload() {
+
+        const giftEnabled =
+          $("isGift").checked;
+
+
+        return {
+
+          requestId:
+            getRequestId(),
+
+          customer: {
+
+            name:
+              $("customerName")
+                .value
+                .trim(),
+
+            surname:
+              $("customerSurname")
+                .value
+                .trim(),
+
+            phone:
+              $("customerPhone")
+                .value
+                .trim(),
+
+            region:
+              $("customerRegion")
+                .value
+                .trim(),
+
+            city:
+              $("customerCity")
+                .value
+                .trim()
+
+          },
+
+          recipient: {},
+
+          delivery: {
+
+            code:
+              $("deliveryMethod")
+                .value,
+
+            branch:
+              $("deliveryBranch")
+                .value
+                .trim()
+
+          },
+
+          paymentCode:
+            $("paymentMethod")
+              .value,
+
+          desiredDate:
+            $("desiredDate")
+              .value,
+
+          gift:
+            giftEnabled
+              ? {
+                  isGift: true
+                }
+              : {
+                  isGift: false
+                },
+
+          certificateCode:
+            $("hasCertificate")
+              .checked
+                ? $("certificateCode")
+                    .value
+                    .trim()
+                : "",
+
+          comment:
+            $("customerComment")
+              .value
+              .trim(),
+
+          source:
+            "GitHub Pages — Точка Хрускоту v2",
+
+          items:
+            checkoutCart.map(
+              function (item) {
+
+                return {
+
+                  code:
+                    item.code,
+
+                  quantity:
+                    Number(
+                      item.quantity
+                    ) || 1,
+
+                  variantValue:
+                    item.variantValue ||
+                    "",
+
+                  sauces:
+                    Array.isArray(
+                      item.sauces
+                    )
+                      ? item.sauces
+                      : []
+
+                };
+
+              }
+            )
+
+        };
+
+      }
+
+
+      async function submitOrder(
+        event
+      ) {
+
+        event.preventDefault();
+
+
+        if (isSubmitting) {
+          return;
+        }
+
+
+        checkoutCart =
+          readCart();
+
+
+        if (
+          !checkoutCart.length
+        ) {
+
+          setStatus(
+            "error",
+            "Кошик порожній."
+          );
+
+          return;
+
+        }
+
+
+        const form =
+          $("checkoutForm");
+
+
+        if (
+          !form.checkValidity()
+        ) {
+
+          form.reportValidity();
+
+          setStatus(
+            "error",
+            "Заповніть, будь ласка, усі обов’язкові поля."
+          );
+
+          return;
+
+        }
+
+
+        if (
+          !phoneIsValid()
+        ) {
+
+          $("customerPhone")
+            .focus();
+
+
+          setStatus(
+            "error",
+            "Перевірте, будь ласка, номер телефону."
+          );
+
+          return;
+
+        }
+
+
+        if (
+          $("hasCertificate")
+            .checked &&
+          !$("certificateCode")
+            .value
+            .trim()
+        ) {
+
+          $("certificateCode")
+            .focus();
+
+
+          setStatus(
+            "error",
+            "Вкажіть код сертифіката."
+          );
+
+          return;
+
+        }
+
+
+        isSubmitting = true;
+
+
+        const button =
+          $("submitOrderButton");
+
+
+        button.disabled =
+          true;
+
+        button.textContent =
+          "Надсилаємо замовлення...";
+
+
+        setStatus(
+          "loading",
+          "Передаємо замовлення. Не закривайте сторінку."
+        );
+
+
+        const totalBeforeSubmit =
+          cartTotal();
+
+
+        const paymentBeforeSubmit =
+          $("paymentMethod")
+            .value;
+
+
+        try {
+
+          const body =
+            new URLSearchParams();
+
+
+          body.set(
+            "payload",
+            JSON.stringify(
+              createPayload()
+            )
+          );
+
+
+          const response =
+            await fetch(
+              CHECKOUT_API_URL,
+              {
+                method: "POST",
+                body:
+                  body,
+                redirect:
+                  "follow"
+              }
+            );
+
+
+          const text =
+            await response.text();
+
+
+          let result;
+
+
+          try {
+
+            result =
+              JSON.parse(
+                text
+              );
+
+          } catch (error) {
+
+            throw new Error(
+              "Сервер повернув некоректну відповідь."
+            );
+
+          }
+
+
+          if (
+            !result?.success
+          ) {
+
+            throw new Error(
+              result?.error ||
+              "Не вдалося оформити замовлення."
+            );
+
+          }
+
+
+          const orderNumber =
+            result.orderNumber ||
+            "—";
+
+
+          if (
+            typeof window.gtag ===
+            "function"
+          ) {
+
+            window.gtag(
+              "event",
+              "purchase",
+              {
+
+                transaction_id:
+                  orderNumber,
+
+                value:
+                  totalBeforeSubmit,
+
+                currency:
+                  "UAH",
+
+                items:
+                  checkoutCart.map(
+                    function (item) {
+
+                      return {
+
+                        item_id:
+                          item.code,
+
+                        item_name:
+                          item.name ||
+                          item.code,
+
+                        price:
+                          Number(
+                            item.price
+                          ) || 0,
+
+                        quantity:
+                          Number(
+                            item.quantity
+                          ) || 1
+
+                      };
+
+                    }
+                  )
+
+              }
+            );
+
+          }
+
+
+          saveEmptyCart();
+          clearRequestId();
+
+
+          if ($("cartCount")) {
+            $("cartCount")
+              .textContent = "0";
+          }
+
+
+          $("successOrderNumber")
+            .textContent =
+              "№ " +
+              orderNumber;
+
+
+          if (
+            paymentBeforeSubmit ===
+            "IBAN_FOP"
+          ) {
+
+            $("successPaymentBox")
+              .hidden = false;
+
+
+            $("successPaymentPurpose")
+              .innerHTML =
+                "У призначенні платежу вкажіть: " +
+                "<strong>Замовлення " +
+                escapeHtml(
+                  orderNumber
+                ) +
+                "</strong>.";
+
+          } else {
+
+            $("successPaymentBox")
+              .hidden = true;
+
+          }
+
+
+          $("checkoutContent")
+            .hidden = true;
+
+          $("checkoutEmpty")
+            .hidden = true;
+
+          $("checkoutSuccess")
+            .hidden = false;
+
+
+          $("checkoutSuccess")
+            .scrollIntoView(
+              {
+                behavior:
+                  "smooth",
+                block:
+                  "start"
+              }
+            );
+
+
+        } catch (error) {
+
+          console.error(
+            error
+          );
+
+
+          setStatus(
+            "error",
+            error.message ||
+            "Не вдалося оформити замовлення. Спробуйте ще раз."
+          );
+
+
+          button.disabled =
+            false;
+
+          button.textContent =
+            "Спробувати ще раз";
+
+
+        } finally {
+
+          isSubmitting =
+            false;
+
+        }
+
+      }
+
+
+      async function copyText(
+        text,
+        button
+      ) {
+
+        try {
+
+          await navigator
+            .clipboard
+            .writeText(
+              text
+            );
+
+
+          const old =
+            button.textContent;
+
+
+          button.textContent =
+            "IBAN скопійовано";
+
+
+          setTimeout(
+            function () {
+
+              button.textContent =
+                old;
+
+            },
+            2000
+          );
+
+
+        } catch (error) {
+
+          const area =
+            document.createElement(
+              "textarea"
+            );
+
+
+          area.value =
+            text;
+
+          area.style.position =
+            "fixed";
+
+          area.style.opacity =
+            "0";
+
+
+          document.body
+            .appendChild(
+              area
+            );
+
+
+          area.select();
+
+
+          document.execCommand(
+            "copy"
+          );
+
+
+          area.remove();
+
+
+          button.textContent =
+            "IBAN скопійовано";
+
+
+          setTimeout(
+            function () {
+
+              button.textContent =
+                "Скопіювати IBAN";
+
+            },
+            2000
+          );
+
+        }
+
+      }
+
+
+      function readCachedStore() {
+
+        const keys = [
+
+          "tochka_hruskotu_store_cache_v1",
+          "tochka_hruskotu_store_cache_v2"
+
+        ];
+
+
+        for (
+          const key of keys
+        ) {
+
+          const cached =
+            readJson(key);
+
+
+          if (
+            cached?.data?.success
+          ) {
+
+            return cached.data;
+
+          }
+
+
+          if (
+            cached?.success
+          ) {
+
+            return cached;
+
+          }
+
+        }
+
+
+        return null;
+
+      }
+
+
+      async function loadCheckoutStore() {
+
+        const cached =
+          readCachedStore();
+
+
+        if (cached) {
+
+          checkoutStore =
+            cached;
+
+          populateDelivery();
+          renderSummary();
+
+        }
+
+
+        try {
+
+          const controller =
+            new AbortController();
+
+
+          const timer =
+            setTimeout(
+              function () {
+
+                controller.abort();
+
+              },
+              12000
+            );
+
+
+          const response =
+            await fetch(
+              CHECKOUT_API_URL +
+              "?action=store&_=" +
+              Date.now(),
+              {
+                method: "GET",
+                redirect: "follow",
+                signal:
+                  controller.signal
+              }
+            );
+
+
+          clearTimeout(
+            timer
+          );
+
+
+          const result =
+            await response.json();
+
+
+          if (
+            !result?.success
+          ) {
+
+            throw new Error(
+              result?.error ||
+              "Не вдалося завантажити налаштування."
+            );
+
+          }
+
+
+          checkoutStore =
+            result;
+
+
+          populateDelivery();
+          renderSummary();
+
+
+        } catch (error) {
+
+          console.warn(
+            "Checkout працює з резервними налаштуваннями:",
+            error
+          );
+
+
+          if (!checkoutStore) {
+
+            checkoutStore = {
+              success: true,
+              deliveryMethods:
+                fallbackDelivery,
+              paymentMethods:
+                fallbackPayments,
+              products: []
+            };
+
+
+            populateDelivery();
+            renderSummary();
+
+          }
+
+        }
+
+
+        $("pageLoader")
+          ?.classList
+          .add(
+            "is-hidden"
+          );
+
+      }
+
+
+      function setMinimumDate() {
+
+        const now =
+          new Date();
+
+
+        const year =
+          now.getFullYear();
+
+        const month =
+          String(
+            now.getMonth() + 1
+          ).padStart(
+            2,
+            "0"
+          );
+
+        const day =
+          String(
+            now.getDate()
+          ).padStart(
+            2,
+            "0"
+          );
+
+
+        $("desiredDate")
+          .min =
+            year +
+            "-" +
+            month +
+            "-" +
+            day;
+
+      }
+
+
+      function sendBeginCheckout() {
+
+        if (
+          !checkoutCart.length ||
+          typeof window.gtag !==
+            "function"
+        ) {
+          return;
+        }
+
+
+        window.gtag(
+          "event",
+          "begin_checkout",
+          {
+
+            currency:
+              "UAH",
+
+            value:
+              cartTotal(),
+
+            items:
+              checkoutCart.map(
+                function (item) {
+
+                  return {
+
+                    item_id:
+                      item.code,
+
+                    item_name:
+                      item.name ||
+                      item.code,
+
+                    price:
+                      Number(
+                        item.price
+                      ) || 0,
+
+                    quantity:
+                      Number(
+                        item.quantity
+                      ) || 1
+
+                  };
+
+                }
+              )
+
+          }
+        );
+
+      }
+
+
+      document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+          checkoutCart =
+            readCart();
+
+
+          renderSummary();
+          setMinimumDate();
+
+
+          $("deliveryMethod")
+            .addEventListener(
+              "change",
+              updateDeliveryFields
+            );
+
+
+          $("paymentMethod")
+            .addEventListener(
+              "change",
+              updatePaymentNote
+            );
+
+
+          $("isGift")
+            .addEventListener(
+              "change",
+              toggleGift
+            );
+
+
+          $("hasCertificate")
+            .addEventListener(
+              "change",
+              toggleCertificate
+            );
+
+
+          $("checkoutForm")
+            .addEventListener(
+              "submit",
+              submitOrder
+            );
+
+
+          $("copyCheckoutIban")
+            .addEventListener(
+              "click",
+              function () {
+
+                copyText(
+                  IBAN,
+                  this
+                );
+
+              }
+            );
+
+
+          loadCheckoutStore();
+
+
+          setTimeout(
+            sendBeginCheckout,
+            1200
+          );
+
+
+          const cartCount =
+            $("cartCount");
+
+
+          if (
+            cartCount &&
+            window.MutationObserver
+          ) {
+
+            const observer =
+              new MutationObserver(
+                function () {
+
+                  checkoutCart =
+                    readCart();
+
+                  renderSummary();
+
+                }
+              );
+
+
+            observer.observe(
+              cartCount,
+              {
+                childList: true,
+                characterData: true,
+                subtree: true
+              }
+            );
+
+          }
+
+        }
+      );
+
+    })();
+
+  </script>
+
+</body>
+</html>
