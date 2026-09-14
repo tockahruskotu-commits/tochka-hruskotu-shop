@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Подарунки — Точка Хрускоту</title>
+
+  <meta
+    name="description"
+    content="Подарункові смаколики від Точки Хрускоту. Безкоштовна листівка, відправка безпосередньо отримувачу, можливість не вкладати ціну та організувати сюрприз."
+  >
+
+  <meta name="theme-color" content="#fffaf5">
+
+  <link
+    rel="canonical"
+    href="https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/gifts.html"
+  >
+
+  <link
+    rel="icon"
+    href="images/brand/logo.webp"
+    type="image/webp"
+  >
+
+  <link
+    rel="stylesheet"
+    href="site-v2.css?v=20260914-4"
+  >
+
+
+  <!-- ======================================================
+       СТИЛІ СТОРІНКИ ПОДАРУНКІВ
+       ====================================================== -->
+
+  <style>
+    .gifts-hero {
+      padding: 46px 0 34px;
+    }
+
+    .gifts-hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr);
+      gap: 34px;
+      align-items: center;
+      padding: 34px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(
+          135deg,
+          #fff8f2 0%,
+          #fff0e5 100%
+        );
+    }
+
+    .gifts-hero h1 {
+      margin: 0;
+      color: var(--brown);
+      font-size: clamp(38px, 5vw, 62px);
+      line-height: 1.03;
+      letter-spacing: -.035em;
+    }
+
+    .gifts-hero-text {
+      max-width: 690px;
+      margin: 16px 0 0;
+      color: var(--text-soft);
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .gifts-hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .gift-hero-card {
+      padding: 24px;
+      border: 1px solid #ead7ca;
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.78);
+    }
+
+    .gift-hero-card strong {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--brown);
+      font-size: 19px;
+    }
+
+    .gift-hero-card p {
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+
+    /* ======================================================
+       МОЖЛИВОСТІ ПОДАРУНКА
+       ====================================================== */
+
+    .gift-services-section {
+      padding: 12px 0 42px;
+    }
+
+    .gift-services-heading {
+      margin-bottom: 18px;
+    }
+
+    .gift-services-heading h2 {
+      margin: 0;
+      color: var(--brown);
+      font-size: clamp(27px, 3vw, 36px);
+    }
+
+    .gift-services-heading p {
+      max-width: 720px;
+      margin: 9px 0 0;
+      color: var(--text-soft);
+    }
+
+    .gift-services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .gift-service-card {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .gift-service-number {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-weight: 900;
+    }
+
+    .gift-service-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--brown);
+      font-size: 16px;
+    }
+
+    .gift-service-card p {
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .gift-service-note {
+      margin-top: 14px;
+      padding: 14px 18px;
+      border-radius: 13px;
+      background: var(--green-soft);
+      color: #496347;
+      font-size: 13px;
+    }
+
+    .gift-service-note strong {
+      color: #3e583d;
+    }
+
+
+    /* ======================================================
+       ТОВАРИ
+       ====================================================== */
+
+    .gifts-products-section {
+      padding: 16px 0 66px;
+    }
+
+    .gifts-products-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .gifts-products-head h2 {
+      margin: 0;
+      color: var(--brown);
+      font-size: clamp(30px, 3.5vw, 42px);
+    }
+
+    .gifts-products-head p {
+      margin: 8px 0 0;
+      color: var(--text-soft);
+    }
+
+    .gifts-sort {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .gifts-sort label {
+      color: var(--text-soft);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .gifts-sort select {
+      min-width: 235px;
+      min-height: 50px;
+      padding: 10px 42px 10px 14px;
+      border: 1px solid var(--border-strong);
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 750;
+    }
+
+    .gifts-result-text {
+      margin: 0 0 14px;
+      color: var(--text-soft);
+      font-size: 14px;
+    }
+
+    .gifts-empty,
+    .gifts-error {
+      padding: 34px 22px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      text-align: center;
+    }
+
+    .gifts-empty h2,
+    .gifts-error strong {
+      color: var(--brown);
+    }
+
+    .gifts-empty p,
+    .gifts-error p {
+      max-width: 560px;
+      margin: 8px auto 18px;
+      color: var(--text-soft);
+    }
+
+
+    /* ======================================================
+       ДОПОМОГА З ВИБОРОМ
+       ====================================================== */
+
+    .gift-help-section {
+      padding: 0 0 70px;
+    }
+
+    .gift-help-box {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 28px;
+      align-items: center;
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface-soft);
+    }
+
+    .gift-help-box h2 {
+      margin: 0;
+      color: var(--brown);
+      font-size: 26px;
+    }
+
+    .gift-help-box p {
+      max-width: 720px;
+      margin: 8px 0 0;
+      color: var(--text-soft);
+    }
+
+    .gift-help-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .gift-help-link {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--brown);
+      font-weight: 800;
+    }
+
+    .gift-help-link:hover {
+      background: #fff;
+    }
+
+
+    /* ======================================================
+       АДАПТИВ
+       ====================================================== */
+
+    @media (max-width: 900px) {
+      .gifts-hero-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .gift-services-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .gifts-products-head {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .gifts-sort select {
+        width: 100%;
+      }
+
+      .gift-help-box {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .gifts-hero {
+        padding-top: 28px;
+      }
+
+      .gifts-hero-inner {
+        padding: 22px;
+        border-radius: 18px;
+      }
+
+      .gifts-hero h1 {
+        font-size: 38px;
+      }
+
+      .gifts-hero-text {
+        font-size: 16px;
+      }
+
+      .gift-services-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .gift-service-card {
+        padding: 16px;
+      }
+
+      .gift-help-box {
+        padding: 20px;
+      }
+
+      .gift-help-actions {
+        flex-direction: column;
+      }
+
+      .gift-help-link {
+        width: 100%;
+      }
+    }
+  </style>
+
+
+  <!-- ======================================================
+       GOOGLE ANALYTICS 4
+       ====================================================== -->
+
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-BMMFC6QXD5"
+  ></script>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag("js", new Date());
+    gtag("config", "G-BMMFC6QXD5");
+  </script>
+</head>
+
+
+<body>
+
+  <!-- ======================================================
+       ЗАВАНТАЖЕННЯ
+       ====================================================== -->
+
+  <div
+    class="page-loader"
+    id="pageLoader"
+    aria-live="polite"
+  >
+
+    <div class="page-loader-card">
+
+      <img
+        src="images/brand/logo.webp"
+        alt=""
+        width="70"
+        height="70"
+      >
+
+      <strong>
+        Точка Хрускоту
+      </strong>
+
+      <span>
+        Завантажуємо подарунки...
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- ======================================================
+       ВЕРХНЯ СМУГА
+       ====================================================== -->
+
+  <div class="trust-bar">
+
+    <div class="container trust-bar-inner">
+
+      <a
+        class="trust-item trust-location"
+        href="contacts.html"
+      >
+        <span>
+          Млинів, Рівненська обл.
+        </span>
+      </a>
+
+
+      <a
+        class="trust-item trust-local-delivery"
+        href="delivery.html"
+      >
+        <span>
+          Млинів • Дубно • Рівне
+        </span>
+      </a>
+
+
+      <a
+        class="trust-item trust-ukraine"
+        href="delivery.html"
+      >
+        <span>
+          Доставка по Україні
+        </span>
+      </a>
+
+
+      <a
+        class="trust-item trust-phone"
+        href="tel:+380638330860"
+      >
+        <span>
+          +380 63 833 08 60
+        </span>
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <!-- ======================================================
+       ШАПКА
+       ====================================================== -->
+
+  <header
+    class="site-header"
+    id="siteHeader"
+  >
+
+    <div class="container header-inner">
+
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="Точка Хрускоту — головна"
+      >
+
+        <img
+          id="headerLogo"
+          src="images/brand/logo.webp"
+          alt="Точка Хрускоту"
+          width="64"
+          height="64"
+        >
+
+        <span class="brand-text">
+
+          <strong id="headerStoreName">
+            Точка Хрускоту
+          </strong>
+
+          <small>
+            Візьми. Вмочи. Хрусни.
+          </small>
+
+        </span>
+
+      </a>
+
+
+      <nav
+        class="desktop-nav"
+        aria-label="Головна навігація"
+      >
+
+        <a href="catalog.html">
+          Каталог
+        </a>
+
+        <a
+          class="is-active"
+          href="gifts.html"
+        >
+          Подарунки
+        </a>
+
+        <a href="delivery.html">
+          Доставка й оплата
+        </a>
+
+        <a href="reviews.html">
+          Відгуки
+        </a>
+
+        <a href="contacts.html">
+          Контакти
+        </a>
+
+      </nav>
+
+
+      <div class="header-actions">
+
+        <a
+          class="header-action-button"
+          href="catalog.html"
+          aria-label="Пошук товарів"
+        >
+          <span class="header-action-text">
+            Пошук
+          </span>
+        </a>
+
+
+        <button
+          class="header-action-button cart-button"
+          id="cartButton"
+          type="button"
+          aria-label="Відкрити кошик"
+        >
+
+          <span class="header-action-text">
+            Кошик
+          </span>
+
+          <span
+            class="cart-count"
+            id="cartCount"
+          >
+            0
+          </span>
+
+        </button>
+
+
+        <button
+          class="mobile-menu-button"
+          id="mobileMenuButton"
+          type="button"
+          aria-controls="mobileMenu"
+          aria-expanded="false"
+        >
+          <span>
+            Меню
+          </span>
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ======================================================
+       МОБІЛЬНЕ МЕНЮ
+       ====================================================== -->
+
+  <div
+    class="mobile-menu-overlay"
+    id="mobileMenuOverlay"
+    hidden
+  ></div>
+
+
+  <aside
+    class="mobile-menu"
+    id="mobileMenu"
+    aria-hidden="true"
+  >
+
+    <div class="mobile-menu-head">
+
+      <strong>
+        Меню
+      </strong>
+
+      <button
+        id="closeMobileMenu"
+        type="button"
+        aria-label="Закрити меню"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <nav
+      class="mobile-nav"
+      aria-label="Мобільна навігація"
+    >
+
+      <a href="catalog.html">
+        Каталог
+      </a>
+
+      <a
+        class="is-active"
+        href="gifts.html"
+      >
+        Подарунки
+      </a>
+
+      <a href="delivery.html">
+        Доставка й оплата
+      </a>
+
+      <a href="reviews.html">
+        Відгуки
+      </a>
+
+      <a href="contacts.html">
+        Контакти
+      </a>
+
+    </nav>
+
+
+    <div class="mobile-menu-contact">
+
+      <p>
+        <strong>
+          Млинів, Рівненська область
+        </strong>
+      </p>
+
+      <a href="tel:+380638330860">
+        +380 63 833 08 60
+      </a>
+
+      <a
+        href="https://t.me/tockahruskotu"
+        target="_blank"
+        rel="noopener"
+      >
+        Telegram
+      </a>
+
+      <a
+        href="https://instagram.com/tockahruskotu"
+        target="_blank"
+        rel="noopener"
+      >
+        Instagram
+      </a>
+
+    </div>
+
+  </aside>
+
+
+  <!-- ======================================================
+       ОСНОВНИЙ ВМІСТ
+       ====================================================== -->
+
+  <main>
+
+    <!-- Хлібні крихти -->
+
+    <div class="container breadcrumbs">
+
+      <a href="index.html">
+        Головна
+      </a>
+
+      <span>
+        ›
+      </span>
+
+      <span aria-current="page">
+        Подарунки
+      </span>
+
+    </div>
+
+
+    <!-- ====================================================
+         HERO
+         ==================================================== -->
+
+    <section class="gifts-hero">
+
+      <div class="container">
+
+        <div class="gifts-hero-inner">
+
+          <div>
+
+            <p class="section-kicker">
+              Точка Хрускоту
+            </p>
+
+            <h1>
+              Подарунки,
+              які хочеться
+              і подарувати,
+              і з’їсти
+            </h1>
+
+            <p class="gifts-hero-text">
+              Тут зібрані наші товари,
+              які добре підходять для подарунка.
+              Обирайте той, що сподобався,
+              а всі додаткові деталі ми зможемо
+              узгодити з вами після оформлення замовлення.
+            </p>
+
+            <div class="gifts-hero-actions">
+
+              <a
+                class="button button-primary"
+                href="#giftProducts"
+              >
+                Дивитися подарунки
+              </a>
+
+              <a
+                class="gift-help-link"
+                href="catalog.html"
+              >
+                Увесь каталог
+              </a>
+
+            </div>
+
+          </div>
+
+
+          <aside class="gift-hero-card">
+
+            <strong>
+              Все просто
+            </strong>
+
+            <p>
+              Вам не потрібно заповнювати
+              окрему анкету для подарунка.
+              Під час оформлення достатньо
+              позначити «Це подарунок».
+              Після замовлення ми зв’яжемося
+              з вами та уточнимо всі деталі.
+            </p>
+
+          </aside>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         МОЖЛИВОСТІ
+         ==================================================== -->
+
+    <section class="gift-services-section">
+
+      <div class="container">
+
+        <div class="gift-services-heading">
+
+          <p class="section-kicker">
+            Додатково до подарунка
+          </p>
+
+          <h2>
+            Що ми можемо зробити
+          </h2>
+
+          <p>
+            Ці можливості не потрібно налаштовувати
+            прямо на сторінці товару.
+            Ми уточнимо все особисто після оформлення.
+          </p>
+
+        </div>
+
+
+        <div class="gift-services-grid">
+
+          <article class="gift-service-card">
+
+            <span class="gift-service-number">
+              1
+            </span>
+
+            <strong>
+              Безкоштовна листівка
+            </strong>
+
+            <p>
+              Додамо листівку з вашим текстом
+              або коротким привітанням.
+            </p>
+
+          </article>
+
+
+          <article class="gift-service-card">
+
+            <span class="gift-service-number">
+              2
+            </span>
+
+            <strong>
+              Не вкладати ціну
+            </strong>
+
+            <p>
+              Якщо подарунок їде одразу отримувачу,
+              можемо не вкладати інформацію про вартість.
+            </p>
+
+          </article>
+
+
+          <article class="gift-service-card">
+
+            <span class="gift-service-number">
+              3
+            </span>
+
+            <strong>
+              Відправити отримувачу
+            </strong>
+
+            <p>
+              Можемо відправити замовлення
+              безпосередньо людині,
+              для якої воно призначене.
+            </p>
+
+          </article>
+
+
+          <article class="gift-service-card">
+
+            <span class="gift-service-number">
+              4
+            </span>
+
+            <strong>
+              Допомогти із сюрпризом
+            </strong>
+
+            <p>
+              Якщо подарунок має бути несподіванкою,
+              узгодимо з вами деталі окремо.
+            </p>
+
+          </article>
+
+        </div>
+
+
+        <div class="gift-service-note">
+
+          <strong>
+            Під час оформлення:
+          </strong>
+
+          просто поставте галочку
+          «Це подарунок».
+          Ми зв’яжемося з вами після замовлення
+          та уточнимо все необхідне.
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         ПОДАРУНКОВІ ТОВАРИ
+         ==================================================== -->
+
+    <section
+      class="gifts-products-section"
+      id="giftProducts"
+    >
+
+      <div class="container">
+
+        <div class="gifts-products-head">
+
+          <div>
+
+            <p class="section-kicker">
+              Обирайте
+            </p>
+
+            <h2>
+              Подарункові товари
+            </h2>
+
+            <p>
+              Усі актуальні товари,
+              які ми віднесли до подарункової категорії.
+            </p>
+
+          </div>
+
+
+          <div class="gifts-sort">
+
+            <label for="giftSortSelect">
+              Сортування
+            </label>
+
+            <select id="giftSortSelect">
+
+              <option value="default">
+                За замовчуванням
+              </option>
+
+              <option value="price-asc">
+                Від дешевших
+              </option>
+
+              <option value="price-desc">
+                Від дорожчих
+              </option>
+
+              <option value="new">
+                Спочатку новинки
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <p
+          class="gifts-result-text"
+          id="giftResultText"
+          aria-live="polite"
+        >
+          Завантажуємо подарунки...
+        </p>
+
+
+        <div
+          class="gifts-error"
+          id="giftStoreError"
+          hidden
+        >
+
+          <strong>
+            Не вдалося завантажити товари.
+          </strong>
+
+          <p>
+            Перевірте з’єднання з інтернетом
+            і оновіть сторінку.
+          </p>
+
+          <button
+            class="button button-primary"
+            type="button"
+            onclick="location.reload()"
+          >
+            Спробувати ще раз
+          </button>
+
+        </div>
+
+
+        <div
+          class="product-grid"
+          id="giftProductGrid"
+        >
+        </div>
+
+
+        <div
+          class="gifts-empty"
+          id="giftEmpty"
+          hidden
+        >
+
+          <h2>
+            Подарункових товарів поки немає
+          </h2>
+
+          <p>
+            Ви можете переглянути весь асортимент
+            у нашому каталозі.
+          </p>
+
+          <a
+            class="button button-primary"
+            href="catalog.html"
+          >
+            Перейти до каталогу
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         ДОПОМОГА З ВИБОРОМ
+         ==================================================== -->
+
+    <section class="gift-help-section">
+
+      <div class="container">
+
+        <div class="gift-help-box">
+
+          <div>
+
+            <h2>
+              Не знаєте, що обрати?
+            </h2>
+
+            <p>
+              Можете написати нам —
+              підкажемо варіант із наявного асортименту.
+              А якщо хочете залишити вибір отримувачу,
+              у каталозі також є подарункові сертифікати.
+            </p>
+
+          </div>
+
+
+          <div class="gift-help-actions">
+
+            <a
+              class="gift-help-link"
+              href="catalog.html?category=CERTIFICATES"
+            >
+              Сертифікати
+            </a>
+
+            <a
+              class="gift-help-link"
+              href="https://t.me/tockahruskotu"
+              target="_blank"
+              rel="noopener"
+            >
+              Написати в Telegram
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ======================================================
+       КОШИК
+       ====================================================== -->
+
+  <div
+    class="cart-overlay"
+    id="cartOverlay"
+    hidden
+  ></div>
+
+
+  <aside
+    class="cart-panel"
+    id="cartPanel"
+    aria-hidden="true"
+    aria-label="Кошик"
+  >
+
+    <div class="cart-panel-head">
+
+      <div>
+
+        <p class="section-kicker">
+          Ваше замовлення
+        </p>
+
+        <h2>
+          Кошик
+        </h2>
+
+      </div>
+
+
+      <button
+        id="closeCartButton"
+        type="button"
+        aria-label="Закрити кошик"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div
+      class="cart-items"
+      id="cartItems"
+    ></div>
+
+
+    <div
+      class="cart-free-delivery"
+      id="cartProgress"
+    ></div>
+
+
+    <div
+      class="cart-suggestions"
+      id="cartSuggestions"
+    ></div>
+
+
+    <div class="cart-panel-footer">
+
+      <div class="cart-total-row">
+
+        <span>
+          Разом
+        </span>
+
+        <strong id="cartTotal">
+          0 грн
+        </strong>
+
+      </div>
+
+
+      <a
+        class="button button-primary checkout-link"
+        id="checkoutButton"
+        href="checkout.html"
+      >
+        Оформити замовлення
+      </a>
+
+
+      <button
+        class="continue-shopping-button"
+        id="continueShoppingButton"
+        type="button"
+      >
+        Продовжити покупки
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- ======================================================
+       ПОВІДОМЛЕННЯ
+       ====================================================== -->
+
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+
+  <!-- ======================================================
+       ФУТЕР
+       ====================================================== -->
+
+  <footer class="site-footer">
+
+    <div class="container footer-grid">
+
+
+      <div class="footer-column footer-brand">
+
+        <a
+          class="footer-logo-link"
+          href="index.html"
+        >
+
+          <img
+            id="footerLogo"
+            src="images/brand/logo.webp"
+            alt="Точка Хрускоту"
+            width="76"
+            height="76"
+            loading="lazy"
+          >
+
+        </a>
+
+
+        <strong id="footerStoreName">
+          Точка Хрускоту
+        </strong>
+
+
+        <p>
+          Домашнє виробництво.
+          Селище Млинів, Рівненська область.
+          Готуємо під замовлення
+          та доставляємо по Україні.
+        </p>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h2>
+          Покупцям
+        </h2>
+
+        <a href="catalog.html">
+          Каталог
+        </a>
+
+        <a href="gifts.html">
+          Подарунки
+        </a>
+
+        <a href="delivery.html">
+          Доставка й оплата
+        </a>
+
+        <a href="reviews.html">
+          Відгуки
+        </a>
+
+        <a href="contacts.html">
+          Контакти
+        </a>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h2>
+          Зв’язок
+        </h2>
+
+        <a href="tel:+380638330860">
+          +380 63 833 08 60
+        </a>
+
+        <a
+          href="https://t.me/tockahruskotu"
+          target="_blank"
+          rel="noopener"
+        >
+          Telegram
+        </a>
+
+        <a
+          href="https://instagram.com/tockahruskotu"
+          target="_blank"
+          rel="noopener"
+        >
+          Instagram
+        </a>
+
+        <a
+          id="footerGoogleProfile"
+          href="https://share.google/Fc4vC6bW6pVCzwFYW"
+          target="_blank"
+          rel="noopener"
+        >
+          Профіль у Google
+        </a>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h2>
+          Документи
+        </h2>
+
+        <a href="terms.html">
+          Умови замовлення
+        </a>
+
+        <a href="privacy.html">
+          Політика конфіденційності
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- Соцмережі -->
+
+    <div class="container footer-social-section">
+
+      <h2>
+        Ми в соцмережах
+      </h2>
+
+
+      <div class="footer-social-links">
+
+        <a
+          href="https://instagram.com/tockahruskotu"
+          target="_blank"
+          rel="noopener"
+        >
+          Instagram
+        </a>
+
+        <a
+          href="https://www.facebook.com/tockahruskotu/"
+          target="_blank"
+          rel="noopener"
+        >
+          Facebook
+        </a>
+
+        <a
+          href="https://www.tiktok.com/@tockahruskotu"
+          target="_blank"
+          rel="noopener"
+        >
+          TikTok
+        </a>
+
+        <a
+          href="https://www.youtube.com/@ТочкаХрускоту"
+          target="_blank"
+          rel="noopener"
+        >
+          YouTube
+        </a>
+
+        <a
+          href="https://t.me/tockahruskotu"
+          target="_blank"
+          rel="noopener"
+        >
+          Telegram
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- Публікація відео -->
+
+    <div class="container footer-publishing">
+
+      <span>
+        Публікація відео:
+      </span>
+
+      <a href="tiktok-share.html">
+        TikTok
+      </a>
+
+      <span>
+        |
+      </span>
+
+      <a href="youtube-share.html">
+        YouTube
+      </a>
+
+    </div>
+
+
+    <div class="container footer-bottom">
+
+      <span>
+        © Точка Хрускоту, 2026
+      </span>
+
+      <span>
+        Млинів • Дубно • Рівне • Доставка по Україні
+      </span>
+
+    </div>
+
+  </footer>
+
+
+  <noscript>
+
+    <div class="noscript-message">
+      Для роботи сторінки потрібно
+      увімкнути JavaScript у браузері.
+    </div>
+
+  </noscript>
+
+
+  <!-- ======================================================
+       ЛОГІКА СТОРІНКИ ПОДАРУНКІВ
+       ====================================================== -->
+
+  <script
+    src="gifts-v2.js?v=20260914-1"
+    defer
+  ></script>
+
+</body>
+</html>
