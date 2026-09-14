@@ -33,11 +33,13 @@ const elements = {
   clearSearch: $("#clearSearch"),
   sortSelect: $("#sortSelect"),
   categoryFilters: $("#categoryFilters"),
+  catalogueCategoriesSection: $(".catalogue-categories-section"),
   productGrid: $("#productGrid"),
   catalogueResultText: $("#catalogueResultText"),
   catalogueEmpty: $("#catalogueEmpty"),
   resetCatalogue: $("#resetCatalogue"),
   storeError: $("#storeError"),
+  catalogueSection: $("#catalogue"),
 
   mobileMenuButton: $("#mobileMenuButton"),
   mobileMenu: $("#mobileMenu"),
@@ -190,6 +192,51 @@ function hidePageLoader() {
   elements.pageLoader.classList.add("is-hidden");
 }
 
+function hasActiveSearch() {
+  return normalizeText(searchQuery).length > 0;
+}
+
+function updateSearchMode() {
+  const searching = hasActiveSearch();
+
+  if (elements.catalogueCategoriesSection) {
+    elements.catalogueCategoriesSection.hidden = searching;
+  }
+
+  if (elements.catalogSearch) {
+    elements.catalogSearch.setAttribute(
+      "aria-expanded",
+      searching ? "true" : "false"
+    );
+  }
+}
+
+function scrollToCatalogueResults() {
+  if (!elements.catalogueSection) {
+    return;
+  }
+
+  elements.catalogueSection.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+function prepareSearchField() {
+  if (!elements.catalogSearch) {
+    return;
+  }
+
+  /*
+    type="search" у Chrome показує власний хрестик очищення.
+    У нас уже є своя кнопка, тому переводимо поле у звичайний text,
+    щоб не було двох хрестиків.
+  */
+  elements.catalogSearch.type = "text";
+  elements.catalogSearch.setAttribute("role", "searchbox");
+  elements.catalogSearch.setAttribute("aria-controls", "productGrid");
+}
+
 
 /* ==========================================================
    2. КЕШ І ЗАВАНТАЖЕННЯ МАГАЗИНУ
@@ -205,21 +252,13 @@ function readCachedStore() {
 
     const cached = JSON.parse(raw);
 
-    if (
-      !cached ||
-      typeof cached !== "object" ||
-      !cached.data
-    ) {
+    if (!cached || typeof cached !== "object" || !cached.data) {
       return null;
     }
 
     return cached;
   } catch (error) {
-    console.warn(
-      "Не вдалося прочитати кеш магазину:",
-      error
-    );
-
+    console.warn("Не вдалося прочитати кеш магазину:", error);
     return null;
   }
 }
@@ -234,10 +273,7 @@ function saveCachedStore(data) {
       })
     );
   } catch (error) {
-    console.warn(
-      "Не вдалося зберегти кеш магазину:",
-      error
-    );
+    console.warn("Не вдалося зберегти кеш магазину:", error);
   }
 }
 
@@ -249,19 +285,14 @@ async function fetchStoreFromServer() {
   }, STORE_REQUEST_TIMEOUT_MS);
 
   try {
-    const response = await fetch(
-      `${STORE_API_URL}?action=store`,
-      {
-        method: "GET",
-        redirect: "follow",
-        signal: controller.signal
-      }
-    );
+    const response = await fetch(`${STORE_API_URL}?action=store`, {
+      method: "GET",
+      redirect: "follow",
+      signal: controller.signal
+    });
 
     if (!response.ok) {
-      throw new Error(
-        `Помилка сервера: ${response.status}`
-      );
+      throw new Error(`Помилка сервера: ${response.status}`);
     }
 
     const text = await response.text();
@@ -271,16 +302,11 @@ async function fetchStoreFromServer() {
     try {
       result = JSON.parse(text);
     } catch {
-      throw new Error(
-        "Сервер повернув некоректну відповідь."
-      );
+      throw new Error("Сервер повернув некоректну відповідь.");
     }
 
     if (!result.success) {
-      throw new Error(
-        result.error ||
-          "Не вдалося завантажити магазин."
-      );
+      throw new Error(result.error || "Не вдалося завантажити магазин.");
     }
 
     return result;
@@ -298,19 +324,16 @@ function renderStore(data) {
 
   applySettings();
   renderCategories();
+  updateSearchMode();
   renderCatalogue();
   renderCart();
 }
 
 async function loadStore() {
-  window.setTimeout(
-    hidePageLoader,
-    PAGE_LOADER_MAX_MS
-  );
+  window.setTimeout(hidePageLoader, PAGE_LOADER_MAX_MS);
 
   const cached = readCachedStore();
-  const hasCachedStore =
-    Boolean(cached?.data?.success);
+  const hasCachedStore = Boolean(cached?.data?.success);
 
   if (hasCachedStore) {
     renderStore(cached.data);
@@ -318,8 +341,7 @@ async function loadStore() {
   }
 
   try {
-    const freshStore =
-      await fetchStoreFromServer();
+    const freshStore = await fetchStoreFromServer();
 
     renderStore(freshStore);
     saveCachedStore(freshStore);
@@ -348,42 +370,30 @@ async function loadStore() {
 
 function applySettings() {
   const settings = store?.settings || {};
+  const storeName = settings.storeName || "Точка Хрускоту";
 
-  const storeName =
-    settings.storeName ||
-    "Точка Хрускоту";
-
-  document.title =
-    `Каталог — ${storeName}`;
+  document.title = `Каталог — ${storeName}`;
 
   if (elements.headerStoreName) {
-    elements.headerStoreName.textContent =
-      storeName;
+    elements.headerStoreName.textContent = storeName;
   }
 
   if (elements.footerStoreName) {
-    elements.footerStoreName.textContent =
-      storeName;
+    elements.footerStoreName.textContent = storeName;
   }
 
   if (settings.logo) {
     if (elements.headerLogo) {
-      elements.headerLogo.src =
-        settings.logo;
+      elements.headerLogo.src = settings.logo;
     }
 
     if (elements.footerLogo) {
-      elements.footerLogo.src =
-        settings.logo;
+      elements.footerLogo.src = settings.logo;
     }
   }
 
-  if (
-    settings.googleProfile &&
-    elements.footerGoogleProfile
-  ) {
-    elements.footerGoogleProfile.href =
-      settings.googleProfile;
+  if (settings.googleProfile && elements.footerGoogleProfile) {
+    elements.footerGoogleProfile.href = settings.googleProfile;
   }
 }
 
@@ -393,29 +403,21 @@ function applySettings() {
    ========================================================== */
 
 function productsForCategory(code) {
-  const products =
-    store?.products || [];
+  const products = store?.products || [];
 
   if (code === "ALL") {
     return products;
   }
 
   if (code === "NEW") {
-    return products.filter(
-      product => Boolean(product.isNew)
-    );
+    return products.filter(product => Boolean(product.isNew));
   }
 
   if (code === "SALE") {
-    return products.filter(
-      product => Boolean(product.saleActive)
-    );
+    return products.filter(product => Boolean(product.saleActive));
   }
 
-  return products.filter(
-    product =>
-      product.categoryCode === code
-  );
+  return products.filter(product => product.categoryCode === code);
 }
 
 function categoryLabel(category) {
@@ -439,19 +441,10 @@ function categoryLabel(category) {
 }
 
 function getVisibleCategories() {
-  const source =
-    Array.isArray(store?.categories)
-      ? store.categories
-      : [];
-
+  const source = Array.isArray(store?.categories) ? store.categories : [];
   const result = [];
 
-  if (
-    !source.some(
-      category =>
-        category.code === "ALL"
-    )
-  ) {
+  if (!source.some(category => category.code === "ALL")) {
     result.push({
       code: "ALL",
       name: "Усі товари"
@@ -474,7 +467,6 @@ function getVisibleCategories() {
     }
 
     seen.add(category.code);
-
     return true;
   });
 }
@@ -484,63 +476,39 @@ function renderCategories() {
     return;
   }
 
-  const categories =
-    getVisibleCategories();
+  const categories = getVisibleCategories();
 
-  if (
-    !categories.some(
-      category =>
-        category.code === activeCategory
-    )
-  ) {
+  if (!categories.some(category => category.code === activeCategory)) {
     activeCategory = "ALL";
   }
 
-  elements.categoryFilters.innerHTML =
-    categories
-      .map(category => {
-        const count =
-          productsForCategory(
-            category.code
-          ).length;
+  elements.categoryFilters.innerHTML = categories
+    .map(category => {
+      const count = productsForCategory(category.code).length;
+      const isActive = category.code === activeCategory;
 
-        const isActive =
-          category.code === activeCategory;
+      return `
+        <button
+          class="category-button${isActive ? " is-active" : ""}"
+          type="button"
+          data-category="${escapeHtml(category.code)}"
+          aria-pressed="${isActive ? "true" : "false"}"
+        >
+          ${escapeHtml(categoryLabel(category))}
 
-        return `
-          <button
-            class="category-button${
-              isActive
-                ? " is-active"
-                : ""
-            }"
-            type="button"
-            data-category="${escapeHtml(
-              category.code
-            )}"
-            aria-pressed="${
-              isActive
-                ? "true"
-                : "false"
-            }"
-          >
-            ${escapeHtml(
-              categoryLabel(category)
-            )}
-
-            ${
-              count
-                ? `
-                  <span class="visually-hidden">
-                    — ${count} товарів
-                  </span>
-                `
-                : ""
-            }
-          </button>
-        `;
-      })
-      .join("");
+          ${
+            count
+              ? `
+                <span class="visually-hidden">
+                  — ${count} товарів
+                </span>
+              `
+              : ""
+          }
+        </button>
+      `;
+    })
+    .join("");
 }
 
 
@@ -549,34 +517,29 @@ function renderCategories() {
    ========================================================== */
 
 function productMatchesSearch(product) {
-  const query =
-    normalizeText(searchQuery);
+  const query = normalizeText(searchQuery);
 
   if (!query) {
     return true;
   }
 
-  const category =
-    findCategory(
-      product.categoryCode
-    );
+  const category = findCategory(product.categoryCode);
 
-  const haystack =
-    normalizeText(
-      [
-        product.code,
-        product.name,
-        product.shortDescription,
-        product.fullDescription,
-        product.ingredients,
-        product.allergens,
-        product.weight,
-        product.badge,
-        category?.name
-      ]
-        .filter(Boolean)
-        .join(" ")
-    );
+  const haystack = normalizeText(
+    [
+      product.code,
+      product.name,
+      product.shortDescription,
+      product.fullDescription,
+      product.ingredients,
+      product.allergens,
+      product.weight,
+      product.badge,
+      category?.name
+    ]
+      .filter(Boolean)
+      .join(" ")
+  );
 
   return haystack.includes(query);
 }
@@ -591,57 +554,31 @@ function productMatchesCategory(product) {
   }
 
   if (activeCategory === "SALE") {
-    return Boolean(
-      product.saleActive
-    );
+    return Boolean(product.saleActive);
   }
 
-  return (
-    product.categoryCode ===
-    activeCategory
-  );
+  return product.categoryCode === activeCategory;
 }
 
 function getFilteredProducts() {
-  const source =
-    Array.isArray(store?.products)
-      ? [...store.products]
-      : [];
+  const source = Array.isArray(store?.products) ? [...store.products] : [];
 
-  const filtered =
-    source.filter(product => {
-      return (
-        productMatchesCategory(
-          product
-        ) &&
-        productMatchesSearch(
-          product
-        )
-      );
-    });
+  const filtered = source.filter(product => {
+    return productMatchesCategory(product) && productMatchesSearch(product);
+  });
 
   if (sortMode === "new") {
     return filtered.sort(
-      (a, b) =>
-        Number(Boolean(b.isNew)) -
-        Number(Boolean(a.isNew))
+      (a, b) => Number(Boolean(b.isNew)) - Number(Boolean(a.isNew))
     );
   }
 
   if (sortMode === "price-asc") {
-    return filtered.sort(
-      (a, b) =>
-        productUnitPrice(a) -
-        productUnitPrice(b)
-    );
+    return filtered.sort((a, b) => productUnitPrice(a) - productUnitPrice(b));
   }
 
   if (sortMode === "price-desc") {
-    return filtered.sort(
-      (a, b) =>
-        productUnitPrice(b) -
-        productUnitPrice(a)
-    );
+    return filtered.sort((a, b) => productUnitPrice(b) - productUnitPrice(a));
   }
 
   return filtered;
@@ -652,8 +589,7 @@ function updateClearSearchButton() {
     return;
   }
 
-  elements.clearSearch.hidden =
-    !searchQuery;
+  elements.clearSearch.hidden = !hasActiveSearch();
 }
 
 function resetCatalogueFilters() {
@@ -666,12 +602,41 @@ function resetCatalogueFilters() {
   }
 
   if (elements.sortSelect) {
-    elements.sortSelect.value =
-      "default";
+    elements.sortSelect.value = "default";
   }
 
   updateClearSearchButton();
+  updateSearchMode();
   renderCategories();
+  renderCatalogue();
+}
+
+function applySearchValue(value) {
+  const nextQuery = String(value ?? "").trim();
+  const wasSearching = hasActiveSearch();
+
+  searchQuery = nextQuery;
+
+  if (hasActiveSearch()) {
+    /*
+      Пошук завжди йде по всьому каталогу,
+      а не лише по вибраній категорії.
+    */
+    if (activeCategory !== "ALL") {
+      activeCategory = "ALL";
+      renderCategories();
+    }
+  } else if (wasSearching) {
+    /*
+      Після очищення пошуку категорії повертаються
+      з "Усі товари".
+    */
+    activeCategory = "ALL";
+    renderCategories();
+  }
+
+  updateClearSearchButton();
+  updateSearchMode();
   renderCatalogue();
 }
 
@@ -681,54 +646,33 @@ function resetCatalogueFilters() {
    ========================================================== */
 
 function getProductRating(product) {
-  const rating =
-    safeNumber(
-      product.ratingAvg ??
-        product.averageRating ??
-        product.rating,
-      0
-    );
+  const rating = safeNumber(
+    product.ratingAvg ?? product.averageRating ?? product.rating,
+    0
+  );
 
-  const count =
-    safeNumber(
-      product.reviewCount ??
-        product.reviewsCount ??
-        product.ratingCount,
-      0
-    );
+  const count = safeNumber(
+    product.reviewCount ?? product.reviewsCount ?? product.ratingCount,
+    0
+  );
 
-  return {
-    rating,
-    count
-  };
+  return { rating, count };
 }
 
 function renderProductBadges(product) {
   const badges = [];
 
   if (product.saleActive) {
-    badges.push(
-      '<span class="product-badge sale">Акція</span>'
-    );
+    badges.push('<span class="product-badge sale">Акція</span>');
   }
 
-  if (
-    product.isNew &&
-    badges.length < 2
-  ) {
-    badges.push(
-      '<span class="product-badge new">Новинка</span>'
-    );
+  if (product.isNew && badges.length < 2) {
+    badges.push('<span class="product-badge new">Новинка</span>');
   }
 
-  if (
-    product.badge &&
-    badges.length < 2
-  ) {
+  if (product.badge && badges.length < 2) {
     badges.push(
-      `<span class="product-badge">${escapeHtml(
-        product.badge
-      )}</span>`
+      `<span class="product-badge">${escapeHtml(product.badge)}</span>`
     );
   }
 
@@ -748,38 +692,19 @@ function renderProductPrice(product) {
     Array.isArray(product.variants) &&
     product.variants.length > 0;
 
-  const price =
-    productUnitPrice(product);
+  const price = productUnitPrice(product);
+  const regularPrice = safeNumber(product.regularPrice, 0);
 
-  const regularPrice =
-    safeNumber(
-      product.regularPrice,
-      0
-    );
-
-  if (
-    product.saleActive &&
-    regularPrice > price
-  ) {
+  if (product.saleActive && regularPrice > price) {
     return `
       <div class="product-card-price-row">
 
         <span class="product-card-price">
-          ${
-            hasVariants
-              ? "від "
-              : ""
-          }${escapeHtml(
-            formatMoney(price)
-          )}
+          ${hasVariants ? "від " : ""}${escapeHtml(formatMoney(price))}
         </span>
 
         <span class="product-card-old-price">
-          ${escapeHtml(
-            formatMoney(
-              regularPrice
-            )
-          )}
+          ${escapeHtml(formatMoney(regularPrice))}
         </span>
 
       </div>
@@ -790,13 +715,7 @@ function renderProductPrice(product) {
     <div class="product-card-price-row">
 
       <span class="product-card-price">
-        ${
-          hasVariants
-            ? "від "
-            : ""
-        }${escapeHtml(
-          formatMoney(price)
-        )}
+        ${hasVariants ? "від " : ""}${escapeHtml(formatMoney(price))}
       </span>
 
     </div>
@@ -804,10 +723,7 @@ function renderProductPrice(product) {
 }
 
 function renderProductRating(product) {
-  const {
-    rating,
-    count
-  } = getProductRating(product);
+  const { rating, count } = getProductRating(product);
 
   if (!rating || !count) {
     return "";
@@ -839,15 +755,10 @@ function renderProductRating(product) {
 }
 
 function reviewWord(count) {
-  const value =
-    Math.abs(Number(count)) % 100;
-
+  const value = Math.abs(Number(count)) % 100;
   const last = value % 10;
 
-  if (
-    value > 10 &&
-    value < 20
-  ) {
+  if (value > 10 && value < 20) {
     return "відгуків";
   }
 
@@ -855,10 +766,7 @@ function reviewWord(count) {
     return "відгук";
   }
 
-  if (
-    last >= 2 &&
-    last <= 4
-  ) {
+  if (last >= 2 && last <= 4) {
     return "відгуки";
   }
 
@@ -866,49 +774,30 @@ function reviewWord(count) {
 }
 
 function renderProductCard(product) {
-  const image =
-    productImage(product);
-
-  const url =
-    productUrl(product);
-
-  const choices =
-    productHasChoices(product);
-
-  const available =
-    product.available !== false;
+  const image = productImage(product);
+  const url = productUrl(product);
+  const choices = productHasChoices(product);
+  const available = product.available !== false;
 
   return `
     <article
       class="product-card"
-      data-product-card="${escapeHtml(
-        product.code
-      )}"
+      data-product-card="${escapeHtml(product.code)}"
     >
 
       <div class="product-card-media">
 
-        ${renderProductBadges(
-          product
-        )}
+        ${renderProductBadges(product)}
 
         <a
           href="${escapeHtml(url)}"
-          data-product-link="${escapeHtml(
-            product.code
-          )}"
-          aria-label="${escapeHtml(
-            product.name
-          )} — детальніше"
+          data-product-link="${escapeHtml(product.code)}"
+          aria-label="${escapeHtml(product.name)} — детальніше"
         >
 
           <img
-            src="${escapeHtml(
-              image
-            )}"
-            alt="${escapeHtml(
-              product.name
-            )}"
+            src="${escapeHtml(image)}"
+            alt="${escapeHtml(product.name)}"
             loading="lazy"
           >
 
@@ -922,16 +811,10 @@ function renderProductCard(product) {
         <h3 class="product-card-title">
 
           <a
-            href="${escapeHtml(
-              url
-            )}"
-            data-product-link="${escapeHtml(
-              product.code
-            )}"
+            href="${escapeHtml(url)}"
+            data-product-link="${escapeHtml(product.code)}"
           >
-            ${escapeHtml(
-              product.name
-            )}
+            ${escapeHtml(product.name)}
           </a>
 
         </h3>
@@ -941,9 +824,7 @@ function renderProductCard(product) {
           product.shortDescription
             ? `
               <p class="product-card-description">
-                ${escapeHtml(
-                  product.shortDescription
-                )}
+                ${escapeHtml(product.shortDescription)}
               </p>
             `
             : ""
@@ -954,22 +835,16 @@ function renderProductCard(product) {
           product.weight
             ? `
               <div class="product-card-meta">
-                ${escapeHtml(
-                  product.weight
-                )}
+                ${escapeHtml(product.weight)}
               </div>
             `
             : ""
         }
 
 
-        ${renderProductRating(
-          product
-        )}
+        ${renderProductRating(product)}
 
-        ${renderProductPrice(
-          product
-        )}
+        ${renderProductPrice(product)}
 
 
         <div class="product-card-actions">
@@ -989,12 +864,8 @@ function renderProductCard(product) {
                 ? `
                   <a
                     class="product-card-button"
-                    href="${escapeHtml(
-                      url
-                    )}"
-                    data-product-link="${escapeHtml(
-                      product.code
-                    )}"
+                    href="${escapeHtml(url)}"
+                    data-product-link="${escapeHtml(product.code)}"
                   >
                     Обрати варіант
                   </a>
@@ -1003,9 +874,7 @@ function renderProductCard(product) {
                   <button
                     class="product-card-button"
                     type="button"
-                    data-add-cart="${escapeHtml(
-                      product.code
-                    )}"
+                    data-add-cart="${escapeHtml(product.code)}"
                   >
                     У кошик
                   </button>
@@ -1021,18 +890,13 @@ function renderProductCard(product) {
 }
 
 function renderCatalogue() {
-  if (
-    !elements.productGrid ||
-    !store
-  ) {
+  if (!elements.productGrid || !store) {
     return;
   }
 
-  const products =
-    getFilteredProducts();
-
-  const total =
-    (store.products || []).length;
+  const products = getFilteredProducts();
+  const total = (store.products || []).length;
+  const searching = hasActiveSearch();
 
   elements.productGrid.innerHTML =
     products
@@ -1044,41 +908,55 @@ function renderCatalogue() {
       products.length > 0;
   }
 
-  if (
-    elements.catalogueResultText
-  ) {
-    if (!products.length) {
+  if (elements.catalogueResultText) {
+
+    if (searching) {
+
+      if (!products.length) {
+
+        elements.catalogueResultText.textContent =
+          `За запитом «${searchQuery}» нічого не знайдено.`;
+
+      } else {
+
+        elements.catalogueResultText.textContent =
+          `За запитом «${searchQuery}» знайдено ${products.length} ${productWord(
+            products.length
+          )}.`;
+
+      }
+
+    } else if (!products.length) {
+
       elements.catalogueResultText.textContent =
         "За цими параметрами товарів не знайдено.";
+
     } else if (
       products.length === total &&
-      activeCategory === "ALL" &&
-      !searchQuery
+      activeCategory === "ALL"
     ) {
+
       elements.catalogueResultText.textContent =
         `У каталозі ${products.length} ${productWord(
           products.length
         )}.`;
+
     } else {
+
       elements.catalogueResultText.textContent =
         `Знайдено ${products.length} ${productWord(
           products.length
         )}.`;
+
     }
   }
 }
 
 function productWord(count) {
-  const value =
-    Math.abs(Number(count)) % 100;
+  const value = Math.abs(Number(count)) % 100;
+  const last = value % 10;
 
-  const last =
-    value % 10;
-
-  if (
-    value > 10 &&
-    value < 20
-  ) {
+  if (value > 10 && value < 20) {
     return "товарів";
   }
 
@@ -1086,10 +964,7 @@ function productWord(count) {
     return "товар";
   }
 
-  if (
-    last >= 2 &&
-    last <= 4
-  ) {
+  if (last >= 2 && last <= 4) {
     return "товари";
   }
 
@@ -1118,7 +993,9 @@ function loadCart() {
     return Array.isArray(parsed)
       ? parsed
       : [];
+
   } catch (error) {
+
     console.error(
       "Помилка читання кошика:",
       error
@@ -1130,11 +1007,14 @@ function loadCart() {
 
 function saveCart() {
   try {
+
     localStorage.setItem(
       CART_STORAGE_KEY,
       JSON.stringify(cart)
     );
+
   } catch (error) {
+
     console.error(
       "Помилка збереження кошика:",
       error
@@ -1145,6 +1025,7 @@ function saveCart() {
 function calculateCartCount() {
   return cart.reduce(
     (sum, item) => {
+
       return (
         sum +
         Math.max(
@@ -1155,6 +1036,7 @@ function calculateCartCount() {
           )
         )
       );
+
     },
     0
   );
@@ -1163,6 +1045,7 @@ function calculateCartCount() {
 function calculateCartTotal() {
   return cart.reduce(
     (sum, item) => {
+
       return (
         sum +
         safeNumber(
@@ -1177,6 +1060,7 @@ function calculateCartTotal() {
             )
           )
       );
+
     },
     0
   );
@@ -1209,6 +1093,7 @@ function normalizeCartItem(item) {
 }
 
 function addSimpleProductToCart(product) {
+
   if (
     !product ||
     product.available === false
@@ -1217,6 +1102,7 @@ function addSimpleProductToCart(product) {
   }
 
   if (productHasChoices(product)) {
+
     window.location.href =
       productUrl(product);
 
@@ -1237,6 +1123,7 @@ function addSimpleProductToCart(product) {
     );
 
   if (existing) {
+
     existing.quantity =
       Math.max(
         1,
@@ -1245,7 +1132,9 @@ function addSimpleProductToCart(product) {
           1
         )
       ) + 1;
+
   } else {
+
     cart.push({
       cartItemId,
       code: product.code,
@@ -1256,6 +1145,7 @@ function addSimpleProductToCart(product) {
       sauces: [],
       quantity: 1
     });
+
   }
 
   saveCart();
@@ -1266,6 +1156,7 @@ function addSimpleProductToCart(product) {
     {
       currency: "UAH",
       value: price,
+
       items: [
         ga4ItemFromProduct(
           product,
@@ -1286,6 +1177,7 @@ function changeCartQuantity(
   cartItemId,
   change
 ) {
+
   const item =
     cart.find(
       entry =>
@@ -1304,12 +1196,14 @@ function changeCartQuantity(
     ) + change;
 
   if (item.quantity <= 0) {
+
     cart =
       cart.filter(
         entry =>
           entry.cartItemId !==
           cartItemId
       );
+
   }
 
   saveCart();
@@ -1319,6 +1213,7 @@ function changeCartQuantity(
 function removeCartItem(
   cartItemId
 ) {
+
   cart =
     cart.filter(
       entry =>
@@ -1331,6 +1226,7 @@ function removeCartItem(
 }
 
 function getFreeDeliveryThreshold() {
+
   const settings =
     store?.settings || {};
 
@@ -1372,15 +1268,18 @@ function getFreeDeliveryThreshold() {
       );
 
   if (fromDelivery.length) {
+
     return Math.min(
       ...fromDelivery
     );
+
   }
 
   return 2000;
 }
 
 function renderFreeDeliveryProgress() {
+
   if (!elements.cartProgress) {
     return;
   }
@@ -1395,6 +1294,7 @@ function renderFreeDeliveryProgress() {
     !threshold ||
     !cart.length
   ) {
+
     elements.cartProgress.innerHTML =
       "";
 
@@ -1408,6 +1308,7 @@ function renderFreeDeliveryProgress() {
     false;
 
   if (total >= threshold) {
+
     elements.cartProgress.innerHTML = `
       <strong>
         Доставку у відділення або поштомат беремо на себе.
@@ -1462,6 +1363,7 @@ function renderFreeDeliveryProgress() {
 }
 
 function renderCart() {
+
   if (!elements.cartItems) {
     return;
   }
@@ -1478,11 +1380,14 @@ function renderCart() {
     calculateCartTotal();
 
   if (elements.cartCount) {
+
     elements.cartCount.textContent =
       count;
+
   }
 
   if (!cart.length) {
+
     elements.cartItems.innerHTML = `
       <div class="cart-empty">
 
@@ -1498,24 +1403,31 @@ function renderCart() {
     `;
 
     if (elements.cartTotal) {
+
       elements.cartTotal.textContent =
         formatMoney(0);
+
     }
 
     if (elements.cartProgress) {
+
       elements.cartProgress.innerHTML =
         "";
 
       elements.cartProgress.hidden =
         true;
+
     }
 
     if (elements.cartSuggestions) {
+
       elements.cartSuggestions.innerHTML =
         "";
+
     }
 
     if (elements.checkoutButton) {
+
       elements.checkoutButton.classList.add(
         "is-disabled"
       );
@@ -1524,6 +1436,7 @@ function renderCart() {
         "aria-disabled",
         "true"
       );
+
     }
 
     return;
@@ -1532,6 +1445,7 @@ function renderCart() {
   elements.cartItems.innerHTML =
     cart
       .map(item => {
+
         const product =
           findProduct(
             item.code
@@ -1673,11 +1587,14 @@ function renderCart() {
       .join("");
 
   if (elements.cartTotal) {
+
     elements.cartTotal.textContent =
       formatMoney(total);
+
   }
 
   if (elements.checkoutButton) {
+
     elements.checkoutButton.classList.remove(
       "is-disabled"
     );
@@ -1685,6 +1602,7 @@ function renderCart() {
     elements.checkoutButton.removeAttribute(
       "aria-disabled"
     );
+
   }
 
   renderFreeDeliveryProgress();
@@ -1696,6 +1614,7 @@ function renderCart() {
    ========================================================== */
 
 function openMobileMenu() {
+
   if (
     !elements.mobileMenu ||
     !elements.mobileMenuOverlay
@@ -1728,6 +1647,7 @@ function openMobileMenu() {
 }
 
 function closeMobileMenu() {
+
   if (
     !elements.mobileMenu ||
     !elements.mobileMenuOverlay
@@ -1754,14 +1674,18 @@ function closeMobileMenu() {
   );
 
   window.setTimeout(() => {
+
     if (
       !elements.mobileMenu.classList.contains(
         "is-open"
       )
     ) {
+
       elements.mobileMenuOverlay.hidden =
         true;
+
     }
+
   }, 260);
 }
 
@@ -1771,6 +1695,7 @@ function closeMobileMenu() {
    ========================================================== */
 
 function openCart() {
+
   if (
     !elements.cartPanel ||
     !elements.cartOverlay
@@ -1798,6 +1723,7 @@ function openCart() {
 }
 
 function closeCart() {
+
   if (
     !elements.cartPanel ||
     !elements.cartOverlay
@@ -1819,14 +1745,18 @@ function closeCart() {
   );
 
   window.setTimeout(() => {
+
     if (
       !elements.cartPanel.classList.contains(
         "is-open"
       )
     ) {
+
       elements.cartOverlay.hidden =
         true;
+
     }
+
   }, 260);
 }
 
@@ -1836,6 +1766,7 @@ function closeCart() {
    ========================================================== */
 
 function handleCategoryClick(event) {
+
   const button =
     event.target.closest(
       "[data-category]"
@@ -1849,24 +1780,32 @@ function handleCategoryClick(event) {
     button.dataset.category ||
     "ALL";
 
+  searchQuery = "";
+
+  if (elements.catalogSearch) {
+
+    elements.catalogSearch.value =
+      "";
+
+  }
+
+  updateClearSearchButton();
+  updateSearchMode();
   renderCategories();
   renderCatalogue();
 
-  document
-    .querySelector("#catalogue")
-    ?.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
+  scrollToCatalogueResults();
 }
 
 function handleProductGridClick(event) {
+
   const addButton =
     event.target.closest(
       "[data-add-cart]"
     );
 
   if (addButton) {
+
     event.preventDefault();
 
     const product =
@@ -1887,6 +1826,7 @@ function handleProductGridClick(event) {
     );
 
   if (productLink) {
+
     const product =
       findProduct(
         productLink.dataset.productLink
@@ -1910,18 +1850,22 @@ function handleProductGridClick(event) {
         ]
       }
     );
+
   }
 }
 
 function handleCartClick(event) {
+
   const changeButton =
     event.target.closest(
       "[data-cart-change]"
     );
 
   if (changeButton) {
+
     changeCartQuantity(
       changeButton.dataset.cartItem,
+
       safeNumber(
         changeButton.dataset.cartChange,
         0
@@ -1937,9 +1881,11 @@ function handleCartClick(event) {
     );
 
   if (removeButton) {
+
     removeCartItem(
       removeButton.dataset.cartRemove
     );
+
   }
 }
 
@@ -1949,6 +1895,7 @@ function handleCartClick(event) {
    ========================================================== */
 
 function bindEvents() {
+
   elements.categoryFilters?.addEventListener(
     "click",
     handleCategoryClick
@@ -1968,11 +1915,29 @@ function bindEvents() {
   elements.catalogSearch?.addEventListener(
     "input",
     event => {
-      searchQuery =
-        event.target.value.trim();
 
-      updateClearSearchButton();
-      renderCatalogue();
+      applySearchValue(
+        event.target.value
+      );
+
+    }
+  );
+
+
+  elements.catalogSearch?.addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Enter" &&
+        hasActiveSearch()
+      ) {
+
+        event.preventDefault();
+        scrollToCatalogueResults();
+
+      }
+
     }
   );
 
@@ -1980,15 +1945,18 @@ function bindEvents() {
   elements.clearSearch?.addEventListener(
     "click",
     () => {
-      searchQuery = "";
 
-      elements.catalogSearch.value =
-        "";
+      if (elements.catalogSearch) {
 
-      updateClearSearchButton();
-      renderCatalogue();
+        elements.catalogSearch.value =
+          "";
 
-      elements.catalogSearch.focus();
+      }
+
+      applySearchValue("");
+
+      elements.catalogSearch?.focus();
+
     }
   );
 
@@ -1996,11 +1964,13 @@ function bindEvents() {
   elements.sortSelect?.addEventListener(
     "change",
     event => {
+
       sortMode =
         event.target.value ||
         "default";
 
       renderCatalogue();
+
     }
   );
 
@@ -2014,14 +1984,18 @@ function bindEvents() {
   elements.headerSearchButton?.addEventListener(
     "click",
     () => {
+
       elements.catalogSearch?.scrollIntoView({
         behavior: "smooth",
         block: "center"
       });
 
       window.setTimeout(() => {
+
         elements.catalogSearch?.focus();
+
       }, 350);
+
     }
   );
 
@@ -2066,9 +2040,12 @@ function bindEvents() {
   elements.checkoutButton?.addEventListener(
     "click",
     event => {
+
       if (!cart.length) {
+
         event.preventDefault();
         return;
+
       }
 
       trackGa4Event(
@@ -2081,6 +2058,7 @@ function bindEvents() {
 
           items:
             cart.map(item => {
+
               const product =
                 findProduct(
                   item.code
@@ -2116,9 +2094,11 @@ function bindEvents() {
                     1
                   )
               };
+
             })
         }
       );
+
     }
   );
 
@@ -2126,12 +2106,14 @@ function bindEvents() {
   document.addEventListener(
     "keydown",
     event => {
+
       if (event.key !== "Escape") {
         return;
       }
 
       closeMobileMenu();
       closeCart();
+
     }
   );
 
@@ -2139,6 +2121,7 @@ function bindEvents() {
   window.addEventListener(
     "storage",
     event => {
+
       if (
         event.key !==
         CART_STORAGE_KEY
@@ -2148,6 +2131,7 @@ function bindEvents() {
 
       cart = loadCart();
       renderCart();
+
     }
   );
 }
@@ -2157,6 +2141,8 @@ function bindEvents() {
    12. СТАРТ
    ========================================================== */
 
+prepareSearchField();
 bindEvents();
+updateSearchMode();
 renderCart();
 loadStore();
