@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Контакти — Точка Хрускоту</title>
+
+  <meta
+    name="description"
+    content="Контакти Точки Хрускоту. Домашнє виробництво у селищі Млинів, Рівненська область. Телефон, Telegram, Instagram, Facebook, TikTok та YouTube."
+  >
+
+  <meta
+    name="theme-color"
+    content="#fffaf5"
+  >
+
+  <link
+    rel="canonical"
+    href="https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/contacts.html"
+  >
+
+  <link
+    rel="icon"
+    href="images/brand/logo.webp"
+    type="image/webp"
+  >
+
+  <link
+    rel="stylesheet"
+    href="site-v2.css?v=20260914-8"
+  >
+
+
+  <style>
+
+    /* ======================================================
+       HERO
+       ====================================================== */
+
+    .contacts-hero {
+      padding: 46px 0 34px;
+    }
+
+    .contacts-hero-box {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1.15fr)
+        minmax(300px, .85fr);
+
+      gap: 32px;
+      align-items: center;
+
+      padding: 36px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+
+      background:
+        linear-gradient(
+          135deg,
+          #fff8f2 0%,
+          #fff0e5 100%
+        );
+    }
+
+    .contacts-hero h1 {
+      margin: 0;
+
+      color: var(--brown);
+
+      font-size: clamp(
+        38px,
+        5vw,
+        62px
+      );
+
+      line-height: 1.03;
+      letter-spacing: -.035em;
+    }
+
+    .contacts-hero-text {
+      max-width: 720px;
+
+      margin: 15px 0 0;
+
+      color: var(--text-soft);
+
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .contacts-hero-note {
+      padding: 22px;
+
+      border: 1px solid #ead7ca;
+      border-radius: var(--radius-lg);
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          .78
+        );
+    }
+
+    .contacts-hero-note strong {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: var(--brown);
+
+      font-size: 18px;
+    }
+
+    .contacts-hero-note p {
+      margin: 0;
+
+      color: var(--text-soft);
+
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+
+    /* ======================================================
+       ОСНОВНІ КОНТАКТИ
+       ====================================================== */
+
+    .contacts-main-section {
+      padding: 4px 0 46px;
+    }
+
+    .contacts-heading {
+      margin-bottom: 18px;
+    }
+
+    .contacts-heading h2 {
+      margin: 0;
+
+      color: var(--brown);
+
+      font-size: clamp(
+        29px,
+        3.5vw,
+        40px
+      );
+    }
+
+    .contacts-heading p {
+      max-width: 720px;
+
+      margin: 8px 0 0;
+
+      color: var(--text-soft);
+    }
+
+    .contacts-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(
+          4,
+          minmax(0, 1fr)
+        );
+
+      gap: 12px;
+    }
+
+    .contact-card {
+      display: flex;
+      flex-direction: column;
+
+      min-height: 190px;
+
+      padding: 21px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+
+      background: var(--surface);
+
+      box-shadow: var(--shadow-sm);
+    }
+
+    .contact-card-number {
+      width: 34px;
+      height: 34px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-bottom: 14px;
+
+      border-radius: 50%;
+
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+
+      font-weight: 900;
+    }
+
+    .contact-card h3 {
+      margin: 0 0 7px;
+
+      color: var(--brown);
+
+      font-size: 18px;
+    }
+
+    .contact-card p {
+      margin: 0 0 15px;
+
+      color: var(--text-soft);
+
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .contact-card a {
+      margin-top: auto;
+
+      color: var(--accent-dark);
+
+      font-size: 14px;
+      font-weight: 850;
+
+      word-break: break-word;
+    }
+
+
+    /* ======================================================
+       ЛОКАЦІЯ
+       ====================================================== */
+
+    .contact-location-section {
+      padding: 6px 0 46px;
+    }
+
+    .contact-location-grid {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+      gap: 20px;
+    }
+
+    .contact-location-card {
+      padding: 26px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+
+      background: var(--surface);
+    }
+
+    .contact-location-card h2 {
+      margin: 0 0 16px;
+
+      color: var(--brown);
+
+      font-size: 25px;
+    }
+
+    .contact-location-line {
+      padding: 14px 0;
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+    .contact-location-line:first-of-type {
+      padding-top: 0;
+    }
+
+    .contact-location-line:last-child {
+      padding-bottom: 0;
+
+      border-bottom: 0;
+    }
+
+    .contact-location-line strong {
+      display: block;
+
+      margin-bottom: 4px;
+
+      color: var(--brown);
+
+      font-size: 16px;
+    }
+
+    .contact-location-line span {
+      color: var(--text-soft);
+
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+
+    /* ======================================================
+       СОЦМЕРЕЖІ
+       ====================================================== */
+
+    .contact-social-section {
+      padding: 5px 0 48px;
+    }
+
+    .contact-social-box {
+      padding: 28px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+
+      background: var(--surface-soft);
+    }
+
+    .contact-social-box h2 {
+      margin: 0;
+
+      color: var(--brown);
+
+      font-size: 27px;
+    }
+
+    .contact-social-box > p {
+      max-width: 720px;
+
+      margin: 8px 0 20px;
+
+      color: var(--text-soft);
+    }
+
+    .contact-social-links {
+      display: grid;
+      grid-template-columns:
+        repeat(
+          5,
+          minmax(0, 1fr)
+        );
+
+      gap: 9px;
+    }
+
+    .contact-social-link {
+      min-height: 52px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 10px 12px;
+
+      border: 1px solid var(--border-strong);
+      border-radius: 13px;
+
+      background: var(--surface);
+
+      color: var(--brown);
+
+      font-size: 13px;
+      font-weight: 850;
+
+      text-align: center;
+    }
+
+    .contact-social-link:hover {
+      background: #fff;
+    }
+
+
+    /* ======================================================
+       GOOGLE
+       ====================================================== */
+
+    .contact-google-section {
+      padding: 4px 0 46px;
+    }
+
+    .contact-google-box {
+      display: grid;
+      grid-template-columns:
+        1fr
+        auto;
+
+      gap: 24px;
+      align-items: center;
+
+      padding: 25px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+
+      background: var(--surface);
+    }
+
+    .contact-google-box h2 {
+      margin: 0;
+
+      color: var(--brown);
+
+      font-size: 24px;
+    }
+
+    .contact-google-box p {
+      max-width: 720px;
+
+      margin: 7px 0 0;
+
+      color: var(--text-soft);
+    }
+
+    .contact-secondary-button {
+      min-height: 48px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 10px 17px;
+
+      border: 1px solid var(--border-strong);
+      border-radius: 13px;
+
+      background: var(--surface);
+
+      color: var(--brown);
+
+      font-weight: 850;
+    }
+
+
+    /* ======================================================
+       CTA
+       ====================================================== */
+
+    .contacts-cta-section {
+      padding: 0 0 72px;
+    }
+
+    .contacts-cta {
+      display: grid;
+      grid-template-columns:
+        1fr
+        auto;
+
+      gap: 26px;
+      align-items: center;
+
+      padding: 28px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+
+      background:
+        linear-gradient(
+          135deg,
+          #fff8f2,
+          #fff2e9
+        );
+    }
+
+    .contacts-cta h2 {
+      margin: 0;
+
+      color: var(--brown);
+
+      font-size: 26px;
+    }
+
+    .contacts-cta p {
+      max-width: 700px;
+
+      margin: 8px 0 0;
+
+      color: var(--text-soft);
+    }
+
+    .contacts-cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+
+    /* ======================================================
+       АДАПТИВ
+       ====================================================== */
+
+    @media (max-width: 980px) {
+
+      .contacts-grid {
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0, 1fr)
+          );
+      }
+
+      .contact-social-links {
+        grid-template-columns:
+          repeat(
+            3,
+            minmax(0, 1fr)
+          );
+      }
+
+    }
+
+
+    @media (max-width: 900px) {
+
+      .contacts-hero-box {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-location-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-google-box,
+      .contacts-cta {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+
+    @media (max-width: 640px) {
+
+      .contacts-hero {
+        padding-top: 28px;
+      }
+
+      .contacts-hero-box {
+        padding: 22px;
+
+        border-radius: 18px;
+      }
+
+      .contacts-hero h1 {
+        font-size: 38px;
+      }
+
+      .contacts-hero-text {
+        font-size: 16px;
+      }
+
+      .contacts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-card {
+        min-height: 0;
+      }
+
+      .contact-social-links {
+        grid-template-columns:
+          1fr 1fr;
+      }
+
+      .contact-social-link:last-child {
+        grid-column: 1 / -1;
+      }
+
+      .contact-google-box,
+      .contacts-cta {
+        padding: 20px;
+      }
+
+      .contacts-cta-actions {
+        flex-direction: column;
+      }
+
+      .contacts-cta-actions a {
+        width: 100%;
+      }
+
+    }
+
+  </style>
+
+
+  <!-- ======================================================
+       GOOGLE ANALYTICS 4
+       ====================================================== -->
+
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-BMMFC6QXD5"
+  ></script>
+
+  <script>
+    window.dataLayer =
+      window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag(
+      "js",
+      new Date()
+    );
+
+    gtag(
+      "config",
+      "G-BMMFC6QXD5"
+    );
+  </script>
+
+</head>
+
+
+<body>
+
+  <!-- ======================================================
+       ЗАВАНТАЖЕННЯ
+       ====================================================== -->
+
+  <div
+    class="page-loader"
+    id="pageLoader"
+    aria-live="polite"
+  >
+
+    <div class="page-loader-card">
+
+      <img
+        src="images/brand/logo.webp"
+        alt=""
+        width="70"
+        height="70"
+      >
+
+      <strong>
+        Точка Хрускоту
+      </strong>
+
+      <span>
+        Завантажуємо...
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- ======================================================
+       ВЕРХНЯ СМУГА
+       ====================================================== -->
+
+  <div class="trust-bar">
+
+    <div class="container trust-bar-inner">
+
+      <a
+        class="trust-item trust-location"
+        href="contacts.html"
+      >
+        <span>
+          Млинів, Рівненська обл.
+        </span>
+      </a>
+
+
+      <a
+        class="trust-item trust-local-delivery"
+        href="delivery.html"
+      >
+        <span>
+          Млинів • Дубно • Рівне
+        </span>
+      </a>
+
+
+      <a
+        class="trust-item trust-ukraine"
+        href="delivery.html"
+      >
+        <span>
+          Доставка по Україні
+        </span>
+      </a>
+
+
+      <a
+        class="trust-item trust-phone"
+        href="tel:+380638330860"
+      >
+        <span>
+          +380 63 833 08 60
+        </span>
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <!-- ======================================================
+       ШАПКА
+       ====================================================== -->
+
+  <header
+    class="site-header"
+    id="siteHeader"
+  >
+
+    <div class="container header-inner">
+
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="Точка Хрускоту — головна"
+      >
+
+        <img
+          id="headerLogo"
+          src="images/brand/logo.webp"
+          alt="Точка Хрускоту"
+          width="64"
+          height="64"
+        >
+
+        <span class="brand-text">
+
+          <strong id="headerStoreName">
+            Точка Хрускоту
+          </strong>
+
+          <small>
+            Візьми. Вмочи. Хрусни.
+          </small>
+
+        </span>
+
+      </a>
+
+
+      <nav
+        class="desktop-nav"
+        aria-label="Головна навігація"
+      >
+
+        <a href="catalog.html">
+          Каталог
+        </a>
+
+        <a href="gifts.html">
+          Подарунки
+        </a>
+
+        <a href="delivery.html">
+          Доставка й оплата
+        </a>
+
+        <a href="reviews.html">
+          Відгуки
+        </a>
+
+        <a
+          class="is-active"
+          href="contacts.html"
+        >
+          Контакти
+        </a>
+
+      </nav>
+
+
+      <div class="header-actions">
+
+        <a
+          class="header-action-button"
+          href="catalog.html"
+          aria-label="Пошук товарів"
+        >
+          <span class="header-action-text">
+            Пошук
+          </span>
+        </a>
+
+
+        <button
+          class="header-action-button cart-button"
+          id="cartButton"
+          type="button"
+          aria-label="Відкрити кошик"
+        >
+
+          <span class="header-action-text">
+            Кошик
+          </span>
+
+          <span
+            class="cart-count"
+            id="cartCount"
+          >
+            0
+          </span>
+
+        </button>
+
+
+        <button
+          class="mobile-menu-button"
+          id="mobileMenuButton"
+          type="button"
+          aria-controls="mobileMenu"
+          aria-expanded="false"
+        >
+          <span>
+            Меню
+          </span>
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ======================================================
+       МОБІЛЬНЕ МЕНЮ
+       ====================================================== -->
+
+  <div
+    class="mobile-menu-overlay"
+    id="mobileMenuOverlay"
+    hidden
+  ></div>
+
+
+  <aside
+    class="mobile-menu"
+    id="mobileMenu"
+    aria-hidden="true"
+  >
+
+    <div class="mobile-menu-head">
+
+      <strong>
+        Меню
+      </strong>
+
+      <button
+        id="closeMobileMenu"
+        type="button"
+        aria-label="Закрити меню"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <nav
+      class="mobile-nav"
+      aria-label="Мобільна навігація"
+    >
+
+      <a href="catalog.html">
+        Каталог
+      </a>
+
+      <a href="gifts.html">
+        Подарунки
+      </a>
+
+      <a href="delivery.html">
+        Доставка й оплата
+      </a>
+
+      <a href="reviews.html">
+        Відгуки
+      </a>
+
+      <a
+        class="is-active"
+        href="contacts.html"
+      >
+        Контакти
+      </a>
+
+    </nav>
+
+
+    <div class="mobile-menu-contact">
+
+      <p>
+        <strong>
+          Млинів, Рівненська область
+        </strong>
+      </p>
+
+      <a href="tel:+380638330860">
+        +380 63 833 08 60
+      </a>
+
+      <a
+        href="https://t.me/tockahruskotu"
+        target="_blank"
+        rel="noopener"
+      >
+        Telegram
+      </a>
+
+      <a
+        href="https://instagram.com/tockahruskotu"
+        target="_blank"
+        rel="noopener"
+      >
+        Instagram
+      </a>
+
+    </div>
+
+  </aside>
+
+
+  <!-- ======================================================
+       ОСНОВНИЙ ВМІСТ
+       ====================================================== -->
+
+  <main>
+
+    <div class="container breadcrumbs">
+
+      <a href="index.html">
+        Головна
+      </a>
+
+      <span>
+        ›
+      </span>
+
+      <span aria-current="page">
+        Контакти
+      </span>
+
+    </div>
+
+
+    <!-- ====================================================
+         HERO
+         ==================================================== -->
+
+    <section class="contacts-hero">
+
+      <div class="container">
+
+        <div class="contacts-hero-box">
+
+          <div>
+
+            <p class="section-kicker">
+              Ми на зв’язку
+            </p>
+
+            <h1>
+              Контакти
+            </h1>
+
+            <p class="contacts-hero-text">
+              Потрібна допомога з вибором,
+              доставкою або замовленням?
+              Напишіть або зателефонуйте —
+              допоможемо все узгодити.
+            </p>
+
+          </div>
+
+
+          <aside class="contacts-hero-note">
+
+            <strong>
+              Домашнє виробництво
+            </strong>
+
+            <p>
+              База виробництва —
+              селище Млинів,
+              Рівненська область.
+              Деталі самовивозу
+              та передачі замовлення
+              погоджуємо після оформлення.
+            </p>
+
+          </aside>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         ОСНОВНІ КАНАЛИ
+         ==================================================== -->
+
+    <section class="contacts-main-section">
+
+      <div class="container">
+
+        <div class="contacts-heading">
+
+          <p class="section-kicker">
+            Оберіть зручний спосіб
+          </p>
+
+          <h2>
+            Як з нами зв’язатися
+          </h2>
+
+          <p>
+            Для швидкого уточнення деталей
+            замовлення можете написати
+            у месенджер або зателефонувати.
+          </p>
+
+        </div>
+
+
+        <div class="contacts-grid">
+
+
+          <article class="contact-card">
+
+            <span class="contact-card-number">
+              1
+            </span>
+
+            <h3>
+              Телефон
+            </h3>
+
+            <p>
+              Для питань щодо замовлення,
+              доставки та асортименту.
+            </p>
+
+            <a href="tel:+380638330860">
+              +380 63 833 08 60
+            </a>
+
+          </article>
+
+
+          <article class="contact-card">
+
+            <span class="contact-card-number">
+              2
+            </span>
+
+            <h3>
+              Telegram
+            </h3>
+
+            <p>
+              Можна написати повідомлення
+              та уточнити деталі замовлення.
+            </p>
+
+            <a
+              href="https://t.me/tockahruskotu"
+              target="_blank"
+              rel="noopener"
+            >
+              @tockahruskotu
+            </a>
+
+          </article>
+
+
+          <article class="contact-card">
+
+            <span class="contact-card-number">
+              3
+            </span>
+
+            <h3>
+              Instagram
+            </h3>
+
+            <p>
+              Новинки, відео,
+              ідеї подачі
+              та наші смаколики.
+            </p>
+
+            <a
+              href="https://instagram.com/tockahruskotu"
+              target="_blank"
+              rel="noopener"
+            >
+              @tockahruskotu
+            </a>
+
+          </article>
+
+
+          <article class="contact-card">
+
+            <span class="contact-card-number">
+              4
+            </span>
+
+            <h3>
+              Google
+            </h3>
+
+            <p>
+              Профіль Точки Хрускоту
+              та можливість залишити відгук.
+            </p>
+
+            <a
+              id="contactGoogleProfile"
+              href="https://share.google/Fc4vC6bW6pVCzwFYW"
+              target="_blank"
+              rel="noopener"
+            >
+              Відкрити профіль
+            </a>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         ДЕ МИ ПРАЦЮЄМО
+         ==================================================== -->
+
+    <section class="contact-location-section">
+
+      <div class="container contact-location-grid">
+
+
+        <article class="contact-location-card">
+
+          <p class="section-kicker">
+            Де ми
+          </p>
+
+          <h2>
+            Млинів, Рівненська область
+          </h2>
+
+
+          <div class="contact-location-line">
+
+            <strong>
+              Виробництво
+            </strong>
+
+            <span>
+              Селище Млинів.
+              Більшість продукції
+              готуємо під конкретне замовлення.
+            </span>
+
+          </div>
+
+
+          <div class="contact-location-line">
+
+            <strong>
+              Самовивіз
+            </strong>
+
+            <span>
+              Можливість та місце передачі
+              погоджуємо індивідуально
+              після оформлення замовлення.
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <article class="contact-location-card">
+
+          <p class="section-kicker">
+            Доставка
+          </p>
+
+          <h2>
+            Працюємо не лише у Млинові
+          </h2>
+
+
+          <div class="contact-location-line">
+
+            <strong>
+              Млинів
+            </strong>
+
+            <span>
+              Безкоштовна локальна доставка.
+            </span>
+
+          </div>
+
+
+          <div class="contact-location-line">
+
+            <strong>
+              Дубно та Рівне
+            </strong>
+
+            <span>
+              Безкоштовна доставка
+              за попереднім погодженням
+              у дні наших маршрутів.
+            </span>
+
+          </div>
+
+
+          <div class="contact-location-line">
+
+            <strong>
+              Вся Україна
+            </strong>
+
+            <span>
+              Відправляємо Новою поштою
+              та Укрпоштою.
+            </span>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         СОЦМЕРЕЖІ
+         ==================================================== -->
+
+    <section class="contact-social-section">
+
+      <div class="container">
+
+        <div class="contact-social-box">
+
+          <p class="section-kicker">
+            Слідкуйте за нами
+          </p>
+
+          <h2>
+            Точка Хрускоту в соцмережах
+          </h2>
+
+          <p>
+            Там показуємо новинки,
+            процес приготування,
+            варіанти подачі,
+            акції та нові ідеї.
+          </p>
+
+
+          <div class="contact-social-links">
+
+            <a
+              class="contact-social-link"
+              href="https://instagram.com/tockahruskotu"
+              target="_blank"
+              rel="noopener"
+            >
+              Instagram
+            </a>
+
+
+            <a
+              class="contact-social-link"
+              href="https://www.facebook.com/tockahruskotu/"
+              target="_blank"
+              rel="noopener"
+            >
+              Facebook
+            </a>
+
+
+            <a
+              class="contact-social-link"
+              href="https://www.tiktok.com/@tockahruskotu"
+              target="_blank"
+              rel="noopener"
+            >
+              TikTok
+            </a>
+
+
+            <a
+              class="contact-social-link"
+              href="https://www.youtube.com/@ТочкаХрускоту"
+              target="_blank"
+              rel="noopener"
+            >
+              YouTube
+            </a>
+
+
+            <a
+              class="contact-social-link"
+              href="https://t.me/tockahruskotu"
+              target="_blank"
+              rel="noopener"
+            >
+              Telegram
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         GOOGLE
+         ==================================================== -->
+
+    <section class="contact-google-section">
+
+      <div class="container">
+
+        <div class="contact-google-box">
+
+          <div>
+
+            <h2>
+              Ми також у Google
+            </h2>
+
+            <p>
+              Можете перейти до профілю
+              «Точки Хрускоту»
+              або залишити там свій відгук.
+            </p>
+
+          </div>
+
+
+          <a
+            class="contact-secondary-button"
+            id="contactGoogleButton"
+            href="https://share.google/Fc4vC6bW6pVCzwFYW"
+            target="_blank"
+            rel="noopener"
+          >
+            Відкрити Google
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         CTA
+         ==================================================== -->
+
+    <section class="contacts-cta-section">
+
+      <div class="container">
+
+        <div class="contacts-cta">
+
+          <div>
+
+            <h2>
+              Готові обирати?
+            </h2>
+
+            <p>
+              Перегляньте каталог
+              або одразу відкрийте
+              подарункові товари.
+            </p>
+
+          </div>
+
+
+          <div class="contacts-cta-actions">
+
+            <a
+              class="button button-primary"
+              href="catalog.html"
+            >
+              Каталог
+            </a>
+
+            <a
+              class="contact-secondary-button"
+              href="gifts.html"
+            >
+              Подарунки
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ======================================================
+       КОШИК
+       ====================================================== -->
+
+  <div
+    class="cart-overlay"
+    id="cartOverlay"
+    hidden
+  ></div>
+
+
+  <aside
+    class="cart-panel"
+    id="cartPanel"
+    aria-hidden="true"
+    aria-label="Кошик"
+  >
+
+    <div class="cart-panel-head">
+
+      <div>
+
+        <p class="section-kicker">
+          Ваше замовлення
+        </p>
+
+        <h2>
+          Кошик
+        </h2>
+
+      </div>
+
+
+      <button
+        id="closeCartButton"
+        type="button"
+        aria-label="Закрити кошик"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div
+      class="cart-items"
+      id="cartItems"
+    ></div>
+
+
+    <div
+      class="cart-free-delivery"
+      id="cartProgress"
+    ></div>
+
+
+    <div
+      class="cart-suggestions"
+      id="cartSuggestions"
+    ></div>
+
+
+    <div class="cart-panel-footer">
+
+      <div class="cart-total-row">
+
+        <span>
+          Разом
+        </span>
+
+        <strong id="cartTotal">
+          0 грн
+        </strong>
+
+      </div>
+
+
+      <a
+        class="button button-primary checkout-link"
+        id="checkoutButton"
+        href="checkout.html"
+      >
+        Оформити замовлення
+      </a>
+
+
+      <button
+        class="continue-shopping-button"
+        id="continueShoppingButton"
+        type="button"
+      >
+        Продовжити покупки
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- ======================================================
+       ПОВІДОМЛЕННЯ
+       ====================================================== -->
+
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+
+  <!-- ======================================================
+       ФУТЕР
+       ====================================================== -->
+
+  <footer class="site-footer">
+
+    <div class="container footer-grid">
+
+
+      <div class="footer-column footer-brand">
+
+        <a
+          class="footer-logo-link"
+          href="index.html"
+        >
+
+          <img
+            id="footerLogo"
+            src="images/brand/logo.webp"
+            alt="Точка Хрускоту"
+            width="76"
+            height="76"
+            loading="lazy"
+          >
+
+        </a>
+
+
+        <strong id="footerStoreName">
+          Точка Хрускоту
+        </strong>
+
+
+        <p>
+          Домашнє виробництво.
+          Селище Млинів, Рівненська область.
+          Готуємо під замовлення
+          та доставляємо по Україні.
+        </p>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h2>
+          Покупцям
+        </h2>
+
+        <a href="catalog.html">
+          Каталог
+        </a>
+
+        <a href="gifts.html">
+          Подарунки
+        </a>
+
+        <a href="delivery.html">
+          Доставка й оплата
+        </a>
+
+        <a href="reviews.html">
+          Відгуки
+        </a>
+
+        <a href="contacts.html">
+          Контакти
+        </a>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h2>
+          Зв’язок
+        </h2>
+
+        <a href="tel:+380638330860">
+          +380 63 833 08 60
+        </a>
+
+        <a
+          href="https://t.me/tockahruskotu"
+          target="_blank"
+          rel="noopener"
+        >
+          Telegram
+        </a>
+
+        <a
+          href="https://instagram.com/tockahruskotu"
+          target="_blank"
+          rel="noopener"
+        >
+          Instagram
+        </a>
+
+        <a
+          id="footerGoogleProfile"
+          href="https://share.google/Fc4vC6bW6pVCzwFYW"
+          target="_blank"
+          rel="noopener"
+        >
+          Профіль у Google
+        </a>
+
+      </div>
+
+
+      <div class="footer-column">
+
+        <h2>
+          Документи
+        </h2>
+
+        <a href="terms.html">
+          Умови замовлення
+        </a>
+
+        <a href="privacy.html">
+          Політика конфіденційності
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- СОЦМЕРЕЖІ -->
+
+    <div class="container footer-social-section">
+
+      <h2>
+        Ми в соцмережах
+      </h2>
+
+
+      <div class="footer-social-links">
+
+        <a
+          href="https://instagram.com/tockahruskotu"
+          target="_blank"
+          rel="noopener"
+        >
+          Instagram
+        </a>
+
+        <a
+          href="https://www.facebook.com/tockahruskotu/"
+          target="_blank"
+          rel="noopener"
+        >
+          Facebook
+        </a>
+
+        <a
+          href="https://www.tiktok.com/@tockahruskotu"
+          target="_blank"
+          rel="noopener"
+        >
+          TikTok
+        </a>
+
+        <a
+          href="https://www.youtube.com/@ТочкаХрускоту"
+          target="_blank"
+          rel="noopener"
+        >
+          YouTube
+        </a>
+
+        <a
+          href="https://t.me/tockahruskotu"
+          target="_blank"
+          rel="noopener"
+        >
+          Telegram
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- ПУБЛІКАЦІЯ ВІДЕО -->
+
+    <div class="container footer-publishing">
+
+      <span>
+        Публікація відео:
+      </span>
+
+      <a href="tiktok-share.html">
+        TikTok
+      </a>
+
+      <span>
+        |
+      </span>
+
+      <a href="youtube-share.html">
+        YouTube
+      </a>
+
+    </div>
+
+
+    <div class="container footer-bottom">
+
+      <span>
+        © Точка Хрускоту, 2026
+      </span>
+
+      <span>
+        Млинів • Дубно • Рівне • Доставка по Україні
+      </span>
+
+    </div>
+
+  </footer>
+
+
+  <noscript>
+
+    <div class="noscript-message">
+      Для роботи сторінки потрібно
+      увімкнути JavaScript у браузері.
+    </div>
+
+  </noscript>
+
+
+  <!-- ======================================================
+       СПІЛЬНА ЛОГІКА
+       ====================================================== -->
+
+  <script
+    src="site-v2.js?v=20260914-9"
+    defer
+  ></script>
+
+
+  <!--
+       site-v2.js використовується для кошика,
+       меню та даних магазину.
+
+       Після його завантаження повертаємо
+       правильну назву саме цієї сторінки.
+  -->
+
+  <script>
+    window.addEventListener(
+      "load",
+      function () {
+
+        document.title =
+          "Контакти — Точка Хрускоту";
+
+
+        const googleProfile =
+          document.getElementById(
+            "footerGoogleProfile"
+          )?.href;
+
+
+        if (googleProfile) {
+
+          const profileLink =
+            document.getElementById(
+              "contactGoogleProfile"
+            );
+
+          const googleButton =
+            document.getElementById(
+              "contactGoogleButton"
+            );
+
+
+          if (profileLink) {
+            profileLink.href =
+              googleProfile;
+          }
+
+          if (googleButton) {
+            googleButton.href =
+              googleProfile;
+          }
+
+        }
+
+      }
+    );
+  </script>
+
+</body>
+</html>
