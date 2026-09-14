@@ -1,15 +1,26 @@
 /* ==========================================================
    ТОЧКА ХРУСКОТУ — SITE V2
-   Каталог, пошук, кілька категорій, кошик і GA4
+   Каталог, пошук, кілька категорій,
+   повернення на попереднє місце, кошик і GA4
    ========================================================== */
 
 const STORE_API_URL =
   "https://script.google.com/macros/s/AKfycbzCgvAMAmqrsK-KsGcPMfx60kvQbZVJII91WVZKIn-KF7bFIA3HKdKe0JmaBu4RZtX31Q/exec";
 
-const CART_STORAGE_KEY = "tochka_hruskotu_cart_v3";
-const STORE_CACHE_KEY = "tochka_hruskotu_store_cache_v1";
-const STORE_REQUEST_TIMEOUT_MS = 10000;
-const PAGE_LOADER_MAX_MS = 900;
+const CART_STORAGE_KEY =
+  "tochka_hruskotu_cart_v3";
+
+const STORE_CACHE_KEY =
+  "tochka_hruskotu_store_cache_v1";
+
+const CATALOG_SCROLL_STORAGE_KEY =
+  "tochka_hruskotu_catalog_scroll_v2";
+
+const STORE_REQUEST_TIMEOUT_MS =
+  10000;
+
+const PAGE_LOADER_MAX_MS =
+  900;
 
 let store = null;
 let cart = loadCart();
@@ -17,19 +28,28 @@ let cart = loadCart();
 let activeCategory = "ALL";
 let searchQuery = "";
 let sortMode = "default";
+
 let toastTimer = null;
+let catalogScrollRestored = false;
 
 const $ = selector =>
   document.querySelector(selector);
 
 const elements = {
-  pageLoader: $("#pageLoader"),
+  pageLoader:
+    $("#pageLoader"),
 
-  headerLogo: $("#headerLogo"),
-  footerLogo: $("#footerLogo"),
+  headerLogo:
+    $("#headerLogo"),
 
-  headerStoreName: $("#headerStoreName"),
-  footerStoreName: $("#footerStoreName"),
+  footerLogo:
+    $("#footerLogo"),
+
+  headerStoreName:
+    $("#headerStoreName"),
+
+  footerStoreName:
+    $("#footerStoreName"),
 
   footerGoogleProfile:
     $("#footerGoogleProfile"),
@@ -203,8 +223,7 @@ function findCategory(code) {
 
 
 /* ==========================================================
-   2. КІЛЬКА КАТЕГОРІЙ В ОДНОМУ ТОВАРІ
-   Наприклад:
+   2. КІЛЬКА КАТЕГОРІЙ
    MINI-WAFFLES;GIFT-SETS
    ========================================================== */
 
@@ -250,13 +269,6 @@ function productHasCategory(
   ).includes(wanted);
 }
 
-function primaryCategoryCode(product) {
-  return (
-    productCategoryCodes(product)[0] ||
-    ""
-  );
-}
-
 function productCategoryNames(product) {
   return productCategoryCodes(product)
     .map(code => {
@@ -273,14 +285,291 @@ function productCategoryNames(product) {
 
 function primaryCategoryName(product) {
   return (
-    productCategoryNames(product)[0] ||
+    productCategoryNames(
+      product
+    )[0] ||
     ""
   );
 }
 
 
 /* ==========================================================
-   3. ТОВАР
+   3. URL СТАН КАТАЛОГУ
+   Зберігаємо категорію, пошук і сортування
+   ========================================================== */
+
+function readCatalogStateFromUrl() {
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const category =
+    String(
+      params.get("category") ||
+      ""
+    )
+      .trim()
+      .toUpperCase();
+
+  activeCategory =
+    category ||
+    "ALL";
+
+  searchQuery =
+    String(
+      params.get("q") ||
+      ""
+    ).trim();
+
+  const requestedSort =
+    String(
+      params.get("sort") ||
+      "default"
+    );
+
+  const allowedSorts =
+    new Set([
+      "default",
+      "new",
+      "price-asc",
+      "price-desc"
+    ]);
+
+  sortMode =
+    allowedSorts.has(
+      requestedSort
+    )
+      ? requestedSort
+      : "default";
+
+  if (
+    elements.catalogSearch
+  ) {
+    elements.catalogSearch.value =
+      searchQuery;
+  }
+
+  if (
+    elements.sortSelect
+  ) {
+    elements.sortSelect.value =
+      sortMode;
+  }
+}
+
+function updateCatalogUrl() {
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  /*
+    Інші параметри, наприклад UTM,
+    НЕ видаляємо.
+  */
+
+  params.delete(
+    "category"
+  );
+
+  params.delete(
+    "q"
+  );
+
+  params.delete(
+    "sort"
+  );
+
+  if (
+    activeCategory &&
+    activeCategory !== "ALL"
+  ) {
+    params.set(
+      "category",
+      activeCategory
+    );
+  }
+
+  if (
+    searchQuery
+  ) {
+    params.set(
+      "q",
+      searchQuery
+    );
+  }
+
+  if (
+    sortMode &&
+    sortMode !== "default"
+  ) {
+    params.set(
+      "sort",
+      sortMode
+    );
+  }
+
+  const query =
+    params.toString();
+
+  const nextUrl =
+    window.location.pathname +
+    (
+      query
+        ? `?${query}`
+        : ""
+    );
+
+  window.history.replaceState(
+    {
+      catalogue:
+        true
+    },
+    "",
+    nextUrl
+  );
+}
+
+
+/* ==========================================================
+   4. ЗАПАМ'ЯТОВУЄМО МІСЦЕ ПРОКРУТКИ
+   ========================================================== */
+
+function currentCatalogUrlKey() {
+  return (
+    window.location.pathname +
+    window.location.search
+  );
+}
+
+function saveCatalogScrollPosition() {
+  try {
+    const data = {
+      url:
+        currentCatalogUrlKey(),
+
+      y:
+        Math.max(
+          0,
+          window.scrollY ||
+          window.pageYOffset ||
+          0
+        ),
+
+      savedAt:
+        Date.now()
+    };
+
+    sessionStorage.setItem(
+      CATALOG_SCROLL_STORAGE_KEY,
+      JSON.stringify(data)
+    );
+  } catch (error) {
+    console.warn(
+      "Не вдалося запам’ятати місце каталогу:",
+      error
+    );
+  }
+}
+
+function readSavedCatalogScroll() {
+  try {
+    const raw =
+      sessionStorage.getItem(
+        CATALOG_SCROLL_STORAGE_KEY
+      );
+
+    if (!raw) {
+      return null;
+    }
+
+    const saved =
+      JSON.parse(raw);
+
+    if (
+      !saved ||
+      saved.url !==
+        currentCatalogUrlKey()
+    ) {
+      return null;
+    }
+
+    /*
+      Старі позиції довше 30 хвилин
+      не використовуємо.
+    */
+
+    if (
+      Date.now() -
+        safeNumber(
+          saved.savedAt,
+          0
+        ) >
+      30 * 60 * 1000
+    ) {
+      return null;
+    }
+
+    return saved;
+  } catch (error) {
+    return null;
+  }
+}
+
+function restoreCatalogScrollPosition() {
+  if (
+    catalogScrollRestored
+  ) {
+    return;
+  }
+
+  const saved =
+    readSavedCatalogScroll();
+
+  if (
+    !saved ||
+    safeNumber(
+      saved.y,
+      0
+    ) <= 0
+  ) {
+    catalogScrollRestored =
+      true;
+
+    return;
+  }
+
+  catalogScrollRestored =
+    true;
+
+  /*
+    Чекаємо поки картки товарів
+    точно промалюються.
+  */
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      window.scrollTo({
+        top:
+          safeNumber(
+            saved.y,
+            0
+          ),
+
+        left:
+          0,
+
+        behavior:
+          "auto"
+      });
+    });
+  });
+}
+
+
+/* ==========================================================
+   5. ТОВАР
    ========================================================== */
 
 function productUrl(product) {
@@ -351,7 +640,9 @@ function productUnitPrice(product) {
           Number.isFinite
         );
 
-    if (prices.length) {
+    if (
+      prices.length
+    ) {
       return Math.min(
         ...prices
       );
@@ -366,7 +657,7 @@ function productUnitPrice(product) {
 
 
 /* ==========================================================
-   4. GA4
+   6. GA4
    ========================================================== */
 
 function trackGa4Event(
@@ -398,17 +689,17 @@ function ga4ItemFromProduct(
   product,
   quantity = 1
 ) {
-  return {
+  const categoryNames =
+    productCategoryNames(
+      product
+    );
+
+  const result = {
     item_id:
       product.code,
 
     item_name:
       product.name,
-
-    item_category:
-      primaryCategoryName(
-        product
-      ),
 
     price:
       productUnitPrice(
@@ -417,15 +708,33 @@ function ga4ItemFromProduct(
 
     quantity
   };
+
+  if (
+    categoryNames[0]
+  ) {
+    result.item_category =
+      categoryNames[0];
+  }
+
+  if (
+    categoryNames[1]
+  ) {
+    result.item_category2 =
+      categoryNames[1];
+  }
+
+  return result;
 }
 
 
 /* ==========================================================
-   5. ПОВІДОМЛЕННЯ
+   7. ПОВІДОМЛЕННЯ
    ========================================================== */
 
 function showToast(message) {
-  if (!elements.toast) {
+  if (
+    !elements.toast
+  ) {
     return;
   }
 
@@ -436,9 +745,11 @@ function showToast(message) {
   elements.toast.textContent =
     message;
 
-  elements.toast.classList.add(
-    "is-visible"
-  );
+  elements.toast
+    .classList
+    .add(
+      "is-visible"
+    );
 
   toastTimer =
     setTimeout(() => {
@@ -466,7 +777,7 @@ function hidePageLoader() {
 
 
 /* ==========================================================
-   6. ПОШУК
+   8. ПОШУК
    ========================================================== */
 
 function hasActiveSearch() {
@@ -512,8 +823,11 @@ function scrollToCatalogueResults() {
 
   elements.catalogueSection
     .scrollIntoView({
-      behavior: "smooth",
-      block: "start"
+      behavior:
+        "smooth",
+
+      block:
+        "start"
     });
 }
 
@@ -525,9 +839,8 @@ function prepareSearchField() {
   }
 
   /*
-    Chrome у type="search"
-    показує свій хрестик.
-    У нас є власний.
+    Прибираємо браузерний
+    другий хрестик Chrome.
   */
 
   elements.catalogSearch.type =
@@ -548,7 +861,7 @@ function prepareSearchField() {
 
 
 /* ==========================================================
-   7. КЕШ
+   9. КЕШ
    ========================================================== */
 
 function readCachedStore() {
@@ -592,6 +905,7 @@ function saveCachedStore(data) {
       JSON.stringify({
         savedAt:
           Date.now(),
+
         data
       })
     );
@@ -605,7 +919,7 @@ function saveCachedStore(data) {
 
 
 /* ==========================================================
-   8. ЗАВАНТАЖЕННЯ МАГАЗИНУ
+   10. ЗАВАНТАЖЕННЯ МАГАЗИНУ
    ========================================================== */
 
 async function fetchStoreFromServer() {
@@ -624,14 +938,20 @@ async function fetchStoreFromServer() {
       await fetch(
         `${STORE_API_URL}?action=store&_=${Date.now()}`,
         {
-          method: "GET",
-          redirect: "follow",
+          method:
+            "GET",
+
+          redirect:
+            "follow",
+
           signal:
             controller.signal
         }
       );
 
-    if (!response.ok) {
+    if (
+      !response.ok
+    ) {
       throw new Error(
         `Помилка сервера: ${response.status}`
       );
@@ -644,17 +964,21 @@ async function fetchStoreFromServer() {
 
     try {
       result =
-        JSON.parse(text);
+        JSON.parse(
+          text
+        );
     } catch {
       throw new Error(
         "Сервер повернув некоректну відповідь."
       );
     }
 
-    if (!result.success) {
+    if (
+      !result.success
+    ) {
       throw new Error(
         result.error ||
-          "Не вдалося завантажити магазин."
+        "Не вдалося завантажити магазин."
       );
     }
 
@@ -667,7 +991,8 @@ async function fetchStoreFromServer() {
 }
 
 function renderStore(data) {
-  store = data;
+  store =
+    data;
 
   if (
     elements.storeError
@@ -681,6 +1006,8 @@ function renderStore(data) {
   updateSearchMode();
   renderCatalogue();
   renderCart();
+
+  restoreCatalogScrollPosition();
 }
 
 async function loadStore() {
@@ -697,7 +1024,9 @@ async function loadStore() {
       cached?.data?.success
     );
 
-  if (hasCachedStore) {
+  if (
+    hasCachedStore
+  ) {
     renderStore(
       cached.data
     );
@@ -721,7 +1050,9 @@ async function loadStore() {
       error
     );
 
-    if (!hasCachedStore) {
+    if (
+      !hasCachedStore
+    ) {
       if (
         elements.storeError
       ) {
@@ -745,12 +1076,13 @@ async function loadStore() {
 
 
 /* ==========================================================
-   9. НАЛАШТУВАННЯ
+   11. НАЛАШТУВАННЯ
    ========================================================== */
 
 function applySettings() {
   const settings =
-    store?.settings || {};
+    store?.settings ||
+    {};
 
   const storeName =
     settings.storeName ||
@@ -777,7 +1109,9 @@ function applySettings() {
       storeName;
   }
 
-  if (settings.logo) {
+  if (
+    settings.logo
+  ) {
     if (
       elements.headerLogo
     ) {
@@ -806,18 +1140,23 @@ function applySettings() {
 
 
 /* ==========================================================
-   10. КАТЕГОРІЇ
+   12. КАТЕГОРІЇ
    ========================================================== */
 
 function productsForCategory(code) {
   const products =
-    store?.products || [];
+    store?.products ||
+    [];
 
-  if (code === "ALL") {
+  if (
+    code === "ALL"
+  ) {
     return products;
   }
 
-  if (code === "NEW") {
+  if (
+    code === "NEW"
+  ) {
     return products.filter(
       product =>
         Boolean(
@@ -826,7 +1165,9 @@ function productsForCategory(code) {
     );
   }
 
-  if (code === "SALE") {
+  if (
+    code === "SALE"
+  ) {
     return products.filter(
       product =>
         Boolean(
@@ -900,8 +1241,11 @@ function getVisibleCategories() {
     )
   ) {
     result.push({
-      code: "ALL",
-      name: "Усі товари"
+      code:
+        "ALL",
+
+      name:
+        "Усі товари"
     });
   }
 
@@ -926,7 +1270,8 @@ function getVisibleCategories() {
     category => {
       const code =
         String(
-          category.code || ""
+          category.code ||
+          ""
         )
           .trim()
           .toUpperCase();
@@ -938,7 +1283,9 @@ function getVisibleCategories() {
         return false;
       }
 
-      seen.add(code);
+      seen.add(
+        code
+      );
 
       return true;
     }
@@ -964,6 +1311,8 @@ function renderCategories() {
   ) {
     activeCategory =
       "ALL";
+
+    updateCatalogUrl();
   }
 
   elements
@@ -1020,7 +1369,7 @@ function renderCategories() {
 
 
 /* ==========================================================
-   11. ПОШУК І ФІЛЬТРАЦІЯ
+   13. ПОШУК І ФІЛЬТРАЦІЯ
    ========================================================== */
 
 function productMatchesSearch(product) {
@@ -1029,7 +1378,9 @@ function productMatchesSearch(product) {
       searchQuery
     );
 
-  if (!query) {
+  if (
+    !query
+  ) {
     return true;
   }
 
@@ -1183,6 +1534,9 @@ function resetCatalogueFilters() {
   sortMode =
     "default";
 
+  catalogScrollRestored =
+    true;
+
   if (
     elements.catalogSearch
   ) {
@@ -1199,6 +1553,8 @@ function resetCatalogueFilters() {
 
   updateClearSearchButton();
   updateSearchMode();
+  updateCatalogUrl();
+
   renderCategories();
   renderCatalogue();
 }
@@ -1218,11 +1574,6 @@ function applySearchValue(value) {
   if (
     hasActiveSearch()
   ) {
-    /*
-      Пошук завжди йде
-      по всьому каталогу.
-    */
-
     if (
       activeCategory !==
       "ALL"
@@ -1243,42 +1594,21 @@ function applySearchValue(value) {
 
   updateClearSearchButton();
   updateSearchMode();
+  updateCatalogUrl();
   renderCatalogue();
 }
 
 
 /* ==========================================================
-   12. РЕЙТИНГ
+   14. ВІДМІНЮВАННЯ
    ========================================================== */
-
-function getProductRating(product) {
-  const rating =
-    safeNumber(
-      product.ratingAvg ??
-        product.averageRating ??
-        product.rating,
-      0
-    );
-
-  const count =
-    safeNumber(
-      product.reviewCount ??
-        product.reviewsCount ??
-        product.ratingCount,
-      0
-    );
-
-  return {
-    rating,
-    count
-  };
-}
 
 function reviewWord(count) {
   const value =
     Math.abs(
       Number(count)
-    ) % 100;
+    ) %
+    100;
 
   const last =
     value % 10;
@@ -1310,7 +1640,8 @@ function productWord(count) {
   const value =
     Math.abs(
       Number(count)
-    ) % 100;
+    ) %
+    100;
 
   const last =
     value % 10;
@@ -1340,11 +1671,84 @@ function productWord(count) {
 
 
 /* ==========================================================
-   13. КАРТКА ТОВАРУ
+   15. РЕЙТИНГ
+   ========================================================== */
+
+function getProductRating(product) {
+  const rating =
+    safeNumber(
+      product.ratingAvg ??
+      product.averageRating ??
+      product.rating,
+      0
+    );
+
+  const count =
+    safeNumber(
+      product.reviewCount ??
+      product.reviewsCount ??
+      product.ratingCount,
+      0
+    );
+
+  return {
+    rating,
+    count
+  };
+}
+
+function renderProductRating(product) {
+  const {
+    rating,
+    count
+  } =
+    getProductRating(
+      product
+    );
+
+  if (
+    !rating ||
+    !count
+  ) {
+    return "";
+  }
+
+  return `
+    <div class="product-card-rating">
+
+      <span
+        class="stars"
+        aria-hidden="true"
+      >
+        ★
+      </span>
+
+      <span>
+        ${escapeHtml(
+          rating
+            .toFixed(1)
+            .replace(
+              ".",
+              ","
+            )
+        )}
+        ·
+        ${count}
+        ${reviewWord(count)}
+      </span>
+
+    </div>
+  `;
+}
+
+
+/* ==========================================================
+   16. КАРТКА ТОВАРУ
    ========================================================== */
 
 function renderProductBadges(product) {
-  const badges = [];
+  const badges =
+    [];
 
   if (
     product.saleActive
@@ -1392,7 +1796,8 @@ function renderProductPrice(product) {
     Array.isArray(
       product.variants
     ) &&
-    product.variants.length > 0;
+    product.variants.length >
+      0;
 
   const price =
     productUnitPrice(
@@ -1418,7 +1823,9 @@ function renderProductPrice(product) {
               ? "від "
               : ""
           }${escapeHtml(
-            formatMoney(price)
+            formatMoney(
+              price
+            )
           )}
         </span>
 
@@ -1443,52 +1850,10 @@ function renderProductPrice(product) {
             ? "від "
             : ""
         }${escapeHtml(
-          formatMoney(price)
+          formatMoney(
+            price
+          )
         )}
-      </span>
-
-    </div>
-  `;
-}
-
-function renderProductRating(product) {
-  const {
-    rating,
-    count
-  } =
-    getProductRating(
-      product
-    );
-
-  if (
-    !rating ||
-    !count
-  ) {
-    return "";
-  }
-
-  return `
-    <div class="product-card-rating">
-
-      <span
-        class="stars"
-        aria-hidden="true"
-      >
-        ★
-      </span>
-
-      <span>
-        ${escapeHtml(
-          rating
-            .toFixed(1)
-            .replace(
-              ".",
-              ","
-            )
-        )}
-        ·
-        ${count}
-        ${reviewWord(count)}
       </span>
 
     </div>
@@ -1530,7 +1895,9 @@ function renderProductCard(product) {
         )}
 
         <a
-          href="${escapeHtml(url)}"
+          href="${escapeHtml(
+            url
+          )}"
           data-product-link="${escapeHtml(
             product.code
           )}"
@@ -1659,7 +2026,7 @@ function renderProductCard(product) {
 
 
 /* ==========================================================
-   14. ВІДОБРАЖЕННЯ КАТАЛОГУ
+   17. КАТАЛОГ
    ========================================================== */
 
 function renderCatalogue() {
@@ -1697,7 +2064,9 @@ function renderCatalogue() {
   if (
     elements.catalogueResultText
   ) {
-    if (searching) {
+    if (
+      searching
+    ) {
       if (
         !products.length
       ) {
@@ -1745,7 +2114,7 @@ function renderCatalogue() {
 
 
 /* ==========================================================
-   15. КОШИК
+   18. КОШИК
    ========================================================== */
 
 function loadCart() {
@@ -1816,13 +2185,13 @@ function calculateCartTotal() {
         item.price,
         0
       ) *
-        Math.max(
-          0,
-          safeNumber(
-            item.quantity,
-            0
-          )
-        ),
+      Math.max(
+        0,
+        safeNumber(
+          item.quantity,
+          0
+        )
+      ),
     0
   );
 }
@@ -1869,6 +2238,8 @@ function addSimpleProductToCart(product) {
       product
     )
   ) {
+    saveCatalogScrollPosition();
+
     window.location.href =
       productUrl(
         product
@@ -1892,7 +2263,9 @@ function addSimpleProductToCart(product) {
         cartItemId
     );
 
-  if (existing) {
+  if (
+    existing
+  ) {
     existing.quantity =
       Math.max(
         1,
@@ -1900,7 +2273,8 @@ function addSimpleProductToCart(product) {
           existing.quantity,
           1
         )
-      ) + 1;
+      ) +
+      1;
   } else {
     cart.push({
       cartItemId,
@@ -1966,7 +2340,9 @@ function changeCartQuantity(
         cartItemId
     );
 
-  if (!item) {
+  if (
+    !item
+  ) {
     return;
   }
 
@@ -1974,10 +2350,12 @@ function changeCartQuantity(
     safeNumber(
       item.quantity,
       1
-    ) + change;
+    ) +
+    change;
 
   if (
-    item.quantity <= 0
+    item.quantity <=
+    0
   ) {
     cart =
       cart.filter(
@@ -2007,12 +2385,13 @@ function removeCartItem(
 
 
 /* ==========================================================
-   16. БЕЗКОШТОВНА ДОСТАВКА
+   19. БЕЗКОШТОВНА ДОСТАВКА
    ========================================================== */
 
 function getFreeDeliveryThreshold() {
   const settings =
-    store?.settings || {};
+    store?.settings ||
+    {};
 
   const fromSettings =
     [
@@ -2031,7 +2410,9 @@ function getFreeDeliveryThreshold() {
           value > 0
       );
 
-  if (fromSettings) {
+  if (
+    fromSettings
+  ) {
     return fromSettings;
   }
 
@@ -2043,8 +2424,8 @@ function getFreeDeliveryThreshold() {
       .map(method =>
         safeNumber(
           method.freeFrom ??
-            method.freeDeliveryFrom ??
-            method.freeFromAmount,
+          method.freeDeliveryFrom ??
+          method.freeFromAmount,
           0
         )
       )
@@ -2115,7 +2496,8 @@ function renderFreeDeliveryProgress() {
   const remaining =
     Math.max(
       0,
-      threshold - total
+      threshold -
+      total
     );
 
   const percent =
@@ -2126,7 +2508,8 @@ function renderFreeDeliveryProgress() {
         (
           total /
           threshold
-        ) * 100
+        ) *
+        100
       )
     );
 
@@ -2153,7 +2536,7 @@ function renderFreeDeliveryProgress() {
 
 
 /* ==========================================================
-   17. ВІДОБРАЖЕННЯ КОШИКА
+   20. ВІДОБРАЖЕННЯ КОШИКА
    ========================================================== */
 
 function renderCart() {
@@ -2202,7 +2585,9 @@ function renderCart() {
       elements.cartTotal
     ) {
       elements.cartTotal.textContent =
-        formatMoney(0);
+        formatMoney(
+          0
+        );
     }
 
     if (
@@ -2250,6 +2635,7 @@ function renderCart() {
           );
 
         const image =
+          item.photo ||
           productImage(
             product
           );
@@ -2282,8 +2668,8 @@ function renderCart() {
               <p class="cart-item-name">
                 ${escapeHtml(
                   item.name ||
-                    product?.name ||
-                    "Товар"
+                  product?.name ||
+                  "Товар"
                 )}
               </p>
 
@@ -2294,7 +2680,7 @@ function renderCart() {
                     <div class="cart-item-variant">
                       ${escapeHtml(
                         item.variantType ||
-                          "Варіант"
+                        "Варіант"
                       )}:
                       ${escapeHtml(
                         item.variantValue
@@ -2330,7 +2716,7 @@ function renderCart() {
                 ${escapeHtml(
                   formatMoney(
                     item.price *
-                      item.quantity
+                    item.quantity
                   )
                 )}
               </div>
@@ -2350,11 +2736,9 @@ function renderCart() {
                   −
                 </button>
 
-
                 <span class="cart-qty">
                   ${item.quantity}
                 </span>
-
 
                 <button
                   class="cart-qty-button"
@@ -2418,7 +2802,7 @@ function renderCart() {
 
 
 /* ==========================================================
-   18. МОБІЛЬНЕ МЕНЮ
+   21. МОБІЛЬНЕ МЕНЮ
    ========================================================== */
 
 function openMobileMenu() {
@@ -2507,7 +2891,7 @@ function closeMobileMenu() {
 
 
 /* ==========================================================
-   19. КОШИК — ВІДКРИТТЯ / ЗАКРИТТЯ
+   22. КОШИК — ВІДКРИТТЯ / ЗАКРИТТЯ
    ========================================================== */
 
 function openCart() {
@@ -2584,7 +2968,7 @@ function closeCart() {
 
 
 /* ==========================================================
-   20. ПОДІЇ КАТАЛОГУ
+   23. КЛІК КАТЕГОРІЇ
    ========================================================== */
 
 function handleCategoryClick(event) {
@@ -2593,16 +2977,25 @@ function handleCategoryClick(event) {
       "[data-category]"
     );
 
-  if (!button) {
+  if (
+    !button
+  ) {
     return;
   }
 
   activeCategory =
-    button.dataset.category ||
-    "ALL";
+    String(
+      button.dataset.category ||
+      "ALL"
+    )
+      .trim()
+      .toUpperCase();
 
   searchQuery =
     "";
+
+  catalogScrollRestored =
+    true;
 
   if (
     elements.catalogSearch
@@ -2613,11 +3006,18 @@ function handleCategoryClick(event) {
 
   updateClearSearchButton();
   updateSearchMode();
+  updateCatalogUrl();
+
   renderCategories();
   renderCatalogue();
 
   scrollToCatalogueResults();
 }
+
+
+/* ==========================================================
+   24. КЛІК ТОВАРУ
+   ========================================================== */
 
 function handleProductGridClick(event) {
   const addButton =
@@ -2625,7 +3025,9 @@ function handleProductGridClick(event) {
       "[data-add-cart]"
     );
 
-  if (addButton) {
+  if (
+    addButton
+  ) {
     event.preventDefault();
 
     const product =
@@ -2645,13 +3047,26 @@ function handleProductGridClick(event) {
       "[data-product-link]"
     );
 
-  if (productLink) {
+  if (
+    productLink
+  ) {
+    /*
+      ОСЬ ГОЛОВНЕ:
+      перед переходом у товар
+      запам'ятовуємо точне місце
+      каталогу.
+    */
+
+    saveCatalogScrollPosition();
+
     const product =
       findProduct(
         productLink.dataset.productLink
       );
 
-    if (!product) {
+    if (
+      !product
+    ) {
       return;
     }
 
@@ -2659,6 +3074,9 @@ function handleProductGridClick(event) {
       "select_item",
       {
         item_list_name:
+          primaryCategoryName(
+            product
+          ) ||
           "Каталог",
 
         items: [
@@ -2672,13 +3090,20 @@ function handleProductGridClick(event) {
   }
 }
 
+
+/* ==========================================================
+   25. КЛІК КОШИКА
+   ========================================================== */
+
 function handleCartClick(event) {
   const changeButton =
     event.target.closest(
       "[data-cart-change]"
     );
 
-  if (changeButton) {
+  if (
+    changeButton
+  ) {
     changeCartQuantity(
       changeButton
         .dataset
@@ -2700,7 +3125,9 @@ function handleCartClick(event) {
       "[data-cart-remove]"
     );
 
-  if (removeButton) {
+  if (
+    removeButton
+  ) {
     removeCartItem(
       removeButton
         .dataset
@@ -2711,7 +3138,7 @@ function handleCartClick(event) {
 
 
 /* ==========================================================
-   21. ОСНОВНІ ПОДІЇ
+   26. ПОДІЇ
    ========================================================== */
 
 function bindEvents() {
@@ -2791,6 +3218,7 @@ function bindEvents() {
           event.target.value ||
           "default";
 
+        updateCatalogUrl();
         renderCatalogue();
       }
     );
@@ -2811,6 +3239,7 @@ function bindEvents() {
           ?.scrollIntoView({
             behavior:
               "smooth",
+
             block:
               "center"
           });
@@ -2894,7 +3323,12 @@ function bindEvents() {
                     item.code
                   );
 
-                return {
+                const categories =
+                  productCategoryNames(
+                    product
+                  );
+
+                const result = {
                   item_id:
                     item.code,
 
@@ -2902,11 +3336,6 @@ function bindEvents() {
                     item.name ||
                     product?.name ||
                     item.code,
-
-                  item_category:
-                    primaryCategoryName(
-                      product
-                    ),
 
                   item_variant:
                     item.variantValue ||
@@ -2924,6 +3353,22 @@ function bindEvents() {
                       1
                     )
                 };
+
+                if (
+                  categories[0]
+                ) {
+                  result.item_category =
+                    categories[0];
+                }
+
+                if (
+                  categories[1]
+                ) {
+                  result.item_category2 =
+                    categories[1];
+                }
+
+                return result;
               })
           }
         );
@@ -2963,15 +3408,56 @@ function bindEvents() {
       renderCart();
     }
   );
+
+
+  /*
+    Якщо сторінка йде у фон або
+    браузер зберігає її в історії —
+    запам'ятовуємо місце.
+  */
+
+  window.addEventListener(
+    "pagehide",
+    saveCatalogScrollPosition
+  );
+
+
+  /*
+    Якщо браузер повернув готову
+    сторінку з кешу Back/Forward,
+    просто оновлюємо кошик.
+  */
+
+  window.addEventListener(
+    "pageshow",
+    event => {
+      if (
+        event.persisted
+      ) {
+        cart =
+          loadCart();
+
+        renderCart();
+      }
+    }
+  );
 }
 
 
 /* ==========================================================
-   22. СТАРТ
+   27. СТАРТ
    ========================================================== */
 
+readCatalogStateFromUrl();
+
 prepareSearchField();
+
+updateClearSearchButton();
+
 bindEvents();
+
 updateSearchMode();
+
 renderCart();
+
 loadStore();
