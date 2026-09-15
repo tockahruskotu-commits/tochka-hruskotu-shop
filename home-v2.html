@@ -10,7 +10,7 @@
 
   <link rel="canonical" href="https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/">
   <link rel="icon" href="images/brand/logo.webp" type="image/webp">
-  <link rel="stylesheet" href="site-v2.css?v=20260915-home5">
+  <link rel="stylesheet" href="site-v2.css?v=20260915-home6">
 
   <style>
 
@@ -104,22 +104,23 @@
     }
 
     /*
-     * ВАЖЛИВО:
-     * не ставимо width:100%, бо тоді зникає
-     * нормальний контейнер сайту.
+     * На великих екранах робимо hero ширшим,
+     * щоб текст стояв ближче до лівого краю.
      */
 
     .home-hero .container {
       position: relative;
       z-index: 1;
 
-      width: min(calc(100% - 40px), 1100px);
+      width: min(calc(100% - 40px), 1380px);
+
       margin-left: auto;
       margin-right: auto;
     }
 
     .home-hero-copy {
-      width: min(510px, 49%);
+      width: min(520px, 47%);
+
       padding: 46px 0;
     }
 
@@ -146,7 +147,7 @@
     }
 
     .home-hero h1 {
-      max-width: 510px;
+      max-width: 520px;
       margin: 17px 0 0;
 
       color: var(--brown);
@@ -157,7 +158,7 @@
     }
 
     .home-hero-description {
-      max-width: 495px;
+      max-width: 500px;
 
       margin: 18px 0 0;
 
@@ -186,7 +187,7 @@
       flex-wrap: wrap;
       gap: 8px;
 
-      max-width: 510px;
+      max-width: 520px;
       margin-top: 23px;
     }
 
@@ -482,7 +483,6 @@
 
       color: var(--text-soft);
       font-size: 11px;
-
       text-decoration: line-through;
     }
 
@@ -809,9 +809,7 @@
 
     .home-final-cta h2 {
       margin: 0;
-
       color: #fff;
-
       font-size: clamp(30px, 4.5vw, 47px);
     }
 
@@ -820,7 +818,6 @@
       margin: 12px auto 0;
 
       color: rgba(255,255,255,.82);
-
       line-height: 1.6;
     }
 
@@ -845,8 +842,18 @@
           repeat(5, minmax(0, 1fr));
       }
 
+      /*
+       * На середніх екранах повертаємо
+       * стандартну ширину контейнера,
+       * щоб текст не притискався до краю.
+       */
+
       .home-hero .container {
         width: min(calc(100% - 36px), 1100px);
+      }
+
+      .home-hero-copy {
+        width: min(510px, 49%);
       }
 
     }
@@ -1027,7 +1034,6 @@
           repeat(2, minmax(0, 1fr));
 
         gap: 7px;
-
         margin-top: 16px;
       }
 
@@ -1103,9 +1109,7 @@
   ></script>
 
   <script>
-
-    window.dataLayer =
-      window.dataLayer || [];
+    window.dataLayer = window.dataLayer || [];
 
     function gtag() {
       dataLayer.push(arguments);
@@ -1113,7 +1117,6 @@
 
     gtag("js", new Date());
     gtag("config", "G-BMMFC6QXD5");
-
   </script>
 
 </head>
@@ -1136,13 +1139,8 @@
         height="70"
       >
 
-      <strong>
-        Точка Хрускоту
-      </strong>
-
-      <span>
-        Завантажуємо...
-      </span>
+      <strong>Точка Хрускоту</strong>
+      <span>Завантажуємо...</span>
 
     </div>
 
@@ -1153,40 +1151,20 @@
 
     <div class="container trust-bar-inner">
 
-      <a
-        class="trust-item trust-location"
-        href="contacts.html"
-      >
-        <span>
-          Млинів, Рівненська обл.
-        </span>
+      <a class="trust-item trust-location" href="contacts.html">
+        <span>Млинів, Рівненська обл.</span>
       </a>
 
-      <a
-        class="trust-item trust-local-delivery"
-        href="delivery.html"
-      >
-        <span>
-          Млинів • Дубно • Рівне
-        </span>
+      <a class="trust-item trust-local-delivery" href="delivery.html">
+        <span>Млинів • Дубно • Рівне</span>
       </a>
 
-      <a
-        class="trust-item trust-ukraine"
-        href="delivery.html"
-      >
-        <span>
-          Доставка по Україні
-        </span>
+      <a class="trust-item trust-ukraine" href="delivery.html">
+        <span>Доставка по Україні</span>
       </a>
 
-      <a
-        class="trust-item trust-phone"
-        href="tel:+380638330860"
-      >
-        <span>
-          +380 63 833 08 60
-        </span>
+      <a class="trust-item trust-phone" href="tel:+380638330860">
+        <span>+380 63 833 08 60</span>
       </a>
 
     </div>
@@ -1194,10 +1172,7 @@
   </div>
 
 
-  <header
-    class="site-header"
-    id="siteHeader"
-  >
+  <header class="site-header" id="siteHeader">
 
     <div class="container header-inner">
 
@@ -1216,77 +1191,38 @@
         >
 
         <span class="brand-text">
-
-          <strong id="headerStoreName">
-            Точка Хрускоту
-          </strong>
-
-          <small>
-            Візьми. Вмочи. Хрусни.
-          </small>
-
+          <strong id="headerStoreName">Точка Хрускоту</strong>
+          <small>Візьми. Вмочи. Хрусни.</small>
         </span>
 
       </a>
 
 
-      <nav
-        class="desktop-nav"
-        aria-label="Головна навігація"
-      >
+      <nav class="desktop-nav" aria-label="Головна навігація">
 
-        <a href="catalog.html">
-          Каталог
-        </a>
-
-        <a href="gifts.html">
-          Подарунки
-        </a>
-
-        <a href="delivery.html">
-          Доставка й оплата
-        </a>
-
-        <a href="reviews.html">
-          Відгуки
-        </a>
-
-        <a href="contacts.html">
-          Контакти
-        </a>
+        <a href="catalog.html">Каталог</a>
+        <a href="gifts.html">Подарунки</a>
+        <a href="delivery.html">Доставка й оплата</a>
+        <a href="reviews.html">Відгуки</a>
+        <a href="contacts.html">Контакти</a>
 
       </nav>
 
 
       <div class="header-actions">
 
-        <a
-          class="header-action-button"
-          href="catalog.html"
-        >
+        <a class="header-action-button" href="catalog.html">
           Пошук
         </a>
-
 
         <button
           class="header-action-button cart-button"
           id="cartButton"
           type="button"
         >
-
-          <span>
-            Кошик
-          </span>
-
-          <span
-            class="cart-count"
-            id="cartCount"
-          >
-            0
-          </span>
-
+          <span>Кошик</span>
+          <span class="cart-count" id="cartCount">0</span>
         </button>
-
 
         <button
           class="mobile-menu-button"
@@ -1320,14 +1256,9 @@
 
     <div class="mobile-menu-head">
 
-      <strong>
-        Меню
-      </strong>
+      <strong>Меню</strong>
 
-      <button
-        id="closeMobileMenu"
-        type="button"
-      >
+      <button id="closeMobileMenu" type="button">
         ×
       </button>
 
@@ -1336,34 +1267,18 @@
 
     <nav class="mobile-nav">
 
-      <a href="catalog.html">
-        Каталог
-      </a>
-
-      <a href="gifts.html">
-        Подарунки
-      </a>
-
-      <a href="delivery.html">
-        Доставка й оплата
-      </a>
-
-      <a href="reviews.html">
-        Відгуки
-      </a>
-
-      <a href="contacts.html">
-        Контакти
-      </a>
+      <a href="catalog.html">Каталог</a>
+      <a href="gifts.html">Подарунки</a>
+      <a href="delivery.html">Доставка й оплата</a>
+      <a href="reviews.html">Відгуки</a>
+      <a href="contacts.html">Контакти</a>
 
     </nav>
 
 
     <div class="mobile-menu-contact">
 
-      <strong>
-        Млинів, Рівненська область
-      </strong>
+      <strong>Млинів, Рівненська область</strong>
 
       <a href="tel:+380638330860">
         +380 63 833 08 60
@@ -1425,17 +1340,11 @@
 
           <div class="home-hero-actions">
 
-            <a
-              class="button button-primary"
-              href="catalog.html"
-            >
+            <a class="button button-primary" href="catalog.html">
               До каталогу
             </a>
 
-            <a
-              class="button button-secondary"
-              href="gifts.html"
-            >
+            <a class="button button-secondary" href="gifts.html">
               Обрати подарунок
             </a>
 
@@ -1444,21 +1353,10 @@
 
           <div class="home-hero-trust">
 
-            <span class="home-trust-chip">
-              Ручна робота
-            </span>
-
-            <span class="home-trust-chip">
-              Невеликі партії
-            </span>
-
-            <span class="home-trust-chip">
-              Готуємо під замовлення
-            </span>
-
-            <span class="home-trust-chip">
-              Доставка по Україні
-            </span>
+            <span class="home-trust-chip">Ручна робота</span>
+            <span class="home-trust-chip">Невеликі партії</span>
+            <span class="home-trust-chip">Готуємо під замовлення</span>
+            <span class="home-trust-chip">Доставка по Україні</span>
 
           </div>
 
@@ -1475,9 +1373,7 @@
 
         <article class="home-benefit">
 
-          <strong>
-            Готуємо невеликими партіями
-          </strong>
+          <strong>Готуємо невеликими партіями</strong>
 
           <p>
             Більшість позицій готуємо
@@ -1489,9 +1385,7 @@
 
         <article class="home-benefit">
 
-          <strong>
-            Подарунок без зайвого клопоту
-          </strong>
+          <strong>Подарунок без зайвого клопоту</strong>
 
           <p>
             Допоможемо з листівкою,
@@ -1503,9 +1397,7 @@
 
         <article class="home-benefit">
 
-          <strong>
-            Млинів • Дубно • Рівне
-          </strong>
+          <strong>Млинів • Дубно • Рівне</strong>
 
           <p>
             Локальну доставку та маршрути
@@ -1517,9 +1409,7 @@
 
         <article class="home-benefit">
 
-          <strong>
-            По всій Україні
-          </strong>
+          <strong>По всій Україні</strong>
 
           <p>
             Відправляємо Новою поштою
@@ -1560,10 +1450,7 @@
           </div>
 
 
-          <a
-            class="home-text-link"
-            href="catalog.html"
-          >
+          <a class="home-text-link" href="catalog.html">
             Відкрити весь каталог →
           </a>
 
@@ -1607,10 +1494,7 @@
           </div>
 
 
-          <a
-            class="home-text-link"
-            href="catalog.html"
-          >
+          <a class="home-text-link" href="catalog.html">
             Дивитися все →
           </a>
 
@@ -1680,17 +1564,11 @@
 
             <div class="home-gift-actions">
 
-              <a
-                class="button button-primary"
-                href="gifts.html"
-              >
+              <a class="button button-primary" href="gifts.html">
                 Обрати подарунок
               </a>
 
-              <a
-                class="button button-secondary"
-                href="contacts.html"
-              >
+              <a class="button button-secondary" href="contacts.html">
                 Допоможіть обрати
               </a>
 
@@ -1740,10 +1618,7 @@
           </div>
 
 
-          <a
-            class="home-text-link"
-            href="delivery.html"
-          >
+          <a class="home-text-link" href="delivery.html">
             Детальніше →
           </a>
 
@@ -1754,9 +1629,7 @@
 
           <article class="home-delivery-card">
 
-            <strong>
-              Млинів
-            </strong>
+            <strong>Млинів</strong>
 
             <p>
               Безкоштовна локальна доставка.
@@ -1768,9 +1641,7 @@
 
           <article class="home-delivery-card">
 
-            <strong>
-              Дубно та Рівне
-            </strong>
+            <strong>Дубно та Рівне</strong>
 
             <p>
               Безкоштовна доставка
@@ -1783,9 +1654,7 @@
 
           <article class="home-delivery-card">
 
-            <strong>
-              По Україні
-            </strong>
+            <strong>По Україні</strong>
 
             <p>
               Нова пошта або Укрпошта.
@@ -1824,10 +1693,7 @@
           </div>
 
 
-          <a
-            class="home-text-link"
-            href="reviews.html"
-          >
+          <a class="home-text-link" href="reviews.html">
             Усі відгуки →
           </a>
 
@@ -1895,10 +1761,7 @@
             </p>
 
 
-            <a
-              class="button button-secondary"
-              href="contacts.html"
-            >
+            <a class="button button-secondary" href="contacts.html">
               Зв’язатися з нами
             </a>
 
@@ -1930,10 +1793,7 @@
 
           <div class="home-final-actions">
 
-            <a
-              class="button button-primary"
-              href="catalog.html"
-            >
+            <a class="button button-primary" href="catalog.html">
               Перейти до каталогу
             </a>
 
@@ -1985,27 +1845,19 @@
 
       </div>
 
-      <button
-        id="closeCartButton"
-        type="button"
-      >
+      <button id="closeCartButton" type="button">
         ×
       </button>
 
     </div>
 
 
-    <div
-      class="cart-items"
-      id="cartItems"
-    ></div>
-
+    <div class="cart-items" id="cartItems"></div>
 
     <div
       class="cart-free-delivery"
       id="cartProgress"
     ></div>
-
 
     <div
       class="cart-suggestions"
@@ -2017,9 +1869,7 @@
 
       <div class="cart-total-row">
 
-        <span>
-          Разом
-        </span>
+        <span>Разом</span>
 
         <strong id="cartTotal">
           0 грн
@@ -2095,38 +1945,20 @@
 
       <div class="footer-column">
 
-        <h2>
-          Покупцям
-        </h2>
+        <h2>Покупцям</h2>
 
-        <a href="catalog.html">
-          Каталог
-        </a>
-
-        <a href="gifts.html">
-          Подарунки
-        </a>
-
-        <a href="delivery.html">
-          Доставка й оплата
-        </a>
-
-        <a href="reviews.html">
-          Відгуки
-        </a>
-
-        <a href="contacts.html">
-          Контакти
-        </a>
+        <a href="catalog.html">Каталог</a>
+        <a href="gifts.html">Подарунки</a>
+        <a href="delivery.html">Доставка й оплата</a>
+        <a href="reviews.html">Відгуки</a>
+        <a href="contacts.html">Контакти</a>
 
       </div>
 
 
       <div class="footer-column">
 
-        <h2>
-          Зв’язок
-        </h2>
+        <h2>Зв’язок</h2>
 
         <a href="tel:+380638330860">
           +380 63 833 08 60
@@ -2162,9 +1994,7 @@
 
       <div class="footer-column">
 
-        <h2>
-          Документи
-        </h2>
+        <h2>Документи</h2>
 
         <a href="terms.html">
           Умови замовлення
@@ -2181,9 +2011,7 @@
 
     <div class="container footer-social-section">
 
-      <h2>
-        Ми онлайн
-      </h2>
+      <h2>Ми онлайн</h2>
 
 
       <div class="footer-social-links">
@@ -2240,25 +2068,15 @@
 
     <div class="container footer-publishing">
 
-      <span>
-        Публікація відео:
-      </span>
+      <span>Публікація відео:</span>
 
-      <a
-        href="tiktok-share.html"
-        translate="no"
-      >
+      <a href="tiktok-share.html" translate="no">
         TikTok
       </a>
 
-      <span>
-        |
-      </span>
+      <span>|</span>
 
-      <a
-        href="youtube-share.html"
-        translate="no"
-      >
+      <a href="youtube-share.html" translate="no">
         YouTube
       </a>
 
@@ -2281,7 +2099,7 @@
 
 
   <script
-    src="site-v2.js?v=20260915-home5"
+    src="site-v2.js?v=20260915-home6"
     defer
   ></script>
 
@@ -2304,21 +2122,13 @@
       const HOME_FEATURED_ORDER = [
 
         "PUZZLE-KITTIES",
-
         "WAFFLE-HEMI-40",
-
         "FR-CLASSIC",
-
         "GIFT-BOX-12",
-
         "DONUT-FILLED-MIX",
-
         "BOX-TRIO",
-
         "GIFT-BOX-10",
-
         "BURGER-HONEY",
-
         "FORT-CLASSIC"
 
       ];
@@ -2460,9 +2270,7 @@
 
 
       function $(id) {
-
         return document.getElementById(id);
-
       }
 
 
@@ -2746,15 +2554,10 @@
         const possible = [
 
           category?.cover,
-
           category?.coverImage,
-
           category?.image,
-
           category?.photo,
-
           category?.imageUrl,
-
           category?.coverUrl
 
         ];
@@ -2928,9 +2731,7 @@
           product?.isNew ===
           true
         ) {
-
           badges.push("Новинка");
-
         }
 
 
@@ -2938,9 +2739,7 @@
           product?.isHit ===
           true
         ) {
-
           badges.push("Хіт");
-
         }
 
 
@@ -2949,9 +2748,7 @@
             true &&
           badges.length < 2
         ) {
-
           badges.push("Акція");
-
         }
 
 
@@ -3151,9 +2948,7 @@
 
                                   return (
                                     '<span class="home-product-badge">' +
-                                    escapeHtml(
-                                      badge
-                                    ) +
+                                    escapeHtml(badge) +
                                     "</span>"
                                   );
 
@@ -3215,9 +3010,7 @@
 
                     (
                       current > 0
-                        ? formatMoney(
-                            current
-                          )
+                        ? formatMoney(current)
                         : "Ціну уточнюємо"
                     ) +
 
@@ -3229,9 +3022,7 @@
                       current > 0
                         ? (
                             '<span class="home-product-price-old">' +
-                            formatMoney(
-                              regular
-                            ) +
+                            formatMoney(regular) +
                             "</span>"
                           )
                         : ""
