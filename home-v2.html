@@ -10,7 +10,7 @@
 
   <link rel="canonical" href="https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/">
   <link rel="icon" href="images/brand/logo.webp" type="image/webp">
-  <link rel="stylesheet" href="site-v2.css?v=20260915-home4">
+  <link rel="stylesheet" href="site-v2.css?v=20260915-home5">
 
   <style>
 
@@ -62,14 +62,11 @@
 
 
     /* ======================================================
-       ГОЛОВНА КАРТИНКА
-       На комп'ютері hero-desktop.webp
-       На телефоні hero-mobile.webp
+       HERO
        ====================================================== */
 
     .home-hero {
       position: relative;
-
       min-height: 620px;
 
       display: flex;
@@ -78,10 +75,12 @@
       background-image:
         linear-gradient(
           90deg,
-          rgba(255,250,245,.98) 0%,
-          rgba(255,250,245,.88) 32%,
-          rgba(255,250,245,.25) 58%,
-          rgba(255,250,245,0) 76%
+          rgba(255,250,245,1) 0%,
+          rgba(255,250,245,.98) 24%,
+          rgba(255,250,245,.92) 35%,
+          rgba(255,250,245,.66) 45%,
+          rgba(255,250,245,.18) 57%,
+          rgba(255,250,245,0) 68%
         ),
         url("images/hero/hero-desktop.webp");
 
@@ -92,31 +91,36 @@
 
     .home-hero::after {
       content: "";
-
       position: absolute;
       inset: 0;
-
       pointer-events: none;
 
       background:
         linear-gradient(
           180deg,
-          rgba(255,255,255,.02),
-          rgba(255,250,245,.04)
+          rgba(255,255,255,.01),
+          rgba(255,250,245,.02)
         );
     }
+
+    /*
+     * ВАЖЛИВО:
+     * не ставимо width:100%, бо тоді зникає
+     * нормальний контейнер сайту.
+     */
 
     .home-hero .container {
       position: relative;
       z-index: 1;
 
-      width: 100%;
+      width: min(calc(100% - 40px), 1100px);
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .home-hero-copy {
-      width: min(620px, 48%);
-
-      padding: 48px 0;
+      width: min(510px, 49%);
+      padding: 46px 0;
     }
 
     .home-hero-kicker {
@@ -124,13 +128,12 @@
       align-items: center;
 
       min-height: 31px;
-
       padding: 6px 11px;
 
       border: 1px solid rgba(226,193,170,.7);
       border-radius: 999px;
 
-      background: rgba(255,255,255,.78);
+      background: rgba(255,255,255,.82);
 
       color: var(--accent-dark);
 
@@ -143,23 +146,24 @@
     }
 
     .home-hero h1 {
-      margin: 16px 0 0;
+      max-width: 510px;
+      margin: 17px 0 0;
 
       color: var(--brown);
 
-      font-size: clamp(44px, 6vw, 74px);
-      line-height: .98;
-      letter-spacing: -.045em;
+      font-size: clamp(43px, 4.6vw, 63px);
+      line-height: 1.02;
+      letter-spacing: -.04em;
     }
 
     .home-hero-description {
-      max-width: 590px;
+      max-width: 495px;
 
-      margin: 19px 0 0;
+      margin: 18px 0 0;
 
       color: var(--text-soft);
 
-      font-size: clamp(17px, 2vw, 20px);
+      font-size: clamp(16px, 1.5vw, 19px);
       line-height: 1.6;
     }
 
@@ -168,42 +172,39 @@
       flex-wrap: wrap;
       gap: 11px;
 
-      margin-top: 25px;
+      margin-top: 24px;
     }
 
     .home-hero-actions .button {
-      min-height: 52px;
-
-      padding-left: 22px;
-      padding-right: 22px;
+      min-height: 50px;
+      padding-left: 21px;
+      padding-right: 21px;
     }
 
     .home-hero-trust {
       display: flex;
       flex-wrap: wrap;
-      gap: 9px;
+      gap: 8px;
 
-      max-width: 600px;
-
-      margin-top: 24px;
+      max-width: 510px;
+      margin-top: 23px;
     }
 
     .home-trust-chip {
       display: inline-flex;
       align-items: center;
 
-      min-height: 36px;
-
-      padding: 7px 12px;
+      min-height: 35px;
+      padding: 7px 11px;
 
       border: 1px solid rgba(226,193,170,.85);
       border-radius: 999px;
 
-      background: rgba(255,255,255,.82);
+      background: rgba(255,255,255,.86);
 
       color: var(--text-soft);
 
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 750;
 
       backdrop-filter: blur(6px);
@@ -220,35 +221,26 @@
 
     .home-benefit-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
     }
 
     .home-benefit {
       padding: 20px;
-
       border: 1px solid var(--border);
       border-radius: 17px;
-
       background: var(--surface);
     }
 
     .home-benefit strong {
       display: block;
-
       color: var(--brown);
-
       font-size: 15px;
     }
 
     .home-benefit p {
       margin: 6px 0 0;
-
       color: var(--text-soft);
-
       font-size: 12px;
       line-height: 1.5;
     }
@@ -260,25 +252,19 @@
 
     .home-category-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(6, minmax(0, 1fr));
-
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 12px;
     }
 
     .home-category-card {
       position: relative;
-
       min-height: 155px;
-
       overflow: hidden;
 
       border: 1px solid var(--border);
       border-radius: 16px;
 
       background: #eee5dd;
-
       color: #fff;
 
       isolation: isolate;
@@ -286,26 +272,20 @@
 
     .home-category-card img {
       position: absolute;
-
       inset: 0;
-
       z-index: -2;
 
       width: 100%;
       height: 100%;
 
       object-fit: cover;
-
       transition: transform .25s ease;
     }
 
     .home-category-card.has-image::after {
       content: "";
-
       position: absolute;
-
       inset: 0;
-
       z-index: -1;
 
       background:
@@ -335,30 +315,25 @@
       content: "Фото готуємо";
 
       position: absolute;
-
       top: 15px;
       left: 15px;
 
       padding: 5px 8px;
-
       border-radius: 999px;
 
       background: rgba(255,255,255,.72);
-
       color: var(--text-soft);
 
       font-size: 9px;
       font-weight: 800;
     }
 
-    .home-category-card.no-image
-    .home-category-content span {
+    .home-category-card.no-image .home-category-content span {
       color: var(--text-soft);
     }
 
     .home-category-content {
       position: absolute;
-
       left: 13px;
       right: 13px;
       bottom: 13px;
@@ -366,14 +341,12 @@
 
     .home-category-content strong {
       display: block;
-
       font-size: 15px;
       line-height: 1.15;
     }
 
     .home-category-content span {
       display: block;
-
       margin-top: 4px;
 
       color: rgba(255,255,255,.88);
@@ -389,10 +362,7 @@
 
     .home-products-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
 
@@ -401,26 +371,22 @@
       flex-direction: column;
 
       min-width: 0;
-
       overflow: hidden;
 
       border: 1px solid var(--border);
       border-radius: 20px;
 
       background: var(--surface);
-
       box-shadow: var(--shadow-sm);
     }
 
     .home-product-photo {
       position: relative;
-
       display: block;
 
       aspect-ratio: 1 / .88;
 
       overflow: hidden;
-
       background: var(--surface-soft);
     }
 
@@ -429,18 +395,15 @@
       height: 100%;
 
       object-fit: cover;
-
       transition: transform .3s ease;
     }
 
-    .home-product-card:hover
-    .home-product-photo img {
+    .home-product-card:hover .home-product-photo img {
       transform: scale(1.025);
     }
 
     .home-product-badges {
       position: absolute;
-
       top: 11px;
       left: 11px;
 
@@ -456,13 +419,11 @@
       align-items: center;
 
       min-height: 27px;
-
       padding: 5px 9px;
 
       border-radius: 999px;
 
       background: rgba(255,255,255,.94);
-
       color: var(--brown);
 
       font-size: 10px;
@@ -479,7 +440,6 @@
 
     .home-product-title {
       color: var(--brown);
-
       font-size: 18px;
       font-weight: 900;
       line-height: 1.22;
@@ -487,18 +447,14 @@
 
     .home-product-description {
       margin: 7px 0 0;
-
       color: var(--text-soft);
-
       font-size: 12px;
       line-height: 1.5;
     }
 
     .home-product-weight {
       margin: 8px 0 0;
-
       color: var(--text-soft);
-
       font-size: 11px;
       line-height: 1.45;
     }
@@ -515,20 +471,16 @@
 
     .home-product-price-current {
       display: block;
-
       color: var(--brown);
-
       font-size: 20px;
       font-weight: 950;
     }
 
     .home-product-price-old {
       display: block;
-
       margin-top: 2px;
 
       color: var(--text-soft);
-
       font-size: 11px;
 
       text-decoration: line-through;
@@ -540,13 +492,11 @@
       justify-content: center;
 
       min-height: 39px;
-
       padding: 8px 13px;
 
       border-radius: 10px;
 
       background: var(--accent);
-
       color: #fff;
 
       font-size: 12px;
@@ -564,7 +514,6 @@
       border-radius: 16px;
 
       color: var(--text-soft);
-
       text-align: center;
     }
 
@@ -599,7 +548,6 @@
 
     .home-gift-copy h2 {
       margin: 6px 0 0;
-
       color: var(--brown);
 
       font-size: clamp(31px, 4.5vw, 48px);
@@ -609,11 +557,9 @@
 
     .home-gift-copy > p {
       max-width: 580px;
-
       margin: 15px 0 0;
 
       color: var(--text-soft);
-
       font-size: 15px;
       line-height: 1.65;
     }
@@ -651,7 +597,6 @@
       border-radius: 50%;
 
       background: var(--green-soft);
-
       color: var(--green);
 
       font-size: 11px;
@@ -668,15 +613,12 @@
 
     .home-gift-photo {
       position: relative;
-
       min-height: 465px;
-
       background: var(--surface-soft);
     }
 
     .home-gift-photo img {
       position: absolute;
-
       inset: 0;
 
       width: 100%;
@@ -692,10 +634,7 @@
 
     .home-delivery-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
     }
 
@@ -710,9 +649,7 @@
 
     .home-delivery-card strong {
       display: block;
-
       color: var(--brown);
-
       font-size: 18px;
     }
 
@@ -720,7 +657,6 @@
       margin: 8px 0 0;
 
       color: var(--text-soft);
-
       font-size: 13px;
       line-height: 1.55;
     }
@@ -732,10 +668,7 @@
 
     .home-review-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 15px;
     }
 
@@ -750,9 +683,7 @@
 
     .home-review-stars {
       color: #b56c3d;
-
       letter-spacing: 2px;
-
       font-size: 14px;
       font-weight: 900;
     }
@@ -761,7 +692,6 @@
       margin: 11px 0 0;
 
       color: var(--text);
-
       font-size: 14px;
       line-height: 1.6;
     }
@@ -770,18 +700,15 @@
       margin-top: 14px;
 
       color: var(--brown);
-
       font-size: 12px;
       font-weight: 850;
     }
 
     .home-review-product {
       display: block;
-
       margin-top: 3px;
 
       color: var(--text-soft);
-
       font-size: 11px;
     }
 
@@ -794,7 +721,6 @@
       border-radius: 16px;
 
       color: var(--text-soft);
-
       text-align: center;
     }
 
@@ -876,7 +802,6 @@
       border-radius: 25px;
 
       background: var(--brown);
-
       color: #fff;
 
       text-align: center;
@@ -892,7 +817,6 @@
 
     .home-final-cta p {
       max-width: 620px;
-
       margin: 12px auto 0;
 
       color: rgba(255,255,255,.82);
@@ -921,6 +845,10 @@
           repeat(5, minmax(0, 1fr));
       }
 
+      .home-hero .container {
+        width: min(calc(100% - 36px), 1100px);
+      }
+
     }
 
 
@@ -928,11 +856,15 @@
 
       .home-hero {
         min-height: 580px;
-        background-position: 60% center;
+        background-position: 58% center;
       }
 
       .home-hero-copy {
-        width: min(610px, 58%);
+        width: min(500px, 55%);
+      }
+
+      .home-hero h1 {
+        font-size: clamp(40px, 5.8vw, 56px);
       }
 
       .home-benefit-grid {
@@ -975,23 +907,20 @@
         padding: 52px 0;
       }
 
-      /*
-       * На телефоні вже використовуємо
-       * окрему вертикальну картинку.
-       */
-
       .home-hero {
-        min-height: 760px;
+        min-height: 780px;
 
         align-items: flex-start;
 
         background-image:
           linear-gradient(
             180deg,
-            rgba(255,250,245,.98) 0%,
-            rgba(255,250,245,.92) 26%,
-            rgba(255,250,245,.48) 43%,
-            rgba(255,250,245,0) 64%
+            rgba(255,250,245,1) 0%,
+            rgba(255,250,245,.98) 22%,
+            rgba(255,250,245,.90) 32%,
+            rgba(255,250,245,.50) 43%,
+            rgba(255,250,245,.06) 58%,
+            rgba(255,250,245,0) 68%
           ),
           url("images/hero/hero-mobile.webp");
 
@@ -999,23 +928,26 @@
         background-size: cover;
       }
 
+      .home-hero .container {
+        width: min(calc(100% - 28px), 680px);
+      }
+
       .home-hero-copy {
         width: 100%;
-        max-width: 560px;
+        max-width: 540px;
 
-        padding: 40px 0 0;
+        padding: 34px 0 0;
       }
 
       .home-hero h1 {
         max-width: 500px;
 
-        font-size: clamp(42px, 11vw, 60px);
+        font-size: clamp(39px, 10.5vw, 57px);
       }
 
       .home-hero-description {
         max-width: 500px;
-
-        font-size: 17px;
+        font-size: 16px;
       }
 
       .home-section-head {
@@ -1024,7 +956,6 @@
 
       .home-text-link {
         display: inline-flex;
-
         margin-top: 13px;
       }
 
@@ -1048,29 +979,45 @@
     @media (max-width: 520px) {
 
       .home-hero {
-        min-height: 760px;
-
+        min-height: 790px;
         background-position: center top;
       }
 
+      .home-hero .container {
+        width: calc(100% - 24px);
+      }
+
       .home-hero-copy {
-        padding-top: 28px;
+        padding-top: 24px;
       }
 
       .home-hero-kicker {
-        font-size: 10px;
+        font-size: 9px;
+        letter-spacing: .05em;
+      }
+
+      .home-hero h1 {
+        margin-top: 13px;
+
+        font-size: clamp(37px, 11vw, 48px);
+        line-height: 1;
       }
 
       .home-hero-description {
+        margin-top: 13px;
+
+        font-size: 15px;
         line-height: 1.48;
       }
 
       .home-hero-actions {
         display: grid;
+        margin-top: 18px;
       }
 
       .home-hero-actions .button {
         width: 100%;
+        min-height: 47px;
       }
 
       .home-hero-trust {
@@ -1080,6 +1027,8 @@
           repeat(2, minmax(0, 1fr));
 
         gap: 7px;
+
+        margin-top: 16px;
       }
 
       .home-trust-chip {
@@ -1088,7 +1037,6 @@
         min-height: 34px;
 
         text-align: center;
-
         font-size: 10px;
       }
 
@@ -1149,8 +1097,6 @@
   </style>
 
 
-  <!-- GOOGLE ANALYTICS -->
-
   <script
     async
     src="https://www.googletagmanager.com/gtag/js?id=G-BMMFC6QXD5"
@@ -1165,15 +1111,8 @@
       dataLayer.push(arguments);
     }
 
-    gtag(
-      "js",
-      new Date()
-    );
-
-    gtag(
-      "config",
-      "G-BMMFC6QXD5"
-    );
+    gtag("js", new Date());
+    gtag("config", "G-BMMFC6QXD5");
 
   </script>
 
@@ -1181,11 +1120,6 @@
 
 
 <body>
-
-
-  <!-- ======================================================
-       LOADER
-       ====================================================== -->
 
   <div
     class="page-loader"
@@ -1214,10 +1148,6 @@
 
   </div>
 
-
-  <!-- ======================================================
-       ВЕРХНЯ СМУГА
-       ====================================================== -->
 
   <div class="trust-bar">
 
@@ -1263,10 +1193,6 @@
 
   </div>
 
-
-  <!-- ======================================================
-       HEADER
-       ====================================================== -->
 
   <header
     class="site-header"
@@ -1379,10 +1305,6 @@
   </header>
 
 
-  <!-- ======================================================
-       МОБІЛЬНЕ МЕНЮ
-       ====================================================== -->
-
   <div
     class="mobile-menu-overlay"
     id="mobileMenuOverlay"
@@ -1477,14 +1399,8 @@
   </aside>
 
 
-  <!-- ======================================================
-       ГОЛОВНА
-       ====================================================== -->
-
   <main class="home-page">
 
-
-    <!-- HERO -->
 
     <section class="home-hero">
 
@@ -1496,11 +1412,9 @@
             Незвичні солодощі ручної роботи
           </span>
 
-
           <h1>
             Знайди свою точку хрускоту
           </h1>
-
 
           <p class="home-hero-description">
             Солодкі формати, маленькі сюрпризи,
@@ -1554,8 +1468,6 @@
 
     </section>
 
-
-    <!-- ПЕРЕВАГИ -->
 
     <section class="home-benefits">
 
@@ -1621,15 +1533,12 @@
     </section>
 
 
-    <!-- КАТЕГОРІЇ -->
-
     <section
       class="home-section home-section-soft"
       id="categoriesSection"
     >
 
       <div class="container">
-
 
         <div class="home-section-head">
 
@@ -1671,15 +1580,12 @@
     </section>
 
 
-    <!-- ХІТИ ТА НОВИНКИ -->
-
     <section
       class="home-section"
       id="featuredSection"
     >
 
       <div class="container">
-
 
         <div class="home-section-head">
 
@@ -1727,14 +1633,11 @@
     </section>
 
 
-    <!-- ПОДАРУНКИ -->
-
     <section class="home-section home-section-soft">
 
       <div class="container">
 
         <div class="home-gift-panel">
-
 
           <div class="home-gift-copy">
 
@@ -1813,12 +1716,9 @@
     </section>
 
 
-    <!-- ДОСТАВКА -->
-
     <section class="home-section">
 
       <div class="container">
-
 
         <div class="home-section-head">
 
@@ -1902,15 +1802,12 @@
     </section>
 
 
-    <!-- ВІДГУКИ -->
-
     <section
       class="home-section home-section-soft"
       id="reviewsSection"
     >
 
       <div class="container">
-
 
         <div class="home-section-head">
 
@@ -1953,14 +1850,11 @@
     </section>
 
 
-    <!-- ПРО НАС -->
-
     <section class="home-section">
 
       <div class="container">
 
         <div class="home-about-panel">
-
 
           <div class="home-about-logo">
 
@@ -2017,8 +1911,6 @@
     </section>
 
 
-    <!-- ФІНАЛ -->
-
     <section class="home-section">
 
       <div class="container">
@@ -2065,10 +1957,6 @@
 
   </main>
 
-
-  <!-- ======================================================
-       КОШИК
-       ====================================================== -->
 
   <div
     class="cart-overlay"
@@ -2170,15 +2058,9 @@
   ></div>
 
 
-  <!-- ======================================================
-       FOOTER
-       ====================================================== -->
-
   <footer class="site-footer">
 
-
     <div class="container footer-grid">
-
 
       <div class="footer-column footer-brand">
 
@@ -2398,19 +2280,11 @@
   </footer>
 
 
-  <!-- ======================================================
-       СПІЛЬНИЙ JS
-       ====================================================== -->
-
   <script
-    src="site-v2.js?v=20260915-home4"
+    src="site-v2.js?v=20260915-home5"
     defer
   ></script>
 
-
-  <!-- ======================================================
-       HOME JS
-       ====================================================== -->
 
   <script>
 
@@ -2426,11 +2300,6 @@
       const STORE_CACHE_KEY =
         "tochka_hruskotu_store_cache_v1";
 
-
-      /*
-       * Черговість товарів
-       * у блоці "Хіти та новинки".
-       */
 
       const HOME_FEATURED_ORDER = [
 
@@ -2454,13 +2323,6 @@
 
       ];
 
-
-      /*
-       * Резервні категорії.
-       *
-       * Фото основних категорій
-       * сайт бере з Google-таблиці.
-       */
 
       const FALLBACK_CATEGORIES = [
 
@@ -2599,67 +2461,39 @@
 
       function $(id) {
 
-        return document.getElementById(
-          id
-        );
+        return document.getElementById(id);
 
       }
 
 
       function escapeHtml(value) {
 
-        return String(
-          value ?? ""
-        )
-          .replaceAll(
-            "&",
-            "&amp;"
-          )
-          .replaceAll(
-            "<",
-            "&lt;"
-          )
-          .replaceAll(
-            ">",
-            "&gt;"
-          )
-          .replaceAll(
-            '"',
-            "&quot;"
-          )
-          .replaceAll(
-            "'",
-            "&#039;"
-          );
+        return String(value ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
 
       }
 
 
       function hideLoader() {
 
-        const loader =
-          $("pageLoader");
-
+        const loader = $("pageLoader");
 
         if (!loader) {
           return;
         }
 
-
         requestAnimationFrame(
           function () {
 
-            loader.classList.add(
-              "is-hidden"
-            );
-
+            loader.classList.add("is-hidden");
 
             setTimeout(
               function () {
-
-                loader.style.display =
-                  "none";
-
+                loader.style.display = "none";
               },
               320
             );
@@ -2675,17 +2509,11 @@
         try {
 
           const raw =
-            localStorage.getItem(
-              key
-            );
-
+            localStorage.getItem(key);
 
           return raw
-            ? JSON.parse(
-                raw
-              )
+            ? JSON.parse(raw)
             : null;
-
 
         } catch (error) {
 
@@ -2699,37 +2527,22 @@
       function readCachedStore() {
 
         const cached =
-          readJson(
-            STORE_CACHE_KEY
-          );
+          readJson(STORE_CACHE_KEY);
 
-
-        if (
-          cached?.data?.success
-        ) {
-
+        if (cached?.data?.success) {
           return cached.data;
-
         }
 
-
-        if (
-          cached?.success
-        ) {
-
+        if (cached?.success) {
           return cached;
-
         }
-
 
         return null;
 
       }
 
 
-      function saveStoreCache(
-        data
-      ) {
+      function saveStoreCache(data) {
 
         try {
 
@@ -2737,15 +2550,11 @@
             STORE_CACHE_KEY,
             JSON.stringify(
               {
-                savedAt:
-                  Date.now(),
-
-                data:
-                  data
+                savedAt: Date.now(),
+                data: data
               }
             )
           );
-
 
         } catch (error) {
 
@@ -2764,11 +2573,8 @@
           typeof value ===
           "boolean"
         ) {
-
           return value;
-
         }
-
 
         return [
           "так",
@@ -2776,9 +2582,7 @@
           "1",
           "yes"
         ].includes(
-          String(
-            value ?? ""
-          )
+          String(value ?? "")
             .trim()
             .toLowerCase()
         );
@@ -2792,39 +2596,19 @@
           typeof value ===
           "number"
         ) {
-
           return value;
-
         }
 
-
         const text =
-          String(
-            value ?? ""
-          )
-            .replace(
-              /\s/g,
-              ""
-            )
-            .replace(
-              /грн/gi,
-              ""
-            )
-            .replace(
-              ",",
-              "."
-            );
-
+          String(value ?? "")
+            .replace(/\s/g, "")
+            .replace(/грн/gi, "")
+            .replace(",", ".");
 
         const result =
-          Number(
-            text
-          );
+          Number(text);
 
-
-        return Number.isFinite(
-          result
-        )
+        return Number.isFinite(result)
           ? result
           : 0;
 
@@ -2836,13 +2620,10 @@
         return new Intl.NumberFormat(
           "uk-UA",
           {
-            maximumFractionDigits:
-              2
+            maximumFractionDigits: 2
           }
         ).format(
-          numberValue(
-            value
-          )
+          numberValue(value)
         ) + " грн";
 
       }
@@ -2887,26 +2668,19 @@
           return false;
         }
 
-
         if (
           product.visible ===
           false
         ) {
-
           return false;
-
         }
-
 
         if (
           product.available ===
           false
         ) {
-
           return false;
-
         }
-
 
         return true;
 
@@ -2921,11 +2695,8 @@
           ) &&
           product.photos.length
         ) {
-
           return product.photos[0];
-
         }
-
 
         return "images/brand/logo.webp";
 
@@ -2939,26 +2710,20 @@
             product?.effectivePrice
           ) > 0
         ) {
-
           return numberValue(
             product.effectivePrice
           );
-
         }
-
 
         if (
           numberValue(
             product?.salePrice
           ) > 0
         ) {
-
           return numberValue(
             product.salePrice
           );
-
         }
-
 
         return numberValue(
           product?.regularPrice
@@ -3000,8 +2765,7 @@
         ) {
 
           if (
-            typeof value ===
-              "string" &&
+            typeof value === "string" &&
             value.trim()
           ) {
 
@@ -3023,57 +2787,39 @@
           storeCategories();
 
 
-        if (
-          live.length
-        ) {
+        if (live.length) {
 
           return live
             .filter(
               function (category) {
 
-                if (
-                  !category?.code
-                ) {
-
+                if (!category?.code) {
                   return false;
-
                 }
-
 
                 if (
                   category.code ===
                   "ALL"
                 ) {
-
                   return false;
-
                 }
-
 
                 if (
                   category.active ===
                   false
                 ) {
-
                   return false;
-
                 }
-
 
                 if (
                   category.active !==
                     undefined &&
                   typeof category.active !==
                     "boolean" &&
-                  !yes(
-                    category.active
-                  )
+                  !yes(category.active)
                 ) {
-
                   return false;
-
                 }
-
 
                 return true;
 
@@ -3083,12 +2829,8 @@
               function (a, b) {
 
                 return (
-                  numberValue(
-                    a.order
-                  ) -
-                  numberValue(
-                    b.order
-                  )
+                  numberValue(a.order) -
+                  numberValue(b.order)
                 );
 
               }
@@ -3115,24 +2857,18 @@
                 function (category) {
 
                   const image =
-                    categoryCover(
-                      category
-                    );
-
+                    categoryCover(category);
 
                   const cardClass =
                     image
                       ? "home-category-card has-image"
                       : "home-category-card no-image";
 
-
                   const imageHtml =
                     image
                       ? (
                           '<img src="' +
-                          escapeHtml(
-                            image
-                          ) +
+                          escapeHtml(image) +
                           '" alt="' +
                           escapeHtml(
                             category.name ||
@@ -3193,9 +2929,7 @@
           true
         ) {
 
-          badges.push(
-            "Новинка"
-          );
+          badges.push("Новинка");
 
         }
 
@@ -3205,9 +2939,7 @@
           true
         ) {
 
-          badges.push(
-            "Хіт"
-          );
+          badges.push("Хіт");
 
         }
 
@@ -3218,9 +2950,7 @@
           badges.length < 2
         ) {
 
-          badges.push(
-            "Акція"
-          );
+          badges.push("Акція");
 
         }
 
@@ -3239,9 +2969,7 @@
           product?.categoryCode ||
           ""
         )
-          .split(
-            /[;,|]+/
-          )[0]
+          .split(/[;,|]+/)[0]
           .trim();
 
       }
@@ -3251,39 +2979,24 @@
 
         const products =
           storeProducts()
-            .filter(
-              productVisible
-            );
+            .filter(productVisible);
 
 
         const selected = [];
-
-        const used =
-          new Set();
+        const used = new Set();
 
 
         function add(product) {
 
           if (
             !product ||
-            used.has(
-              product.code
-            )
+            used.has(product.code)
           ) {
-
             return;
-
           }
 
-
-          used.add(
-            product.code
-          );
-
-
-          selected.push(
-            product
-          );
+          used.add(product.code);
+          selected.push(product);
 
         }
 
@@ -3325,9 +3038,7 @@
                 selected.length >=
                 6
               ) {
-
                 return;
-
               }
 
 
@@ -3343,25 +3054,17 @@
                   category
                 )
               ) {
-
                 return;
-
               }
 
 
-              add(
-                product
-              );
+              add(product);
 
 
-              if (
-                category
-              ) {
-
+              if (category) {
                 usedCategories.add(
                   category
                 );
-
               }
 
             }
@@ -3382,9 +3085,7 @@
           featuredProducts();
 
 
-        if (
-          !products.length
-        ) {
+        if (!products.length) {
 
           $("homeFeaturedProducts")
             .innerHTML =
@@ -3408,12 +3109,10 @@
                       product
                     );
 
-
                   const regular =
                     regularProductPrice(
                       product
                     );
-
 
                   const badges =
                     productBadges(
@@ -3432,9 +3131,7 @@
 
                     '<img src="' +
                     escapeHtml(
-                      productPhoto(
-                        product
-                      )
+                      productPhoto(product)
                     ) +
                     '" alt="' +
                     escapeHtml(
@@ -3575,13 +3272,9 @@
 
 
         if (
-          id.startsWith(
-            "TEST"
-          )
+          id.startsWith("TEST")
         ) {
-
           return false;
-
         }
 
 
@@ -3596,41 +3289,28 @@
 
         if (
           type &&
-          !type.includes(
-            "відгук"
-          ) &&
-          type !==
-            "review"
+          !type.includes("відгук") &&
+          type !== "review"
         ) {
-
           return false;
-
         }
 
 
         if (
           review.publish !==
             undefined &&
-          !yes(
-            review.publish
-          )
+          !yes(review.publish)
         ) {
-
           return false;
-
         }
 
 
         if (
           review.published !==
             undefined &&
-          !yes(
-            review.published
-          )
+          !yes(review.published)
         ) {
-
           return false;
-
         }
 
 
@@ -3646,18 +3326,12 @@
 
         const reviews =
           storeReviews()
-            .filter(
-              reviewPublished
-            )
-            .slice(
-              -3
-            )
+            .filter(reviewPublished)
+            .slice(-3)
             .reverse();
 
 
-        if (
-          !reviews.length
-        ) {
+        if (!reviews.length) {
 
           $("homeReviewGrid")
             .innerHTML =
@@ -3695,9 +3369,7 @@
 
                     '<div class="home-review-stars">' +
 
-                    "★".repeat(
-                      rating
-                    ) +
+                    "★".repeat(rating) +
 
                     "☆".repeat(
                       5 - rating
@@ -3750,9 +3422,7 @@
       function renderHome() {
 
         renderCategories();
-
         renderFeatured();
-
         renderReviews();
 
       }
@@ -3764,13 +3434,8 @@
           readCachedStore();
 
 
-        if (
-          cached
-        ) {
-
-          homeStore =
-            cached;
-
+        if (cached) {
+          homeStore = cached;
         }
 
 
@@ -3790,9 +3455,7 @@
           const timeout =
             setTimeout(
               function () {
-
                 controller.abort();
-
               },
               7000
             );
@@ -3804,46 +3467,28 @@
               "?action=store&_=" +
               Date.now(),
               {
-
-                method:
-                  "GET",
-
-                redirect:
-                  "follow",
-
-                signal:
-                  controller.signal
-
+                method: "GET",
+                redirect: "follow",
+                signal: controller.signal
               }
             );
 
 
-          clearTimeout(
-            timeout
-          );
+          clearTimeout(timeout);
 
 
           const data =
             await response.json();
 
 
-          if (
-            !data?.success
-          ) {
-
+          if (!data?.success) {
             return;
-
           }
 
 
-          homeStore =
-            data;
+          homeStore = data;
 
-
-          saveStoreCache(
-            data
-          );
-
+          saveStoreCache(data);
 
           renderHome();
 
