@@ -33,7 +33,7 @@
 
   <link
     rel="stylesheet"
-    href="site-v2.css?v=20260915-home2"
+    href="site-v2.css?v=20260915-home3"
   >
 
 
@@ -310,7 +310,7 @@
 
 
     /* ======================================================
-       УСІ КАТЕГОРІЇ
+       КАТЕГОРІЇ
        ====================================================== */
 
     .home-category-grid {
@@ -332,7 +332,7 @@
       border: 1px solid var(--border);
       border-radius: 16px;
 
-      background: var(--surface);
+      background: #eee5dd;
 
       color: #fff;
 
@@ -354,7 +354,7 @@
       transition: transform .25s ease;
     }
 
-    .home-category-card::after {
+    .home-category-card.has-image::after {
       content: "";
 
       position: absolute;
@@ -366,13 +366,55 @@
       background:
         linear-gradient(
           180deg,
-          rgba(39, 22, 13, .02) 20%,
-          rgba(39, 22, 13, .82) 100%
+          rgba(39,22,13,.01) 20%,
+          rgba(39,22,13,.84) 100%
         );
     }
 
-    .home-category-card:hover img {
+    .home-category-card.has-image:hover img {
       transform: scale(1.035);
+    }
+
+
+    /*
+     * Якщо фото категорії ще немає —
+     * ніяких вигаданих картинок.
+     */
+
+    .home-category-card.no-image {
+      background:
+        linear-gradient(
+          145deg,
+          #f3e6dc,
+          #e9d5c5
+        );
+
+      color: var(--brown);
+    }
+
+    .home-category-card.no-image::before {
+      content: "Фото готуємо";
+
+      position: absolute;
+
+      top: 15px;
+      left: 15px;
+
+      padding: 5px 8px;
+
+      border-radius: 999px;
+
+      background: rgba(255,255,255,.72);
+
+      color: var(--text-soft);
+
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .home-category-card.no-image
+    .home-category-content span {
+      color: var(--text-soft);
     }
 
     .home-category-content {
@@ -1097,8 +1139,6 @@
   </style>
 
 
-  <!-- GOOGLE ANALYTICS -->
-
   <script
     async
     src="https://www.googletagmanager.com/gtag/js?id=G-BMMFC6QXD5"
@@ -1113,10 +1153,7 @@
       dataLayer.push(arguments);
     }
 
-    gtag(
-      "js",
-      new Date()
-    );
+    gtag("js", new Date());
 
     gtag(
       "config",
@@ -1130,8 +1167,6 @@
 
 <body>
 
-
-  <!-- LOADER -->
 
   <div
     class="page-loader"
@@ -1160,8 +1195,6 @@
 
   </div>
 
-
-  <!-- ВЕРХНЯ СМУГА -->
 
   <div class="trust-bar">
 
@@ -1207,8 +1240,6 @@
 
   </div>
 
-
-  <!-- HEADER -->
 
   <header
     class="site-header"
@@ -1320,8 +1351,6 @@
 
   </header>
 
-
-  <!-- МОБІЛЬНЕ МЕНЮ -->
 
   <div
     class="mobile-menu-overlay"
@@ -1585,7 +1614,7 @@
     </section>
 
 
-    <!-- УСІ КАТЕГОРІЇ -->
+    <!-- КАТЕГОРІЇ -->
 
     <section
       class="home-section home-section-soft"
@@ -1609,7 +1638,7 @@
 
             <p>
               Усі категорії одразу перед вами —
-              не потрібно шукати їх по сайту.
+              обирайте те, що хочеться спробувати.
             </p>
 
           </div>
@@ -1658,8 +1687,8 @@
             </h2>
 
             <p>
-              Тут показуємо товари у визначеній черговості,
-              щоб найважливіші новинки не губилися.
+              Найцікавіші позиції,
+              з яких варто почати знайомство.
             </p>
 
           </div>
@@ -2358,7 +2387,7 @@
 
 
   <script
-    src="site-v2.js?v=20260915-home2"
+    src="site-v2.js?v=20260915-home3"
     defer
   ></script>
 
@@ -2383,9 +2412,8 @@
 
 
       /*
-       * ЧІТКА ЧЕРГОВІСТЬ ТОВАРІВ НА ГОЛОВНІЙ.
-       * Ніякого автоматичного заповнення шістьма
-       * однаковими новинками.
+       * ПОРЯДОК ХІТІВ І НОВИНОК.
+       * Пізніше винесемо його в таблицю.
        */
 
       const HOME_FEATURED_ORDER = [
@@ -2412,65 +2440,10 @@
 
 
       /*
-       * ПОКИ ЩО ВИКОРИСТОВУЄМО РІЗНІ РЕАЛЬНІ ФОТО
-       * ЯК ТИМЧАСОВІ ОБКЛАДИНКИ КАТЕГОРІЙ.
-       *
-       * ПІЗНІШЕ МИ ЇХ ЗАМІНИМО НА ОКРЕМІ
-       * ФІРМОВІ ОБКЛАДИНКИ.
+       * Резервні назви категорій.
+       * Фото тут НЕ зберігаємо.
+       * Фото беремо тільки з таблиці.
        */
-
-      const CATEGORY_IMAGE_OVERRIDES = {
-
-        "NEW":
-          "images/products/kitties/04.webp",
-
-        "SALE":
-          "images/products/gift-sets/box-10/02.webp",
-
-        "CRUNCH-FRIES":
-          "images/products/crunch-fries/classic-vanilla/02.webp",
-
-        "CRUNCH-BURGERS":
-          "images/products/crunch-burgers/honey/02.webp",
-
-        "CRUNCH-NUGGETS":
-          "images/products/crunch-nuggets/classic-vanilla/02.webp",
-
-        "CRUNCH-POPS":
-          "images/products/crunch-pops/mix/02.webp",
-
-        "CUPCAKE-POPS":
-          "images/products/cupcake-pops/double-chocolate/02.webp",
-
-        "CRUNCH-BOXES":
-          "images/products/crunch-boxes/crispy-trio/02.webp",
-
-        "GIFT-SETS":
-          "images/products/gift-sets/box-12/03.webp",
-
-        "MINI-DONUTS":
-          "images/products/mini-donuts/filled-mix/02.webp",
-
-        "COFFEE-FORTUNES":
-          "images/products/coffee-fortunes/classic/02.webp",
-
-        "SAUCES":
-          "images/products/sauces/strawberry/02.webp",
-
-        "EDIBLE-PUZZLES":
-          "images/products/kitties/02.webp",
-
-        "MINI-WAFFLES":
-          "images/products/mini-waffles/festive-hemisphere/02.webp",
-
-        "CERTIFICATES":
-          "images/brand/logo.webp",
-
-        "AIRY-COOKIES":
-          "images/brand/logo.webp"
-
-      };
-
 
       const FALLBACK_CATEGORIES = [
 
@@ -2484,63 +2457,63 @@
         {
           code: "CRUNCH-FRIES",
           name: "Кранч-Фрі",
-          description: "Печиво у формі картоплі фрі з соусом",
+          description: "Солодке печиво у формі картоплі фрі з соусом",
           order: 20
         },
 
         {
           code: "CRUNCH-BURGERS",
           name: "Кранч-Бургери",
-          description: "Солодкі бургери",
+          description: "Солодкі хрусткі бургери",
           order: 30
         },
 
         {
           code: "CRUNCH-NUGGETS",
           name: "Кранч-Нагетси",
-          description: "Солодкі нагетси з соусом",
+          description: "Хрусткі солодкі нагетси з соусом",
           order: 40
         },
 
         {
           code: "CRUNCH-POPS",
           name: "Кранч-Попс",
-          description: "Маленькі попси для вмочування",
+          description: "Маленькі хрусткі попси для вмочування",
           order: 50
         },
 
         {
           code: "CUPCAKE-POPS",
           name: "Кекс-Попс",
-          description: "М’які кекс-попси",
+          description: "М’які кекс-попси у різних смаках",
           order: 60
         },
 
         {
           code: "CRUNCH-BOXES",
-          name: "Кранч-Бокси",
-          description: "Великі бокси для компанії",
+          name: "Кранч-Бокси та подарункові набори",
+          description: "Великі бокси для компанії та подарунків",
           order: 70
         },
 
         {
           code: "GIFT-SETS",
           name: "Подарункові набори",
-          description: "Готові набори для подарунка",
+          description: "Готові набори для особливих подій",
           order: 80
         },
 
         {
           code: "MINI-DONUTS",
           name: "Міні-донати",
-          description: "Донати у різних смаках",
+          description: "Міні-донати у різних смаках",
           order: 90
         },
 
         {
           code: "COFFEE-FORTUNES",
           name: "Кавове передбачення",
-          description: "Смаколик із маленьким посланням",
+          description: "8 шоколадних зерняток і особливе передбачення",
           order: 100
         },
 
@@ -2568,21 +2541,21 @@
         {
           code: "EDIBLE-PUZZLES",
           name: "Їстівні пазли",
-          description: "Склади, розглянь і з’їж",
+          description: "Фігурне печиво, яке можна складати",
           order: 120
         },
 
         {
           code: "MINI-WAFFLES",
           name: "Міні-вафлі",
-          description: "Вафлі у різних смаках і форматах",
+          description: "Маленькі вафлі у різних смаках",
           order: 130
         },
 
         {
           code: "AIRY-COOKIES",
           name: "Повітряне печиво",
-          description: "Легке печиво у різних смаках",
+          description: "Легке хрустке печиво у різних смаках",
           order: 140
         }
 
@@ -2606,26 +2579,11 @@
         return String(
           value ?? ""
         )
-          .replaceAll(
-            "&",
-            "&amp;"
-          )
-          .replaceAll(
-            "<",
-            "&lt;"
-          )
-          .replaceAll(
-            ">",
-            "&gt;"
-          )
-          .replaceAll(
-            '"',
-            "&quot;"
-          )
-          .replaceAll(
-            "'",
-            "&#039;"
-          );
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
 
       }
 
@@ -2720,9 +2678,7 @@
       }
 
 
-      function saveStoreCache(
-        data
-      ) {
+      function saveStoreCache(data) {
 
         try {
 
@@ -2795,18 +2751,9 @@
           String(
             value ?? ""
           )
-            .replace(
-              /\s/g,
-              ""
-            )
-            .replace(
-              /грн/gi,
-              ""
-            )
-            .replace(
-              ",",
-              "."
-            );
+            .replace(/\s/g, "")
+            .replace(/грн/gi, "")
+            .replace(",", ".");
 
 
         const result =
@@ -2923,18 +2870,7 @@
       }
 
 
-      /*
-       * ВИПРАВЛЕНА ЦІНА.
-       *
-       * API магазину передає:
-       * effectivePrice
-       * regularPrice
-       * salePrice
-       */
-
-      function currentProductPrice(
-        product
-      ) {
+      function currentProductPrice(product) {
 
         if (
           numberValue(
@@ -2969,9 +2905,7 @@
       }
 
 
-      function regularProductPrice(
-        product
-      ) {
+      function regularProductPrice(product) {
 
         return numberValue(
           product?.regularPrice
@@ -2980,106 +2914,142 @@
       }
 
 
+      /*
+       * ШУКАЄМО ФОТО КАТЕГОРІЇ,
+       * ЯКЕ ПРИЙШЛО ІЗ ТАБЛИЦІ.
+       */
+
+      function categoryCover(category) {
+
+        const possible = [
+
+          category?.cover,
+
+          category?.coverImage,
+
+          category?.image,
+
+          category?.photo,
+
+          category?.imageUrl,
+
+          category?.coverUrl
+
+        ];
+
+
+        for (
+          const value of possible
+        ) {
+
+          if (
+            typeof value ===
+              "string" &&
+            value.trim()
+          ) {
+
+            return value.trim();
+
+          }
+
+        }
+
+
+        return "";
+
+      }
+
+
+      /*
+       * Категорії беремо з API / таблиці.
+       *
+       * FALLBACK потрібен лише,
+       * якщо Google тимчасово не відповідає.
+       *
+       * Фотографій у FALLBACK немає.
+       */
+
       function allHomeCategories() {
 
         const live =
           storeCategories();
 
 
-        const map =
-          new Map();
+        if (
+          live.length
+        ) {
 
+          return live
+            .filter(
+              function (category) {
 
-        FALLBACK_CATEGORIES
-          .forEach(
-            function (category) {
-
-              map.set(
-                category.code,
-                {
-                  ...category
+                if (
+                  !category?.code
+                ) {
+                  return false;
                 }
-              );
-
-            }
-          );
 
 
-        live
-          .forEach(
-            function (category) {
-
-              if (
-                !category?.code ||
-                category.code ===
+                if (
+                  category.code ===
                   "ALL"
-              ) {
-
-                return;
-
-              }
-
-
-              if (
-                category.active ===
-                false
-              ) {
-
-                return;
-
-              }
-
-
-              const fallback =
-                map.get(
-                  category.code
-                ) || {};
-
-
-              map.set(
-                category.code,
-                {
-                  ...fallback,
-                  ...category
+                ) {
+                  return false;
                 }
-              );
-
-            }
-          );
 
 
-        return Array.from(
-          map.values()
-        )
-          .filter(
-            function (category) {
+                if (
+                  category.active ===
+                  false
+                ) {
+                  return false;
+                }
 
-              return (
-                category.code !==
-                "ALL" &&
-                category.active !==
-                false
-              );
 
-            }
-          )
-          .sort(
-            function (a, b) {
+                if (
+                  category.active !==
+                    undefined &&
+                  typeof category.active !==
+                    "boolean" &&
+                  !yes(
+                    category.active
+                  )
+                ) {
+                  return false;
+                }
 
-              return (
-                numberValue(
-                  a.order
-                ) -
-                numberValue(
-                  b.order
-                )
-              );
 
-            }
-          );
+                return true;
+
+              }
+            )
+            .sort(
+              function (a, b) {
+
+                return (
+                  numberValue(
+                    a.order
+                  ) -
+                  numberValue(
+                    b.order
+                  )
+                );
+
+              }
+            );
+
+        }
+
+
+        return FALLBACK_CATEGORIES;
 
       }
 
+
+      /*
+       * ТУТ НЕМАЄ ЖОДНИХ
+       * ЖОРСТКО ПРОПИСАНИХ ФОТО.
+       */
 
       function renderCategories() {
 
@@ -3094,30 +3064,44 @@
                 function (category) {
 
                   const image =
-                    CATEGORY_IMAGE_OVERRIDES[
-                      category.code
-                    ] ||
-                    category.cover ||
-                    "images/brand/logo.webp";
+                    categoryCover(
+                      category
+                    );
+
+
+                  const cardClass =
+                    image
+                      ? "home-category-card has-image"
+                      : "home-category-card no-image";
+
+
+                  const imageHtml =
+                    image
+                      ? (
+                          '<img src="' +
+                          escapeHtml(
+                            image
+                          ) +
+                          '" alt="' +
+                          escapeHtml(
+                            category.name ||
+                            ""
+                          ) +
+                          '" loading="lazy">'
+                        )
+                      : "";
 
 
                   return (
-                    '<a class="home-category-card" href="catalog.html?category=' +
+                    '<a class="' +
+                    cardClass +
+                    '" href="catalog.html?category=' +
                     encodeURIComponent(
                       category.code
                     ) +
                     '">' +
 
-                    '<img src="' +
-                    escapeHtml(
-                      image
-                    ) +
-                    '" alt="' +
-                    escapeHtml(
-                      category.name ||
-                      ""
-                    ) +
-                    '" loading="lazy">' +
+                    imageHtml +
 
                     '<div class="home-category-content">' +
 
@@ -3131,6 +3115,7 @@
                     "<span>" +
                     escapeHtml(
                       category.description ||
+                      category.shortDescription ||
                       ""
                     ) +
                     "</span>" +
@@ -3197,17 +3182,13 @@
       }
 
 
-      function primaryCategory(
-        product
-      ) {
+      function primaryCategory(product) {
 
         return String(
           product?.categoryCode ||
           ""
         )
-          .split(
-            /[;,|]+/
-          )[0]
+          .split(/[;,|]+/)[0]
           .trim();
 
       }
@@ -3253,11 +3234,6 @@
         }
 
 
-        /*
-         * Спочатку — саме той порядок,
-         * який ми визначили.
-         */
-
         HOME_FEATURED_ORDER
           .forEach(
             function (code) {
@@ -3278,12 +3254,6 @@
             }
           );
 
-
-        /*
-         * Якщо якоїсь позиції немає,
-         * доповнюємо різними категоріями,
-         * а не шістьма однаковими товарами.
-         */
 
         const usedCategories =
           new Set(
@@ -3486,6 +3456,7 @@
                     '<div class="home-product-price">' +
 
                     '<span class="home-product-price-current">' +
+
                     (
                       current > 0
                         ? formatMoney(
@@ -3493,6 +3464,7 @@
                           )
                         : "Ціну уточнюємо"
                     ) +
+
                     "</span>" +
 
                     (
@@ -3618,9 +3590,7 @@
             .filter(
               reviewPublished
             )
-            .slice(
-              -3
-            )
+            .slice(-3)
             .reverse();
 
 
