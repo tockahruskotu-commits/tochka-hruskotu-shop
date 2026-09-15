@@ -2,46 +2,17 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Точка Хрускоту — незвичні солодощі та подарунки</title>
+  <meta name="description" content="Точка Хрускоту — незвичні солодощі ручної роботи, подарункові набори, міні-донати, Кранч-Фрі, їстівні пазли та інші формати. Млинів. Доставка по Україні.">
+  <meta name="theme-color" content="#fffaf5">
 
-  <meta
-    name="description"
-    content="Точка Хрускоту — незвичні солодощі ручної роботи, подарункові набори, міні-донати, Кранч-Фрі, їстівні пазли та інші формати. Млинів. Доставка по Україні."
-  >
-
-  <meta
-    name="theme-color"
-    content="#fffaf5"
-  >
-
-  <link
-    rel="canonical"
-    href="https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/"
-  >
-
-  <link
-    rel="icon"
-    href="images/brand/logo.webp"
-    type="image/webp"
-  >
-
-  <link
-    rel="stylesheet"
-    href="site-v2.css?v=20260915-home3"
-  >
-
+  <link rel="canonical" href="https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/">
+  <link rel="icon" href="images/brand/logo.webp" type="image/webp">
+  <link rel="stylesheet" href="site-v2.css?v=20260915-home4">
 
   <style>
-
-    /* ======================================================
-       ЗАГАЛЬНЕ
-       ====================================================== */
 
     .home-page {
       overflow: hidden;
@@ -60,7 +31,6 @@
       align-items: end;
       justify-content: space-between;
       gap: 24px;
-
       margin-bottom: 26px;
     }
 
@@ -70,9 +40,7 @@
 
     .home-section-head h2 {
       margin: 5px 0 0;
-
       color: var(--brown);
-
       font-size: clamp(30px, 4vw, 43px);
       line-height: 1.08;
       letter-spacing: -.03em;
@@ -80,44 +48,75 @@
 
     .home-section-head p {
       margin: 10px 0 0;
-
       color: var(--text-soft);
-
       font-size: 15px;
       line-height: 1.65;
     }
 
     .home-text-link {
       flex: 0 0 auto;
-
       color: var(--accent-dark);
-
       font-size: 14px;
       font-weight: 850;
     }
 
 
     /* ======================================================
-       HERO
+       ГОЛОВНА КАРТИНКА
+       На комп'ютері hero-desktop.webp
+       На телефоні hero-mobile.webp
        ====================================================== */
 
     .home-hero {
-      padding: 42px 0 58px;
+      position: relative;
+
+      min-height: 620px;
+
+      display: flex;
+      align-items: center;
+
+      background-image:
+        linear-gradient(
+          90deg,
+          rgba(255,250,245,.98) 0%,
+          rgba(255,250,245,.88) 32%,
+          rgba(255,250,245,.25) 58%,
+          rgba(255,250,245,0) 76%
+        ),
+        url("images/hero/hero-desktop.webp");
+
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
     }
 
-    .home-hero-grid {
-      display: grid;
+    .home-hero::after {
+      content: "";
 
-      grid-template-columns:
-        minmax(0, 1.04fr)
-        minmax(340px, .96fr);
+      position: absolute;
+      inset: 0;
 
-      gap: 40px;
-      align-items: center;
+      pointer-events: none;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,.02),
+          rgba(255,250,245,.04)
+        );
+    }
+
+    .home-hero .container {
+      position: relative;
+      z-index: 1;
+
+      width: 100%;
     }
 
     .home-hero-copy {
-      max-width: 700px;
+      width: min(620px, 48%);
+
+      padding: 48px 0;
     }
 
     .home-hero-kicker {
@@ -128,29 +127,33 @@
 
       padding: 6px 11px;
 
+      border: 1px solid rgba(226,193,170,.7);
       border-radius: 999px;
 
-      background: var(--accent-soft);
+      background: rgba(255,255,255,.78);
+
       color: var(--accent-dark);
 
       font-size: 12px;
       font-weight: 900;
       letter-spacing: .07em;
       text-transform: uppercase;
+
+      backdrop-filter: blur(6px);
     }
 
     .home-hero h1 {
-      margin: 15px 0 0;
+      margin: 16px 0 0;
 
       color: var(--brown);
 
-      font-size: clamp(43px, 6vw, 72px);
-      line-height: .99;
+      font-size: clamp(44px, 6vw, 74px);
+      line-height: .98;
       letter-spacing: -.045em;
     }
 
     .home-hero-description {
-      max-width: 650px;
+      max-width: 590px;
 
       margin: 19px 0 0;
 
@@ -180,6 +183,8 @@
       flex-wrap: wrap;
       gap: 9px;
 
+      max-width: 600px;
+
       margin-top: 24px;
     }
 
@@ -191,77 +196,17 @@
 
       padding: 7px 12px;
 
-      border: 1px solid var(--border);
+      border: 1px solid rgba(226,193,170,.85);
       border-radius: 999px;
 
-      background: #fff;
+      background: rgba(255,255,255,.82);
 
       color: var(--text-soft);
 
       font-size: 12px;
       font-weight: 750;
-    }
 
-    .home-hero-visual {
-      position: relative;
-
-      min-height: 500px;
-
-      overflow: hidden;
-
-      border-radius: 34px;
-
-      background: var(--surface-soft);
-
-      box-shadow: var(--shadow-md);
-    }
-
-    .home-hero-visual img {
-      position: absolute;
-
-      inset: 0;
-
-      width: 100%;
-      height: 100%;
-
-      object-fit: cover;
-    }
-
-    .home-hero-badge {
-      position: absolute;
-
-      left: 20px;
-      bottom: 20px;
-
-      max-width: 300px;
-
-      padding: 16px 18px;
-
-      border: 1px solid rgba(255,255,255,.7);
-      border-radius: 17px;
-
-      background: rgba(255,255,255,.92);
-
-      backdrop-filter: blur(12px);
-
-      color: var(--brown);
-    }
-
-    .home-hero-badge strong {
-      display: block;
-
-      font-size: 15px;
-    }
-
-    .home-hero-badge span {
-      display: block;
-
-      margin-top: 4px;
-
-      color: var(--text-soft);
-
-      font-size: 12px;
-      line-height: 1.5;
+      backdrop-filter: blur(6px);
     }
 
 
@@ -270,7 +215,7 @@
        ====================================================== */
 
     .home-benefits {
-      padding: 0 0 28px;
+      padding: 30px 0 28px;
     }
 
     .home-benefit-grid {
@@ -375,12 +320,6 @@
       transform: scale(1.035);
     }
 
-
-    /*
-     * Якщо фото категорії ще немає —
-     * ніяких вигаданих картинок.
-     */
-
     .home-category-card.no-image {
       background:
         linear-gradient(
@@ -462,6 +401,7 @@
       flex-direction: column;
 
       min-width: 0;
+
       overflow: hidden;
 
       border: 1px solid var(--border);
@@ -522,6 +462,7 @@
       border-radius: 999px;
 
       background: rgba(255,255,255,.94);
+
       color: var(--brown);
 
       font-size: 10px;
@@ -605,6 +546,7 @@
       border-radius: 10px;
 
       background: var(--accent);
+
       color: #fff;
 
       font-size: 12px;
@@ -709,6 +651,7 @@
       border-radius: 50%;
 
       background: var(--green-soft);
+
       color: var(--green);
 
       font-size: 11px;
@@ -897,7 +840,6 @@
 
     .home-about-logo img {
       width: min(220px, 70%);
-
       height: auto;
     }
 
@@ -934,6 +876,7 @@
       border-radius: 25px;
 
       background: var(--brown);
+
       color: #fff;
 
       text-align: center;
@@ -983,12 +926,13 @@
 
     @media (max-width: 980px) {
 
-      .home-hero-grid {
-        grid-template-columns: 1fr;
+      .home-hero {
+        min-height: 580px;
+        background-position: 60% center;
       }
 
-      .home-hero-visual {
-        min-height: 440px;
+      .home-hero-copy {
+        width: min(610px, 58%);
       }
 
       .home-benefit-grid {
@@ -1031,18 +975,47 @@
         padding: 52px 0;
       }
 
+      /*
+       * На телефоні вже використовуємо
+       * окрему вертикальну картинку.
+       */
+
       .home-hero {
-        padding-top: 25px;
+        min-height: 760px;
+
+        align-items: flex-start;
+
+        background-image:
+          linear-gradient(
+            180deg,
+            rgba(255,250,245,.98) 0%,
+            rgba(255,250,245,.92) 26%,
+            rgba(255,250,245,.48) 43%,
+            rgba(255,250,245,0) 64%
+          ),
+          url("images/hero/hero-mobile.webp");
+
+        background-position: center top;
+        background-size: cover;
       }
 
-      .home-hero-grid {
-        gap: 25px;
+      .home-hero-copy {
+        width: 100%;
+        max-width: 560px;
+
+        padding: 40px 0 0;
       }
 
-      .home-hero-visual {
-        min-height: 350px;
+      .home-hero h1 {
+        max-width: 500px;
 
-        border-radius: 23px;
+        font-size: clamp(42px, 11vw, 60px);
+      }
+
+      .home-hero-description {
+        max-width: 500px;
+
+        font-size: 17px;
       }
 
       .home-section-head {
@@ -1074,12 +1047,49 @@
 
     @media (max-width: 520px) {
 
+      .home-hero {
+        min-height: 760px;
+
+        background-position: center top;
+      }
+
+      .home-hero-copy {
+        padding-top: 28px;
+      }
+
+      .home-hero-kicker {
+        font-size: 10px;
+      }
+
+      .home-hero-description {
+        line-height: 1.48;
+      }
+
       .home-hero-actions {
         display: grid;
       }
 
       .home-hero-actions .button {
         width: 100%;
+      }
+
+      .home-hero-trust {
+        display: grid;
+
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+
+        gap: 7px;
+      }
+
+      .home-trust-chip {
+        justify-content: center;
+
+        min-height: 34px;
+
+        text-align: center;
+
+        font-size: 10px;
       }
 
       .home-benefit-grid {
@@ -1139,6 +1149,8 @@
   </style>
 
 
+  <!-- GOOGLE ANALYTICS -->
+
   <script
     async
     src="https://www.googletagmanager.com/gtag/js?id=G-BMMFC6QXD5"
@@ -1153,7 +1165,10 @@
       dataLayer.push(arguments);
     }
 
-    gtag("js", new Date());
+    gtag(
+      "js",
+      new Date()
+    );
 
     gtag(
       "config",
@@ -1167,6 +1182,10 @@
 
 <body>
 
+
+  <!-- ======================================================
+       LOADER
+       ====================================================== -->
 
   <div
     class="page-loader"
@@ -1195,6 +1214,10 @@
 
   </div>
 
+
+  <!-- ======================================================
+       ВЕРХНЯ СМУГА
+       ====================================================== -->
 
   <div class="trust-bar">
 
@@ -1240,6 +1263,10 @@
 
   </div>
 
+
+  <!-- ======================================================
+       HEADER
+       ====================================================== -->
 
   <header
     class="site-header"
@@ -1352,6 +1379,10 @@
   </header>
 
 
+  <!-- ======================================================
+       МОБІЛЬНЕ МЕНЮ
+       ====================================================== -->
+
   <div
     class="mobile-menu-overlay"
     id="mobileMenuOverlay"
@@ -1446,6 +1477,10 @@
   </aside>
 
 
+  <!-- ======================================================
+       ГОЛОВНА
+       ====================================================== -->
+
   <main class="home-page">
 
 
@@ -1453,8 +1488,7 @@
 
     <section class="home-hero">
 
-      <div class="container home-hero-grid">
-
+      <div class="container">
 
         <div class="home-hero-copy">
 
@@ -1516,32 +1550,6 @@
 
         </div>
 
-
-        <div class="home-hero-visual">
-
-          <img
-            src="images/hero/main-cover.webp"
-            alt="Солодощі Точки Хрускоту"
-            fetchpriority="high"
-          >
-
-
-          <div class="home-hero-badge">
-
-            <strong>
-              Смаколики з характером
-            </strong>
-
-            <span>
-              Для кавової паузи,
-              маленького сюрпризу
-              або подарунка без приводу.
-            </span>
-
-          </div>
-
-        </div>
-
       </div>
 
     </section>
@@ -1552,7 +1560,6 @@
     <section class="home-benefits">
 
       <div class="container home-benefit-grid">
-
 
         <article class="home-benefit">
 
@@ -1726,7 +1733,6 @@
 
       <div class="container">
 
-
         <div class="home-gift-panel">
 
 
@@ -1846,7 +1852,6 @@
 
         <div class="home-delivery-grid">
 
-
           <article class="home-delivery-card">
 
             <strong>
@@ -1953,7 +1958,6 @@
     <section class="home-section">
 
       <div class="container">
-
 
         <div class="home-about-panel">
 
@@ -2062,7 +2066,9 @@
   </main>
 
 
-  <!-- КОШИК -->
+  <!-- ======================================================
+       КОШИК
+       ====================================================== -->
 
   <div
     class="cart-overlay"
@@ -2164,9 +2170,12 @@
   ></div>
 
 
-  <!-- FOOTER -->
+  <!-- ======================================================
+       FOOTER
+       ====================================================== -->
 
   <footer class="site-footer">
+
 
     <div class="container footer-grid">
 
@@ -2186,9 +2195,11 @@
 
         </a>
 
+
         <strong id="footerStoreName">
           Точка Хрускоту
         </strong>
+
 
         <p>
           Домашнє виробництво.
@@ -2292,6 +2303,7 @@
         Ми онлайн
       </h2>
 
+
       <div class="footer-social-links">
 
         <a
@@ -2386,8 +2398,12 @@
   </footer>
 
 
+  <!-- ======================================================
+       СПІЛЬНИЙ JS
+       ====================================================== -->
+
   <script
-    src="site-v2.js?v=20260915-home3"
+    src="site-v2.js?v=20260915-home4"
     defer
   ></script>
 
@@ -2412,8 +2428,8 @@
 
 
       /*
-       * ПОРЯДОК ХІТІВ І НОВИНОК.
-       * Пізніше винесемо його в таблицю.
+       * Черговість товарів
+       * у блоці "Хіти та новинки".
        */
 
       const HOME_FEATURED_ORDER = [
@@ -2440,9 +2456,10 @@
 
 
       /*
-       * Резервні назви категорій.
-       * Фото тут НЕ зберігаємо.
-       * Фото беремо тільки з таблиці.
+       * Резервні категорії.
+       *
+       * Фото основних категорій
+       * сайт бере з Google-таблиці.
        */
 
       const FALLBACK_CATEGORIES = [
@@ -2457,105 +2474,120 @@
         {
           code: "CRUNCH-FRIES",
           name: "Кранч-Фрі",
-          description: "Солодке печиво у формі картоплі фрі з соусом",
+          description:
+            "Солодке печиво у формі картоплі фрі з соусом",
           order: 20
         },
 
         {
           code: "CRUNCH-BURGERS",
           name: "Кранч-Бургери",
-          description: "Солодкі хрусткі бургери",
+          description:
+            "Солодкі хрусткі бургери",
           order: 30
         },
 
         {
           code: "CRUNCH-NUGGETS",
           name: "Кранч-Нагетси",
-          description: "Хрусткі солодкі нагетси з соусом",
+          description:
+            "Хрусткі солодкі нагетси з соусом",
           order: 40
         },
 
         {
           code: "CRUNCH-POPS",
           name: "Кранч-Попс",
-          description: "Маленькі хрусткі попси для вмочування",
+          description:
+            "Маленькі хрусткі попси для вмочування",
           order: 50
         },
 
         {
           code: "CUPCAKE-POPS",
           name: "Кекс-Попс",
-          description: "М’які кекс-попси у різних смаках",
+          description:
+            "М’які кекс-попси у різних смаках",
           order: 60
         },
 
         {
           code: "CRUNCH-BOXES",
           name: "Кранч-Бокси та подарункові набори",
-          description: "Великі бокси для компанії та подарунків",
+          description:
+            "Великі бокси для компанії та подарунків",
           order: 70
         },
 
         {
           code: "GIFT-SETS",
           name: "Подарункові набори",
-          description: "Готові набори для особливих подій",
+          description:
+            "Готові набори для особливих подій",
           order: 80
         },
 
         {
           code: "MINI-DONUTS",
           name: "Міні-донати",
-          description: "Міні-донати у різних смаках",
+          description:
+            "Міні-донати у різних смаках",
           order: 90
         },
 
         {
           code: "COFFEE-FORTUNES",
           name: "Кавове передбачення",
-          description: "8 шоколадних зерняток і особливе передбачення",
+          description:
+            "8 шоколадних зерняток і особливе передбачення",
           order: 100
         },
 
         {
           code: "CERTIFICATES",
           name: "Сертифікати",
-          description: "Подаруйте можливість обрати",
+          description:
+            "Подаруйте можливість обрати",
           order: 105
         },
 
         {
           code: "SALE",
           name: "Акції",
-          description: "Спеціальні пропозиції",
+          description:
+            "Спеціальні пропозиції",
           order: 110
         },
 
         {
           code: "SAUCES",
           name: "Фірмові соуси",
-          description: "Фруктові та шоколадні соуси",
+          description:
+            "Фруктові та шоколадні соуси",
           order: 115
         },
 
         {
           code: "EDIBLE-PUZZLES",
           name: "Їстівні пазли",
-          description: "Фігурне печиво, яке можна складати",
+          description:
+            "Фігурне печиво, яке можна складати",
           order: 120
         },
 
         {
           code: "MINI-WAFFLES",
           name: "Міні-вафлі",
-          description: "Маленькі вафлі у різних смаках",
+          description:
+            "Маленькі вафлі у різних смаках",
           order: 130
         },
 
         {
           code: "AIRY-COOKIES",
           name: "Повітряне печиво",
-          description: "Легке хрустке печиво у різних смаках",
+          description:
+            "Легке хрустке печиво у різних смаках",
           order: 140
         }
 
@@ -2579,11 +2611,26 @@
         return String(
           value ?? ""
         )
-          .replaceAll("&", "&amp;")
-          .replaceAll("<", "&lt;")
-          .replaceAll(">", "&gt;")
-          .replaceAll('"', "&quot;")
-          .replaceAll("'", "&#039;");
+          .replaceAll(
+            "&",
+            "&amp;"
+          )
+          .replaceAll(
+            "<",
+            "&lt;"
+          )
+          .replaceAll(
+            ">",
+            "&gt;"
+          )
+          .replaceAll(
+            '"',
+            "&quot;"
+          )
+          .replaceAll(
+            "'",
+            "&#039;"
+          );
 
       }
 
@@ -2634,7 +2681,9 @@
 
 
           return raw
-            ? JSON.parse(raw)
+            ? JSON.parse(
+                raw
+              )
             : null;
 
 
@@ -2678,7 +2727,9 @@
       }
 
 
-      function saveStoreCache(data) {
+      function saveStoreCache(
+        data
+      ) {
 
         try {
 
@@ -2751,9 +2802,18 @@
           String(
             value ?? ""
           )
-            .replace(/\s/g, "")
-            .replace(/грн/gi, "")
-            .replace(",", ".");
+            .replace(
+              /\s/g,
+              ""
+            )
+            .replace(
+              /грн/gi,
+              ""
+            )
+            .replace(
+              ",",
+              "."
+            );
 
 
         const result =
@@ -2834,6 +2894,7 @@
         ) {
 
           return false;
+
         }
 
 
@@ -2843,6 +2904,7 @@
         ) {
 
           return false;
+
         }
 
 
@@ -2914,11 +2976,6 @@
       }
 
 
-      /*
-       * ШУКАЄМО ФОТО КАТЕГОРІЇ,
-       * ЯКЕ ПРИЙШЛО ІЗ ТАБЛИЦІ.
-       */
-
       function categoryCover(category) {
 
         const possible = [
@@ -2960,15 +3017,6 @@
       }
 
 
-      /*
-       * Категорії беремо з API / таблиці.
-       *
-       * FALLBACK потрібен лише,
-       * якщо Google тимчасово не відповідає.
-       *
-       * Фотографій у FALLBACK немає.
-       */
-
       function allHomeCategories() {
 
         const live =
@@ -2986,7 +3034,9 @@
                 if (
                   !category?.code
                 ) {
+
                   return false;
+
                 }
 
 
@@ -2994,7 +3044,9 @@
                   category.code ===
                   "ALL"
                 ) {
+
                   return false;
+
                 }
 
 
@@ -3002,7 +3054,9 @@
                   category.active ===
                   false
                 ) {
+
                   return false;
+
                 }
 
 
@@ -3015,7 +3069,9 @@
                     category.active
                   )
                 ) {
+
                   return false;
+
                 }
 
 
@@ -3045,11 +3101,6 @@
 
       }
 
-
-      /*
-       * ТУТ НЕМАЄ ЖОДНИХ
-       * ЖОРСТКО ПРОПИСАНИХ ФОТО.
-       */
 
       function renderCategories() {
 
@@ -3188,7 +3239,9 @@
           product?.categoryCode ||
           ""
         )
-          .split(/[;,|]+/)[0]
+          .split(
+            /[;,|]+/
+          )[0]
           .trim();
 
       }
@@ -3204,6 +3257,7 @@
 
 
         const selected = [];
+
         const used =
           new Set();
 
@@ -3268,7 +3322,8 @@
             function (product) {
 
               if (
-                selected.length >= 6
+                selected.length >=
+                6
               ) {
 
                 return;
@@ -3299,7 +3354,9 @@
               );
 
 
-              if (category) {
+              if (
+                category
+              ) {
 
                 usedCategories.add(
                   category
@@ -3325,7 +3382,9 @@
           featuredProducts();
 
 
-        if (!products.length) {
+        if (
+          !products.length
+        ) {
 
           $("homeFeaturedProducts")
             .innerHTML =
@@ -3590,16 +3649,22 @@
             .filter(
               reviewPublished
             )
-            .slice(-3)
+            .slice(
+              -3
+            )
             .reverse();
 
 
-        if (!reviews.length) {
+        if (
+          !reviews.length
+        ) {
 
           $("homeReviewGrid")
             .innerHTML =
               '<div class="home-review-empty">' +
-              '<a href="reviews.html"><strong>Переглянути відгуки покупців →</strong></a>' +
+              '<a href="reviews.html">' +
+              '<strong>Переглянути відгуки покупців →</strong>' +
+              "</a>" +
               "</div>";
 
           return;
@@ -3629,28 +3694,35 @@
                     '<article class="home-review-card">' +
 
                     '<div class="home-review-stars">' +
+
                     "★".repeat(
                       rating
                     ) +
+
                     "☆".repeat(
                       5 - rating
                     ) +
+
                     "</div>" +
 
                     "<blockquote>" +
+
                     escapeHtml(
                       review.text ||
                       review.message ||
                       ""
                     ) +
+
                     "</blockquote>" +
 
                     '<div class="home-review-author">' +
+
                     escapeHtml(
                       review.name ||
                       review.author ||
                       "Покупець"
                     ) +
+
                     "</div>" +
 
                     (
@@ -3732,6 +3804,7 @@
               "?action=store&_=" +
               Date.now(),
               {
+
                 method:
                   "GET",
 
@@ -3740,6 +3813,7 @@
 
                 signal:
                   controller.signal
+
               }
             );
 
