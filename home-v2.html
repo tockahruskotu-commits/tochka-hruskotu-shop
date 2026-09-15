@@ -12,7 +12,7 @@
 
   <meta
     name="description"
-    content="Точка Хрускоту — незвичні солодощі ручної роботи, подарункові набори, міні-донати, Кранч-Фрі, їстівні пазли та інші хрумкі формати. Млинів. Доставка по Україні."
+    content="Точка Хрускоту — незвичні солодощі ручної роботи, подарункові набори, міні-донати, Кранч-Фрі, їстівні пазли та інші формати. Млинів. Доставка по Україні."
   >
 
   <meta
@@ -33,14 +33,14 @@
 
   <link
     rel="stylesheet"
-    href="site-v2.css?v=20260915-home1"
+    href="site-v2.css?v=20260915-home2"
   >
 
 
   <style>
 
     /* ======================================================
-       HOME — ЗАГАЛЬНЕ
+       ЗАГАЛЬНЕ
        ====================================================== */
 
     .home-page {
@@ -48,7 +48,7 @@
     }
 
     .home-section {
-      padding: 70px 0;
+      padding: 68px 0;
     }
 
     .home-section-soft {
@@ -61,11 +61,11 @@
       justify-content: space-between;
       gap: 24px;
 
-      margin-bottom: 28px;
+      margin-bottom: 26px;
     }
 
     .home-section-head-text {
-      max-width: 690px;
+      max-width: 720px;
     }
 
     .home-section-head h2 {
@@ -73,12 +73,7 @@
 
       color: var(--brown);
 
-      font-size: clamp(
-        30px,
-        4vw,
-        43px
-      );
-
+      font-size: clamp(30px, 4vw, 43px);
       line-height: 1.08;
       letter-spacing: -.03em;
     }
@@ -140,7 +135,6 @@
 
       font-size: 12px;
       font-weight: 900;
-
       letter-spacing: .07em;
       text-transform: uppercase;
     }
@@ -150,12 +144,7 @@
 
       color: var(--brown);
 
-      font-size: clamp(
-        43px,
-        6vw,
-        72px
-      );
-
+      font-size: clamp(43px, 6vw, 72px);
       line-height: .99;
       letter-spacing: -.045em;
     }
@@ -167,12 +156,7 @@
 
       color: var(--text-soft);
 
-      font-size: clamp(
-        17px,
-        2vw,
-        20px
-      );
-
+      font-size: clamp(17px, 2vw, 20px);
       line-height: 1.6;
     }
 
@@ -249,14 +233,14 @@
       left: 20px;
       bottom: 20px;
 
-      max-width: 290px;
+      max-width: 300px;
 
       padding: 16px 18px;
 
       border: 1px solid rgba(255,255,255,.7);
       border-radius: 17px;
 
-      background: rgba(255,255,255,.91);
+      background: rgba(255,255,255,.92);
 
       backdrop-filter: blur(12px);
 
@@ -293,10 +277,7 @@
       display: grid;
 
       grid-template-columns:
-        repeat(
-          4,
-          minmax(0, 1fr)
-        );
+        repeat(4, minmax(0, 1fr));
 
       gap: 12px;
     }
@@ -329,32 +310,29 @@
 
 
     /* ======================================================
-       КАТЕГОРІЇ
+       УСІ КАТЕГОРІЇ
        ====================================================== */
 
     .home-category-grid {
       display: grid;
 
       grid-template-columns:
-        repeat(
-          4,
-          minmax(0, 1fr)
-        );
+        repeat(6, minmax(0, 1fr));
 
-      gap: 15px;
+      gap: 12px;
     }
 
     .home-category-card {
       position: relative;
 
-      min-height: 245px;
+      min-height: 155px;
 
       overflow: hidden;
 
       border: 1px solid var(--border);
-      border-radius: 20px;
+      border-radius: 16px;
 
-      background: var(--surface-soft);
+      background: var(--surface);
 
       color: #fff;
 
@@ -373,7 +351,7 @@
 
       object-fit: cover;
 
-      transition: transform .28s ease;
+      transition: transform .25s ease;
     }
 
     .home-category-card::after {
@@ -388,8 +366,8 @@
       background:
         linear-gradient(
           180deg,
-          rgba(45,25,15,.04) 20%,
-          rgba(45,25,15,.78) 100%
+          rgba(39, 22, 13, .02) 20%,
+          rgba(39, 22, 13, .82) 100%
         );
     }
 
@@ -400,42 +378,39 @@
     .home-category-content {
       position: absolute;
 
-      left: 18px;
-      right: 18px;
-      bottom: 18px;
+      left: 13px;
+      right: 13px;
+      bottom: 13px;
     }
 
     .home-category-content strong {
       display: block;
 
-      font-size: 19px;
+      font-size: 15px;
       line-height: 1.15;
     }
 
     .home-category-content span {
       display: block;
 
-      margin-top: 6px;
+      margin-top: 4px;
 
       color: rgba(255,255,255,.88);
 
-      font-size: 12px;
-      line-height: 1.4;
+      font-size: 10px;
+      line-height: 1.35;
     }
 
 
     /* ======================================================
-       ТОВАРИ
+       ХІТИ ТА НОВИНКИ
        ====================================================== */
 
     .home-products-grid {
       display: grid;
 
       grid-template-columns:
-        repeat(
-          3,
-          minmax(0, 1fr)
-        );
+        repeat(3, minmax(0, 1fr));
 
       gap: 18px;
     }
@@ -496,10 +471,9 @@
 
     .home-product-badge {
       display: inline-flex;
+      align-items: center;
 
       min-height: 27px;
-
-      align-items: center;
 
       padding: 5px 9px;
 
@@ -556,10 +530,6 @@
       padding-top: 17px;
     }
 
-    .home-product-price {
-      min-width: 0;
-    }
-
     .home-product-price-current {
       display: block;
 
@@ -583,7 +553,6 @@
 
     .home-product-open {
       display: inline-flex;
-
       align-items: center;
       justify-content: center;
 
@@ -641,11 +610,7 @@
     }
 
     .home-gift-copy {
-      padding: clamp(
-        28px,
-        5vw,
-        55px
-      );
+      padding: clamp(28px, 5vw, 55px);
     }
 
     .home-gift-copy h2 {
@@ -653,12 +618,7 @@
 
       color: var(--brown);
 
-      font-size: clamp(
-        31px,
-        4.5vw,
-        48px
-      );
-
+      font-size: clamp(31px, 4.5vw, 48px);
       line-height: 1.06;
       letter-spacing: -.035em;
     }
@@ -696,7 +656,6 @@
       content: "✓";
 
       display: inline-flex;
-
       align-items: center;
       justify-content: center;
 
@@ -750,10 +709,7 @@
       display: grid;
 
       grid-template-columns:
-        repeat(
-          3,
-          minmax(0, 1fr)
-        );
+        repeat(3, minmax(0, 1fr));
 
       gap: 14px;
     }
@@ -793,10 +749,7 @@
       display: grid;
 
       grid-template-columns:
-        repeat(
-          3,
-          minmax(0, 1fr)
-        );
+        repeat(3, minmax(0, 1fr));
 
       gap: 15px;
     }
@@ -875,11 +828,7 @@
       gap: 34px;
       align-items: center;
 
-      padding: clamp(
-        26px,
-        5vw,
-        48px
-      );
+      padding: clamp(26px, 5vw, 48px);
 
       border: 1px solid var(--border);
       border-radius: 26px;
@@ -889,7 +838,6 @@
 
     .home-about-logo {
       display: flex;
-
       align-items: center;
       justify-content: center;
 
@@ -906,10 +854,7 @@
     }
 
     .home-about-logo img {
-      width: min(
-        220px,
-        70%
-      );
+      width: min(220px, 70%);
 
       height: auto;
     }
@@ -919,12 +864,7 @@
 
       color: var(--brown);
 
-      font-size: clamp(
-        30px,
-        4vw,
-        43px
-      );
-
+      font-size: clamp(30px, 4vw, 43px);
       line-height: 1.08;
     }
 
@@ -943,7 +883,7 @@
 
 
     /* ======================================================
-       CTA
+       ФІНАЛ
        ====================================================== */
 
     .home-final-cta {
@@ -962,11 +902,7 @@
 
       color: #fff;
 
-      font-size: clamp(
-        30px,
-        4.5vw,
-        47px
-      );
+      font-size: clamp(30px, 4.5vw, 47px);
     }
 
     .home-final-cta p {
@@ -993,6 +929,16 @@
        АДАПТИВ
        ====================================================== */
 
+    @media (max-width: 1180px) {
+
+      .home-category-grid {
+        grid-template-columns:
+          repeat(5, minmax(0, 1fr));
+      }
+
+    }
+
+
     @media (max-width: 980px) {
 
       .home-hero-grid {
@@ -1003,21 +949,19 @@
         min-height: 440px;
       }
 
-      .home-benefit-grid,
+      .home-benefit-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
       .home-category-grid {
         grid-template-columns:
-          repeat(
-            2,
-            minmax(0, 1fr)
-          );
+          repeat(4, minmax(0, 1fr));
       }
 
       .home-products-grid {
         grid-template-columns:
-          repeat(
-            2,
-            minmax(0, 1fr)
-          );
+          repeat(2, minmax(0, 1fr));
       }
 
       .home-gift-panel {
@@ -1063,13 +1007,17 @@
         display: block;
       }
 
-      .home-section-head .home-text-link {
+      .home-text-link {
         display: inline-flex;
 
         margin-top: 13px;
       }
 
-      .home-products-grid,
+      .home-category-grid {
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
+      }
+
       .home-review-grid,
       .home-delivery-grid {
         grid-template-columns: 1fr;
@@ -1092,33 +1040,32 @@
         width: 100%;
       }
 
-      .home-benefit-grid,
-      .home-category-grid {
+      .home-benefit-grid {
         grid-template-columns:
-          repeat(
-            2,
-            minmax(0, 1fr)
-          );
+          repeat(2, minmax(0, 1fr));
 
         gap: 9px;
       }
 
-      .home-benefit {
-        padding: 15px;
+      .home-category-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+
+        gap: 9px;
       }
 
       .home-category-card {
-        min-height: 190px;
+        min-height: 145px;
       }
 
       .home-category-content {
-        left: 13px;
-        right: 13px;
-        bottom: 13px;
+        left: 11px;
+        right: 11px;
+        bottom: 11px;
       }
 
       .home-category-content strong {
-        font-size: 15px;
+        font-size: 14px;
       }
 
       .home-category-content span {
@@ -1150,9 +1097,7 @@
   </style>
 
 
-  <!-- ======================================================
-       GOOGLE ANALYTICS
-       ====================================================== -->
+  <!-- GOOGLE ANALYTICS -->
 
   <script
     async
@@ -1186,9 +1131,7 @@
 <body>
 
 
-  <!-- ======================================================
-       ШВИДКИЙ LOADER
-       ====================================================== -->
+  <!-- LOADER -->
 
   <div
     class="page-loader"
@@ -1218,9 +1161,7 @@
   </div>
 
 
-  <!-- ======================================================
-       ВЕРХНЯ СМУГА
-       ====================================================== -->
+  <!-- ВЕРХНЯ СМУГА -->
 
   <div class="trust-bar">
 
@@ -1267,9 +1208,7 @@
   </div>
 
 
-  <!-- ======================================================
-       HEADER
-       ====================================================== -->
+  <!-- HEADER -->
 
   <header
     class="site-header"
@@ -1382,9 +1321,7 @@
   </header>
 
 
-  <!-- ======================================================
-       МОБІЛЬНЕ МЕНЮ
-       ====================================================== -->
+  <!-- МОБІЛЬНЕ МЕНЮ -->
 
   <div
     class="mobile-menu-overlay"
@@ -1480,16 +1417,10 @@
   </aside>
 
 
-  <!-- ======================================================
-       ГОЛОВНА
-       ====================================================== -->
-
   <main class="home-page">
 
 
-    <!-- ====================================================
-         HERO
-         ==================================================== -->
+    <!-- HERO -->
 
     <section class="home-hero">
 
@@ -1509,7 +1440,7 @@
 
 
           <p class="home-hero-description">
-            Хрумкі формати, маленькі сюрпризи,
+            Солодкі формати, маленькі сюрпризи,
             подарунки та смаки, які хочеться
             не просто з’їсти, а запам’ятати.
           </p>
@@ -1569,12 +1500,13 @@
           <div class="home-hero-badge">
 
             <strong>
-              Візьми. Вмочи. Хрусни.
+              Смаколики з характером
             </strong>
 
             <span>
-              Іноді для гарного дня
-              потрібен лише один смачний момент.
+              Для кавової паузи,
+              маленького сюрпризу
+              або подарунка без приводу.
             </span>
 
           </div>
@@ -1586,9 +1518,7 @@
     </section>
 
 
-    <!-- ====================================================
-         ПЕРЕВАГИ
-         ==================================================== -->
+    <!-- ПЕРЕВАГИ -->
 
     <section class="home-benefits">
 
@@ -1602,8 +1532,8 @@
           </strong>
 
           <p>
-            Без великого складського запасу —
-            більшість позицій готуємо під ваше замовлення.
+            Більшість позицій готуємо
+            саме під ваше замовлення.
           </p>
 
         </article>
@@ -1655,9 +1585,7 @@
     </section>
 
 
-    <!-- ====================================================
-         КАТЕГОРІЇ
-         ==================================================== -->
+    <!-- УСІ КАТЕГОРІЇ -->
 
     <section
       class="home-section home-section-soft"
@@ -1672,16 +1600,16 @@
           <div class="home-section-head-text">
 
             <p class="section-kicker">
-              Обирайте настрій
+              Увесь асортимент
             </p>
 
             <h2>
-              Що сьогодні хрусне?
+              Що будемо хрумтіти сьогодні?
             </h2>
 
             <p>
-              Від печива з соусом
-              до маленьких подарунків і цілих боксів.
+              Усі категорії одразу перед вами —
+              не потрібно шукати їх по сайту.
             </p>
 
           </div>
@@ -1691,7 +1619,7 @@
             class="home-text-link"
             href="catalog.html"
           >
-            Увесь каталог →
+            Відкрити весь каталог →
           </a>
 
         </div>
@@ -1707,9 +1635,7 @@
     </section>
 
 
-    <!-- ====================================================
-         ХІТИ / НОВИНКИ
-         ==================================================== -->
+    <!-- ХІТИ ТА НОВИНКИ -->
 
     <section
       class="home-section"
@@ -1732,8 +1658,8 @@
             </h2>
 
             <p>
-              Кілька позицій для швидкого знайомства
-              з «Точкою Хрускоту».
+              Тут показуємо товари у визначеній черговості,
+              щоб найважливіші новинки не губилися.
             </p>
 
           </div>
@@ -1755,7 +1681,7 @@
         >
 
           <div class="home-products-empty">
-            Підбираємо смаколики...
+            Підбираємо товари...
           </div>
 
         </div>
@@ -1765,9 +1691,7 @@
     </section>
 
 
-    <!-- ====================================================
-         ПОДАРУНКИ
-         ==================================================== -->
+    <!-- ПОДАРУНКИ -->
 
     <section class="home-section home-section-soft">
 
@@ -1785,13 +1709,13 @@
 
             <h2>
               Подарунок,
-              який можна з’їсти
+              який запам’ятається
             </h2>
 
             <p>
               Оберіть готовий набір,
-              а деталі ми допоможемо довести
-              до того самого «вау».
+              а деталі ми допоможемо
+              довести до того самого «вау».
             </p>
 
 
@@ -1840,7 +1764,7 @@
           <div class="home-gift-photo">
 
             <img
-              src="images/products/gift-sets/box-10/01.webp"
+              src="images/products/gift-sets/box-12/02.webp"
               alt="Подарунковий набір Точки Хрускоту"
               loading="lazy"
             >
@@ -1854,9 +1778,7 @@
     </section>
 
 
-    <!-- ====================================================
-         ДОСТАВКА
-         ==================================================== -->
+    <!-- ДОСТАВКА -->
 
     <section class="home-section">
 
@@ -1933,8 +1855,8 @@
 
             <p>
               Нова пошта або Укрпошта.
-              Відділення, поштомат чи інший
-              доступний формат погодимо при замовленні.
+              Деталі отримання уточнимо
+              після оформлення замовлення.
             </p>
 
           </article>
@@ -1946,9 +1868,7 @@
     </section>
 
 
-    <!-- ====================================================
-         ВІДГУКИ
-         ==================================================== -->
+    <!-- ВІДГУКИ -->
 
     <section
       class="home-section home-section-soft"
@@ -1963,11 +1883,11 @@
           <div class="home-section-head-text">
 
             <p class="section-kicker">
-              Уже хрустіли
+              Враження покупців
             </p>
 
             <h2>
-              Що кажуть покупці
+              Що кажуть про наші смаколики
             </h2>
 
           </div>
@@ -1999,9 +1919,7 @@
     </section>
 
 
-    <!-- ====================================================
-         ПРО НАС
-         ==================================================== -->
+    <!-- ПРО НАС -->
 
     <section class="home-section">
 
@@ -2037,7 +1955,7 @@
               пакуємо замовлення вручну й хочемо,
               щоб разом із кожною коробочкою
               до вас приїжджало трохи радості.
-              Любимо запах кави, хрускіт улюбленого смаколика,
+              Любимо запах кави, улюблені смаколики,
               подарунки без приводу і ті моменти,
               коли близькі збираються за одним столом.
             </p>
@@ -2046,7 +1964,7 @@
               Наша база — селище Млинів,
               Рівненська область.
               Звідси готуємо та відправляємо
-              ваші хрумкі замовлення по Україні.
+              ваші замовлення по Україні.
             </p>
 
 
@@ -2066,9 +1984,7 @@
     </section>
 
 
-    <!-- ====================================================
-         ФІНАЛЬНИЙ CTA
-         ==================================================== -->
+    <!-- ФІНАЛ -->
 
     <section class="home-section">
 
@@ -2077,13 +1993,13 @@
         <div class="home-final-cta">
 
           <h2>
-            То що сьогодні хрусне?
+            Знайшли щось до смаку?
           </h2>
 
           <p>
             Відкривайте каталог,
-            обирайте свій смак —
-            решту допоможемо організувати.
+            обирайте улюблені позиції —
+            а решту допоможемо організувати.
           </p>
 
 
@@ -2101,6 +2017,7 @@
               href="https://t.me/tockahruskotu"
               target="_blank"
               rel="noopener"
+              translate="no"
             >
               Написати в Telegram
             </a>
@@ -2116,9 +2033,7 @@
   </main>
 
 
-  <!-- ======================================================
-       КОШИК
-       ====================================================== -->
+  <!-- КОШИК -->
 
   <div
     class="cart-overlay"
@@ -2220,9 +2135,7 @@
   ></div>
 
 
-  <!-- ======================================================
-       FOOTER
-       ====================================================== -->
+  <!-- FOOTER -->
 
   <footer class="site-footer">
 
@@ -2444,12 +2357,8 @@
   </footer>
 
 
-  <!-- ======================================================
-       СПІЛЬНИЙ JS
-       ====================================================== -->
-
   <script
-    src="site-v2.js?v=20260915-home1"
+    src="site-v2.js?v=20260915-home2"
     defer
   ></script>
 
@@ -2473,102 +2382,210 @@
         "tochka_hruskotu_store_cache_v1";
 
 
-      const HOME_CATEGORY_CODES = [
-        "CRUNCH-FRIES",
-        "MINI-DONUTS",
-        "MINI-WAFFLES",
-        "EDIBLE-PUZZLES",
-        "CRUNCH-BOXES",
-        "GIFT-SETS",
-        "COFFEE-FORTUNES",
-        "SAUCES"
+      /*
+       * ЧІТКА ЧЕРГОВІСТЬ ТОВАРІВ НА ГОЛОВНІЙ.
+       * Ніякого автоматичного заповнення шістьма
+       * однаковими новинками.
+       */
+
+      const HOME_FEATURED_ORDER = [
+
+        "PUZZLE-KITTIES",
+
+        "WAFFLE-HEMI-40",
+
+        "FR-CLASSIC",
+
+        "GIFT-BOX-12",
+
+        "DONUT-FILLED-MIX",
+
+        "BOX-TRIO",
+
+        "GIFT-BOX-10",
+
+        "BURGER-HONEY",
+
+        "FORT-CLASSIC"
+
       ];
+
+
+      /*
+       * ПОКИ ЩО ВИКОРИСТОВУЄМО РІЗНІ РЕАЛЬНІ ФОТО
+       * ЯК ТИМЧАСОВІ ОБКЛАДИНКИ КАТЕГОРІЙ.
+       *
+       * ПІЗНІШЕ МИ ЇХ ЗАМІНИМО НА ОКРЕМІ
+       * ФІРМОВІ ОБКЛАДИНКИ.
+       */
+
+      const CATEGORY_IMAGE_OVERRIDES = {
+
+        "NEW":
+          "images/products/kitties/04.webp",
+
+        "SALE":
+          "images/products/gift-sets/box-10/02.webp",
+
+        "CRUNCH-FRIES":
+          "images/products/crunch-fries/classic-vanilla/02.webp",
+
+        "CRUNCH-BURGERS":
+          "images/products/crunch-burgers/honey/02.webp",
+
+        "CRUNCH-NUGGETS":
+          "images/products/crunch-nuggets/classic-vanilla/02.webp",
+
+        "CRUNCH-POPS":
+          "images/products/crunch-pops/mix/02.webp",
+
+        "CUPCAKE-POPS":
+          "images/products/cupcake-pops/double-chocolate/02.webp",
+
+        "CRUNCH-BOXES":
+          "images/products/crunch-boxes/crispy-trio/02.webp",
+
+        "GIFT-SETS":
+          "images/products/gift-sets/box-12/03.webp",
+
+        "MINI-DONUTS":
+          "images/products/mini-donuts/filled-mix/02.webp",
+
+        "COFFEE-FORTUNES":
+          "images/products/coffee-fortunes/classic/02.webp",
+
+        "SAUCES":
+          "images/products/sauces/strawberry/02.webp",
+
+        "EDIBLE-PUZZLES":
+          "images/products/kitties/02.webp",
+
+        "MINI-WAFFLES":
+          "images/products/mini-waffles/festive-hemisphere/02.webp",
+
+        "CERTIFICATES":
+          "images/brand/logo.webp",
+
+        "AIRY-COOKIES":
+          "images/brand/logo.webp"
+
+      };
 
 
       const FALLBACK_CATEGORIES = [
 
         {
+          code: "NEW",
+          name: "Новинки",
+          description: "Нові смаки та формати",
+          order: 10
+        },
+
+        {
           code: "CRUNCH-FRIES",
           name: "Кранч-Фрі",
-          description:
-            "Хрустке печиво з соусом",
-          cover:
-            "images/categories/crunch-fries.webp"
+          description: "Печиво у формі картоплі фрі з соусом",
+          order: 20
         },
 
         {
-          code: "MINI-DONUTS",
-          name: "Міні-донати",
-          description:
-            "Маленькі донати у різних смаках",
-          cover:
-            "images/categories/mini-donuts.webp"
+          code: "CRUNCH-BURGERS",
+          name: "Кранч-Бургери",
+          description: "Солодкі бургери",
+          order: 30
         },
 
         {
-          code: "MINI-WAFFLES",
-          name: "Міні-вафлі",
-          description:
-            "Маленький формат для великого хрускоту",
-          cover:
-            "images/hero/main-cover.webp"
+          code: "CRUNCH-NUGGETS",
+          name: "Кранч-Нагетси",
+          description: "Солодкі нагетси з соусом",
+          order: 40
         },
 
         {
-          code: "EDIBLE-PUZZLES",
-          name: "Їстівні пазли",
-          description:
-            "Спочатку склади, потім з’їж",
-          cover:
-            "images/products/kitties/04.webp"
+          code: "CRUNCH-POPS",
+          name: "Кранч-Попс",
+          description: "Маленькі попси для вмочування",
+          order: 50
+        },
+
+        {
+          code: "CUPCAKE-POPS",
+          name: "Кекс-Попс",
+          description: "М’які кекс-попси",
+          order: 60
         },
 
         {
           code: "CRUNCH-BOXES",
           name: "Кранч-Бокси",
-          description:
-            "Більше смаків в одному наборі",
-          cover:
-            "images/categories/crunch-boxes.webp"
+          description: "Великі бокси для компанії",
+          order: 70
         },
 
         {
           code: "GIFT-SETS",
           name: "Подарункові набори",
-          description:
-            "Коли хочеться подарувати емоцію",
-          cover:
-            "images/categories/gift-sets.webp"
+          description: "Готові набори для подарунка",
+          order: 80
+        },
+
+        {
+          code: "MINI-DONUTS",
+          name: "Міні-донати",
+          description: "Донати у різних смаках",
+          order: 90
         },
 
         {
           code: "COFFEE-FORTUNES",
           name: "Кавове передбачення",
-          description:
-            "Маленький солодкий сюрприз",
-          cover:
-            "images/categories/coffee-fortunes.webp"
+          description: "Смаколик із маленьким посланням",
+          order: 100
+        },
+
+        {
+          code: "CERTIFICATES",
+          name: "Сертифікати",
+          description: "Подаруйте можливість обрати",
+          order: 105
+        },
+
+        {
+          code: "SALE",
+          name: "Акції",
+          description: "Спеціальні пропозиції",
+          order: 110
         },
 
         {
           code: "SAUCES",
           name: "Фірмові соуси",
-          description:
-            "Для вмочування і ще більшого задоволення",
-          cover:
-            "images/categories/sauces.webp"
+          description: "Фруктові та шоколадні соуси",
+          order: 115
+        },
+
+        {
+          code: "EDIBLE-PUZZLES",
+          name: "Їстівні пазли",
+          description: "Склади, розглянь і з’їж",
+          order: 120
+        },
+
+        {
+          code: "MINI-WAFFLES",
+          name: "Міні-вафлі",
+          description: "Вафлі у різних смаках і форматах",
+          order: 130
+        },
+
+        {
+          code: "AIRY-COOKIES",
+          name: "Повітряне печиво",
+          description: "Легке печиво у різних смаках",
+          order: 140
         }
 
-      ];
-
-
-      const FALLBACK_FEATURED_CODES = [
-        "GIFT-BOX-10",
-        "FR-CLASSIC",
-        "BOX-TRIO",
-        "PUZZLE-KITTIES",
-        "WAFFLE-HEMI-40",
-        "DONUT-FILLED-MIX"
       ];
 
 
@@ -2658,14 +2675,9 @@
             );
 
 
-          if (!raw) {
-            return null;
-          }
-
-
-          return JSON.parse(
-            raw
-          );
+          return raw
+            ? JSON.parse(raw)
+            : null;
 
 
         } catch (error) {
@@ -2727,10 +2739,11 @@
             )
           );
 
+
         } catch (error) {
 
           console.info(
-            "Кеш магазину не оновлено."
+            "Кеш не оновлено."
           );
 
         }
@@ -2750,108 +2763,23 @@
         }
 
 
-        const text =
-          String(
-            value ?? ""
-          )
-            .trim()
-            .toLowerCase();
-
-
         return [
           "так",
           "true",
           "1",
           "yes"
         ].includes(
-          text
+          String(
+            value ?? ""
+          )
+            .trim()
+            .toLowerCase()
         );
 
       }
 
 
-      function productVisible(
-        product
-      ) {
-
-        if (!product) {
-          return false;
-        }
-
-
-        if (
-          product.show !==
-          undefined &&
-          !yes(
-            product.show
-          )
-        ) {
-
-          return false;
-
-        }
-
-
-        if (
-          product.visible !==
-          undefined &&
-          !yes(
-            product.visible
-          )
-        ) {
-
-          return false;
-
-        }
-
-
-        if (
-          product.available !==
-          undefined &&
-          !yes(
-            product.available
-          )
-        ) {
-
-          return false;
-
-        }
-
-
-        return true;
-
-      }
-
-
-      function productPhoto(
-        product
-      ) {
-
-        if (
-          Array.isArray(
-            product?.photos
-          ) &&
-          product.photos.length
-        ) {
-
-          return product.photos[0];
-
-        }
-
-
-        return (
-          product?.photo ||
-          product?.image ||
-          product?.photo1 ||
-          "images/brand/logo.webp"
-        );
-
-      }
-
-
-      function numberValue(
-        value
-      ) {
+      function numberValue(value) {
 
         if (
           typeof value ===
@@ -2863,7 +2791,7 @@
         }
 
 
-        const cleaned =
+        const text =
           String(
             value ?? ""
           )
@@ -2872,7 +2800,7 @@
               ""
             )
             .replace(
-              "грн",
+              /грн/gi,
               ""
             )
             .replace(
@@ -2883,7 +2811,7 @@
 
         const result =
           Number(
-            cleaned
+            text
           );
 
 
@@ -2896,14 +2824,13 @@
       }
 
 
-      function formatMoney(
-        value
-      ) {
+      function formatMoney(value) {
 
         return new Intl.NumberFormat(
           "uk-UA",
           {
-            maximumFractionDigits: 2
+            maximumFractionDigits:
+              2
           }
         ).format(
           numberValue(
@@ -2914,17 +2841,13 @@
       }
 
 
-      function categoryCover(
-        category
-      ) {
+      function storeProducts() {
 
-        return (
-          category?.cover ||
-          category?.image ||
-          category?.photo ||
-          category?.coverImage ||
-          "images/hero/main-cover.webp"
-        );
+        return Array.isArray(
+          homeStore?.products
+        )
+          ? homeStore.products
+          : [];
 
       }
 
@@ -2935,17 +2858,6 @@
           homeStore?.categories
         )
           ? homeStore.categories
-          : [];
-
-      }
-
-
-      function storeProducts() {
-
-        return Array.isArray(
-          homeStore?.products
-        )
-          ? homeStore.products
           : [];
 
       }
@@ -2962,107 +2874,232 @@
       }
 
 
-      function renderCategories() {
+      function productVisible(product) {
 
-        const fromStore =
+        if (!product) {
+          return false;
+        }
+
+
+        if (
+          product.visible ===
+          false
+        ) {
+
+          return false;
+        }
+
+
+        if (
+          product.available ===
+          false
+        ) {
+
+          return false;
+        }
+
+
+        return true;
+
+      }
+
+
+      function productPhoto(product) {
+
+        if (
+          Array.isArray(
+            product?.photos
+          ) &&
+          product.photos.length
+        ) {
+
+          return product.photos[0];
+
+        }
+
+
+        return "images/brand/logo.webp";
+
+      }
+
+
+      /*
+       * ВИПРАВЛЕНА ЦІНА.
+       *
+       * API магазину передає:
+       * effectivePrice
+       * regularPrice
+       * salePrice
+       */
+
+      function currentProductPrice(
+        product
+      ) {
+
+        if (
+          numberValue(
+            product?.effectivePrice
+          ) > 0
+        ) {
+
+          return numberValue(
+            product.effectivePrice
+          );
+
+        }
+
+
+        if (
+          numberValue(
+            product?.salePrice
+          ) > 0
+        ) {
+
+          return numberValue(
+            product.salePrice
+          );
+
+        }
+
+
+        return numberValue(
+          product?.regularPrice
+        );
+
+      }
+
+
+      function regularProductPrice(
+        product
+      ) {
+
+        return numberValue(
+          product?.regularPrice
+        );
+
+      }
+
+
+      function allHomeCategories() {
+
+        const live =
           storeCategories();
 
 
-        const chosen =
-          HOME_CATEGORY_CODES
-            .map(
-              function (code) {
-
-                const live =
-                  fromStore.find(
-                    function (category) {
-
-                      return (
-                        category.code ===
-                        code
-                      );
-
-                    }
-                  );
+        const map =
+          new Map();
 
 
-                if (live) {
+        FALLBACK_CATEGORIES
+          .forEach(
+            function (category) {
 
-                  const fallback =
-                    FALLBACK_CATEGORIES
-                      .find(
-                        function (item) {
-
-                          return (
-                            item.code ===
-                            code
-                          );
-
-                        }
-                      );
-
-
-                  return {
-
-                    ...fallback,
-                    ...live,
-
-                    code:
-                      code,
-
-                    name:
-                      live.name ||
-                      fallback?.name ||
-                      code,
-
-                    description:
-                      live.description ||
-                      live.shortDescription ||
-                      fallback?.description ||
-                      "",
-
-                    cover:
-                      categoryCover(
-                        live
-                      ) !==
-                      "images/hero/main-cover.webp"
-                        ? categoryCover(
-                            live
-                          )
-                        : (
-                            fallback?.cover ||
-                            "images/hero/main-cover.webp"
-                          )
-
-                  };
-
+              map.set(
+                category.code,
+                {
+                  ...category
                 }
+              );
+
+            }
+          );
 
 
-                return FALLBACK_CATEGORIES
-                  .find(
-                    function (item) {
+        live
+          .forEach(
+            function (category) {
 
-                      return (
-                        item.code ===
-                        code
-                      );
+              if (
+                !category?.code ||
+                category.code ===
+                  "ALL"
+              ) {
 
-                    }
-                  );
+                return;
 
               }
-            )
-            .filter(
-              Boolean
-            );
+
+
+              if (
+                category.active ===
+                false
+              ) {
+
+                return;
+
+              }
+
+
+              const fallback =
+                map.get(
+                  category.code
+                ) || {};
+
+
+              map.set(
+                category.code,
+                {
+                  ...fallback,
+                  ...category
+                }
+              );
+
+            }
+          );
+
+
+        return Array.from(
+          map.values()
+        )
+          .filter(
+            function (category) {
+
+              return (
+                category.code !==
+                "ALL" &&
+                category.active !==
+                false
+              );
+
+            }
+          )
+          .sort(
+            function (a, b) {
+
+              return (
+                numberValue(
+                  a.order
+                ) -
+                numberValue(
+                  b.order
+                )
+              );
+
+            }
+          );
+
+      }
+
+
+      function renderCategories() {
+
+        const categories =
+          allHomeCategories();
 
 
         $("homeCategoryGrid")
           .innerHTML =
-            chosen
+            categories
               .map(
                 function (category) {
+
+                  const image =
+                    CATEGORY_IMAGE_OVERRIDES[
+                      category.code
+                    ] ||
+                    category.cover ||
+                    "images/brand/logo.webp";
+
 
                   return (
                     '<a class="home-category-card" href="catalog.html?category=' +
@@ -3073,11 +3110,12 @@
 
                     '<img src="' +
                     escapeHtml(
-                      category.cover
+                      image
                     ) +
                     '" alt="' +
                     escapeHtml(
-                      category.name
+                      category.name ||
+                      ""
                     ) +
                     '" loading="lazy">' +
 
@@ -3085,7 +3123,8 @@
 
                     "<strong>" +
                     escapeHtml(
-                      category.name
+                      category.name ||
+                      category.code
                     ) +
                     "</strong>" +
 
@@ -3108,85 +3147,68 @@
       }
 
 
-      function productIsHit(
-        product
-      ) {
+      function productBadges(product) {
 
-        return (
-          yes(
-            product?.isHit
-          ) ||
-          yes(
-            product?.hit
-          ) ||
-          String(
-            product?.badge ||
-            product?.label ||
-            ""
-          )
-            .toLowerCase()
-            .includes(
-              "хіт"
-            )
+        const badges = [];
+
+
+        if (
+          product?.isNew ===
+          true
+        ) {
+
+          badges.push(
+            "Новинка"
+          );
+
+        }
+
+
+        if (
+          product?.isHit ===
+          true
+        ) {
+
+          badges.push(
+            "Хіт"
+          );
+
+        }
+
+
+        if (
+          product?.saleActive ===
+            true &&
+          badges.length < 2
+        ) {
+
+          badges.push(
+            "Акція"
+          );
+
+        }
+
+
+        return badges.slice(
+          0,
+          2
         );
 
       }
 
 
-      function productIsNew(
+      function primaryCategory(
         product
       ) {
 
-        return (
-          yes(
-            product?.isNew
-          ) ||
-          yes(
-            product?.new
-          ) ||
-          String(
-            product?.badge ||
-            product?.label ||
-            ""
-          )
-            .toLowerCase()
-            .includes(
-              "нов"
-            )
-        );
-
-      }
-
-
-      function productIsSale(
-        product
-      ) {
-
-        const regular =
-          numberValue(
-            product?.regularPrice
-          );
-
-
-        const price =
-          numberValue(
-            product?.price
-          );
-
-
-        return (
-          yes(
-            product?.isSale
-          ) ||
-          yes(
-            product?.sale
-          ) ||
-          (
-            regular > 0 &&
-            price > 0 &&
-            price < regular
-          )
-        );
+        return String(
+          product?.categoryCode ||
+          ""
+        )
+          .split(
+            /[;,|]+/
+          )[0]
+          .trim();
 
       }
 
@@ -3198,13 +3220,6 @@
             .filter(
               productVisible
             );
-
-
-        if (!products.length) {
-
-          return [];
-
-        }
 
 
         const selected = [];
@@ -3230,6 +3245,7 @@
             product.code
           );
 
+
           selected.push(
             product
           );
@@ -3237,31 +3253,12 @@
         }
 
 
-        products
-          .filter(
-            function (product) {
+        /*
+         * Спочатку — саме той порядок,
+         * який ми визначили.
+         */
 
-              return (
-                productIsHit(
-                  product
-                ) ||
-                productIsNew(
-                  product
-                )
-              );
-
-            }
-          )
-          .slice(
-            0,
-            8
-          )
-          .forEach(
-            add
-          );
-
-
-        FALLBACK_FEATURED_CODES
+        HOME_FEATURED_ORDER
           .forEach(
             function (code) {
 
@@ -3282,17 +3279,60 @@
           );
 
 
+        /*
+         * Якщо якоїсь позиції немає,
+         * доповнюємо різними категоріями,
+         * а не шістьма однаковими товарами.
+         */
+
+        const usedCategories =
+          new Set(
+            selected.map(
+              primaryCategory
+            )
+          );
+
+
         products
           .forEach(
             function (product) {
 
               if (
-                selected.length <
-                6
+                selected.length >= 6
               ) {
 
-                add(
+                return;
+
+              }
+
+
+              const category =
+                primaryCategory(
                   product
+                );
+
+
+              if (
+                category &&
+                usedCategories.has(
+                  category
+                )
+              ) {
+
+                return;
+
+              }
+
+
+              add(
+                product
+              );
+
+
+              if (category) {
+
+                usedCategories.add(
+                  category
                 );
 
               }
@@ -3309,62 +3349,6 @@
       }
 
 
-      function productBadges(
-        product
-      ) {
-
-        const badges = [];
-
-
-        if (
-          productIsNew(
-            product
-          )
-        ) {
-
-          badges.push(
-            "Новинка"
-          );
-
-        }
-
-
-        if (
-          productIsHit(
-            product
-          )
-        ) {
-
-          badges.push(
-            "Хіт"
-          );
-
-        }
-
-
-        if (
-          productIsSale(
-            product
-          ) &&
-          badges.length <
-          2
-        ) {
-
-          badges.push(
-            "Акція"
-          );
-
-        }
-
-
-        return badges.slice(
-          0,
-          2
-        );
-
-      }
-
-
       function renderFeatured() {
 
         const products =
@@ -3376,7 +3360,7 @@
           $("homeFeaturedProducts")
             .innerHTML =
               '<div class="home-products-empty">' +
-              "Усі товари можна переглянути в каталозі." +
+              "Перегляньте товари у каталозі." +
               "</div>";
 
           return;
@@ -3390,39 +3374,15 @@
               .map(
                 function (product) {
 
-                  const code =
-                    product.code;
-
-
-                  const title =
-                    product.name ||
-                    product.title ||
-                    code;
-
-
-                  const description =
-                    product.shortDescription ||
-                    product.short ||
-                    product.description ||
-                    "";
-
-
-                  const weight =
-                    product.weight ||
-                    product.package ||
-                    product.complectation ||
-                    "";
-
-
-                  const price =
-                    numberValue(
-                      product.price
+                  const current =
+                    currentProductPrice(
+                      product
                     );
 
 
-                  const regularPrice =
-                    numberValue(
-                      product.regularPrice
+                  const regular =
+                    regularProductPrice(
+                      product
                     );
 
 
@@ -3437,7 +3397,7 @@
 
                     '<a class="home-product-photo" href="product.html?code=' +
                     encodeURIComponent(
-                      code
+                      product.code
                     ) +
                     '">' +
 
@@ -3449,7 +3409,8 @@
                     ) +
                     '" alt="' +
                     escapeHtml(
-                      title
+                      product.name ||
+                      ""
                     ) +
                     '" loading="lazy">' +
 
@@ -3485,20 +3446,23 @@
 
                     '<a class="home-product-title" href="product.html?code=' +
                     encodeURIComponent(
-                      code
+                      product.code
                     ) +
                     '">' +
+
                     escapeHtml(
-                      title
+                      product.name ||
+                      product.code
                     ) +
+
                     "</a>" +
 
                     (
-                      description
+                      product.shortDescription
                         ? (
                             '<p class="home-product-description">' +
                             escapeHtml(
-                              description
+                              product.shortDescription
                             ) +
                             "</p>"
                           )
@@ -3506,11 +3470,11 @@
                     ) +
 
                     (
-                      weight
+                      product.weight
                         ? (
                             '<p class="home-product-weight">' +
                             escapeHtml(
-                              weight
+                              product.weight
                             ) +
                             "</p>"
                           )
@@ -3522,19 +3486,23 @@
                     '<div class="home-product-price">' +
 
                     '<span class="home-product-price-current">' +
-                    formatMoney(
-                      price
+                    (
+                      current > 0
+                        ? formatMoney(
+                            current
+                          )
+                        : "Ціну уточнюємо"
                     ) +
                     "</span>" +
 
                     (
-                      regularPrice >
-                      price &&
-                      price > 0
+                      regular >
+                        current &&
+                      current > 0
                         ? (
                             '<span class="home-product-price-old">' +
                             formatMoney(
-                              regularPrice
+                              regular
                             ) +
                             "</span>"
                           )
@@ -3545,7 +3513,7 @@
 
                     '<a class="home-product-open" href="product.html?code=' +
                     encodeURIComponent(
-                      code
+                      product.code
                     ) +
                     '">' +
                     "Переглянути" +
@@ -3562,63 +3530,10 @@
               )
               .join("");
 
-
-        if (
-          typeof window.gtag ===
-          "function"
-        ) {
-
-          window.gtag(
-            "event",
-            "view_item_list",
-            {
-
-              item_list_id:
-                "home_featured",
-
-              item_list_name:
-                "Хіти та новинки",
-
-              items:
-                products.map(
-                  function (
-                    product,
-                    index
-                  ) {
-
-                    return {
-
-                      item_id:
-                        product.code,
-
-                      item_name:
-                        product.name ||
-                        product.code,
-
-                      price:
-                        numberValue(
-                          product.price
-                        ),
-
-                      index:
-                        index
-
-                    };
-
-                  }
-                )
-
-            }
-          );
-
-        }
-
       }
 
 
-      function reviewPublished(
-        review
-      ) {
+      function reviewPublished(review) {
 
         const id =
           String(
@@ -3654,7 +3569,7 @@
             "відгук"
           ) &&
           type !==
-          "review"
+            "review"
         ) {
 
           return false;
@@ -3664,7 +3579,7 @@
 
         if (
           review.publish !==
-          undefined &&
+            undefined &&
           !yes(
             review.publish
           )
@@ -3677,32 +3592,10 @@
 
         if (
           review.published !==
-          undefined &&
+            undefined &&
           !yes(
             review.published
           )
-        ) {
-
-          return false;
-
-        }
-
-
-        const status =
-          String(
-            review.status ||
-            ""
-          )
-            .toLowerCase();
-
-
-        if (
-          status &&
-          !status.includes(
-            "опублік"
-          ) &&
-          status !==
-          "published"
         ) {
 
           return false;
@@ -3718,32 +3611,6 @@
       }
 
 
-      function reviewDateValue(
-        review
-      ) {
-
-        const raw =
-          review.date ||
-          review.createdAt ||
-          review.timestamp ||
-          "";
-
-
-        const parsed =
-          Date.parse(
-            raw
-          );
-
-
-        return Number.isFinite(
-          parsed
-        )
-          ? parsed
-          : 0;
-
-      }
-
-
       function renderReviews() {
 
         const reviews =
@@ -3751,27 +3618,10 @@
             .filter(
               reviewPublished
             )
-            .sort(
-              function (
-                a,
-                b
-              ) {
-
-                return (
-                  reviewDateValue(
-                    b
-                  ) -
-                  reviewDateValue(
-                    a
-                  )
-                );
-
-              }
-            )
             .slice(
-              0,
-              3
-            );
+              -3
+            )
+            .reverse();
 
 
         if (!reviews.length) {
@@ -3779,8 +3629,7 @@
           $("homeReviewGrid")
             .innerHTML =
               '<div class="home-review-empty">' +
-              "Відгуки вже є на окремій сторінці. " +
-              '<a href="reviews.html"><strong>Переглянути відгуки →</strong></a>' +
+              '<a href="reviews.html"><strong>Переглянути відгуки покупців →</strong></a>' +
               "</div>";
 
           return;
@@ -3806,58 +3655,40 @@
                     );
 
 
-                  const stars =
+                  return (
+                    '<article class="home-review-card">' +
+
+                    '<div class="home-review-stars">' +
                     "★".repeat(
                       rating
                     ) +
                     "☆".repeat(
                       5 - rating
-                    );
-
-
-                  const text =
-                    review.text ||
-                    review.message ||
-                    "";
-
-
-                  const name =
-                    review.name ||
-                    review.author ||
-                    "Покупець";
-
-
-                  const productName =
-                    review.productName ||
-                    review.product ||
-                    "";
-
-
-                  return (
-                    '<article class="home-review-card">' +
-
-                    '<div class="home-review-stars">' +
-                    stars +
+                    ) +
                     "</div>" +
 
                     "<blockquote>" +
                     escapeHtml(
-                      text
+                      review.text ||
+                      review.message ||
+                      ""
                     ) +
                     "</blockquote>" +
 
                     '<div class="home-review-author">' +
                     escapeHtml(
-                      name
+                      review.name ||
+                      review.author ||
+                      "Покупець"
                     ) +
                     "</div>" +
 
                     (
-                      productName
+                      review.productName
                         ? (
                             '<span class="home-review-product">' +
                             escapeHtml(
-                              productName
+                              review.productName
                             ) +
                             "</span>"
                           )
@@ -3877,7 +3708,9 @@
       function renderHome() {
 
         renderCategories();
+
         renderFeatured();
+
         renderReviews();
 
       }
@@ -3929,7 +3762,6 @@
               "?action=store&_=" +
               Date.now(),
               {
-
                 method:
                   "GET",
 
@@ -3938,7 +3770,6 @@
 
                 signal:
                   controller.signal
-
               }
             );
 
@@ -3976,7 +3807,7 @@
         } catch (error) {
 
           console.info(
-            "Головна працює з кешем або резервними даними."
+            "Головна працює з кешем."
           );
 
         }
@@ -3987,10 +3818,6 @@
       document.addEventListener(
         "DOMContentLoaded",
         function () {
-
-          /*
-           * Головна не чекає Google Apps Script.
-           */
 
           useCacheImmediately();
 
