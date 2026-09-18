@@ -1,4 +1,5 @@
 import { appUrl, mediaUrl } from './config.js';
+import { secretFor } from './secret-language.js';
 import { escapeHtml } from './utils.js';
 
 export function formatMoney(value, currency = 'грн') {
@@ -14,8 +15,9 @@ export function productPrice(product) {
   return Number.isFinite(regular) ? regular : 0;
 }
 
-export function productHref(code, pathname = globalThis?.location?.pathname ?? '') {
-  return `${appUrl('product.html', pathname)}?code=${encodeURIComponent(String(code || '').trim())}`;
+export function productHref(code, pathname = globalThis?.location?.pathname ?? '', { secret = false } = {}) {
+  const base = `${appUrl('product.html', pathname)}?code=${encodeURIComponent(String(code || '').trim())}`;
+  return secret ? `${base}&mode=secret` : base;
 }
 
 export function categoryCover(category) {
@@ -38,36 +40,61 @@ export function productBadges(product) {
   return badges.slice(0, 2);
 }
 
+function reviewProductCode(review = {}) {
+  return String(review.productCode || review.product_code || review.code || review.productId || review.product_id || '').trim().toUpperCase();
+}
+
+export function reviewSummaryForProduct(reviews = [], code = '') {
+  const target = String(code || '').trim().toUpperCase();
+  if (!target) return null;
+  const matched = (Array.isArray(reviews) ? reviews : []).filter((review) => {
+    const rating = Number(review?.rating);
+    return reviewProductCode(review) === target && Number.isFinite(rating) && rating > 0;
+  });
+  if (!matched.length) return null;
+  const average = matched.reduce((sum, review) => sum + Number(review.rating), 0) / matched.length;
+  return { average, count: matched.length };
+}
+
 export function buildProductCard(product, {
   currency = 'грн',
   pathname = globalThis?.location?.pathname ?? '',
+  reviews = [],
+  secret = false,
 } = {}) {
   const price = productPrice(product);
   const regular = Number(product?.regularPrice) || 0;
   const photo = mediaUrl(product?.photos?.[0]);
-  const href = productHref(product?.code, pathname);
+  const secretEntry = secret ? secretFor(product?.code) : null;
+  const href = productHref(product?.code, pathname, { secret: Boolean(secretEntry) });
   const badges = productBadges(product);
   const needsChoice = (product?.variants?.length || 0) > 0 || Number(product?.sauceCount || 0) > 0;
   const unavailable = product?.available === false;
+  const summary = reviewSummaryForProduct(reviews, product?.code);
+  const displayTitle = secretEntry?.title || product.name;
+  const physicalTitle = secretEntry ? product.name : '';
 
   return `
-    <article class="product-card" data-product-code="${escapeHtml(product.code)}">
-      <a class="product-card__image" href="${href}" aria-label="${escapeHtml(product.name)}">
+    <article class="product-card${secretEntry ? ' product-card--secret' : ''}" data-product-code="${escapeHtml(product.code)}">
+      <a class="product-card__image" href="${href}" aria-label="${escapeHtml(displayTitle)}">
         <img src="${escapeHtml(photo)}" alt="${escapeHtml(product.name)}" loading="lazy">
         ${badges.length ? `<span class="product-card__badges">${badges.map((badge) => `<span>${escapeHtml(badge)}</span>`).join('')}</span>` : ''}
+        ${secretEntry ? `<span class="secret-card__type">${escapeHtml(secretEntry.type)}</span>` : ''}
       </a>
       <div class="product-card__body">
-        <a class="product-card__title" href="${href}">${escapeHtml(product.name)}</a>
+        <a class="product-card__title" href="${href}">${escapeHtml(displayTitle)}</a>
+        ${physicalTitle ? `<p class="product-card__physical">${escapeHtml(physicalTitle)}</p>` : ''}
         ${product.weight ? `<p class="product-card__meta">${escapeHtml(product.weight)}</p>` : ''}
+        ${summary ? `<a class="product-card__reviews" href="${href}#productReviews">★ ${summary.average.toFixed(1).replace('.', ',')} · ${summary.count} ${summary.count === 1 ? 'відгук' : 'відгуків'}</a>` : ''}
         <div class="product-card__price">
           <strong>${formatMoney(price, currency)}</strong>
           ${product?.saleActive && regular > price ? `<del>${formatMoney(regular, currency)}</del>` : ''}
         </div>
         ${unavailable
-          ? '<span class="product-card__disabled">Тимчасово недоступно</span>'
+          ? `<a class="button button-secondary button-block" href="${appUrl('contacts.html', pathname)}">Повідомити про наявність</a>`
           : needsChoice
-            ? `<a class="button button-secondary button-block" href="${href}">Обрати</a>`
-            : `<button class="button button-primary button-block" type="button" data-quick-add="${escapeHtml(product.code)}">У кошик</button>`}
+            ? `<a class="button button-secondary button-block" href="${href}">Обрати смак</a>`
+            : `<button class="button button-primary button-block" type="button" data-quick-add="${escapeHtml(product.code)}"${secretEntry ? ` data-secret-title="${escapeHtml(secretEntry.title)}"` : ''}>До кошика</button>`}
       </div>
     </article>`;
 }

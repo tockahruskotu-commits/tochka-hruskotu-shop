@@ -23,11 +23,27 @@ export function normalizeSauceSelection(values, allowedCount) {
   return unique;
 }
 
+const codes = (product) => product?.categoryCodes?.length
+  ? product.categoryCodes
+  : String(product?.categoryCode || '').split(';').map((value) => value.trim().toUpperCase()).filter(Boolean);
+
+const complements = {
+  'CRUNCH-FRIES': ['SAUCES','COFFEE-FORTUNES','MINI-DONUTS'],
+  'CRUNCH-BURGERS': ['SAUCES','COFFEE-FORTUNES','MINI-DONUTS'],
+  'CRUNCH-NUGGETS': ['SAUCES','COFFEE-FORTUNES','MINI-DONUTS'],
+  'MINI-DONUTS': ['COFFEE-FORTUNES','SAUCES','MINI-WAFFLES'],
+  'MINI-WAFFLES': ['COFFEE-FORTUNES','SAUCES','MINI-DONUTS'],
+  'EDIBLE-PUZZLES': ['MINI-DONUTS','COFFEE-FORTUNES'],
+  'AIRY-COOKIES': ['COFFEE-FORTUNES','SAUCES'],
+  'COFFEE-FORTUNES': ['MINI-DONUTS','MINI-WAFFLES','AIRY-COOKIES'],
+};
+
 export function relatedProducts(product, allProducts, limit = 4) {
-  const all = (Array.isArray(allProducts) ? allProducts : []).filter((item) => item?.available !== false && item?.code && item.code !== product?.code);
-  const explicit = (product?.relatedProductCodes || [])
-    .map((code) => all.find((item) => String(item.code).toUpperCase() === String(code).toUpperCase()))
-    .filter(Boolean);
-  const category = all.filter((item) => item.categoryCode && item.categoryCode === product?.categoryCode && !explicit.some((chosen) => chosen.code === item.code));
-  return [...explicit, ...category].slice(0, limit);
+  const all = (Array.isArray(allProducts) ? allProducts : []).filter((item) => item?.available !== false && item?.code && item.code !== product?.code && !codes(item).includes('CERTIFICATES'));
+  const explicit = (product?.relatedProductCodes || []).map((code) => all.find((item) => String(item.code).toUpperCase() === String(code).toUpperCase())).filter(Boolean);
+  const productCodes = codes(product);
+  const complementTargets = [...new Set(productCodes.flatMap((code) => complements[code] || []))];
+  const complementary = all.filter((item) => codes(item).some((code) => complementTargets.includes(code)) && !explicit.some((chosen) => chosen.code === item.code));
+  const sameCategory = all.filter((item) => codes(item).some((code) => productCodes.includes(code)) && !explicit.some((chosen) => chosen.code === item.code) && !complementary.some((chosen) => chosen.code === item.code));
+  return [...explicit, ...complementary, ...sameCategory].slice(0, limit);
 }

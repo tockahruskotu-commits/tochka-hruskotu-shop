@@ -103,7 +103,7 @@ p { color: var(--text-soft); line-height: 1.65; }
 .v3-mobile-menu a { padding: 12px; border-radius: var(--radius-sm); text-decoration: none; }
 .v3-mobile-menu a.is-active { background: var(--surface-soft); font-weight: 800; }
 .v3-footer { margin-top: 64px; border-top: 1px solid var(--border); background: var(--surface); }
-.v3-footer__grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 34px; padding: 44px 0 32px; }
+.v3-footer__grid { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 34px; padding: 44px 0 32px; }
 .v3-footer h2 { margin: 0 0 12px; font-size: 1rem; }
 .v3-footer p { max-width: 38ch; }
 .v3-footer__grid > div:not(:first-child) { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }

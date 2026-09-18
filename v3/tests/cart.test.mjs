@@ -44,3 +44,11 @@ test('quantity update removes zero quantity and explicit remove removes matching
   assert.equal(afterZero[0].code, 'B');
   assert.deepEqual(removeCartItem(afterZero, afterZero[0].key), []);
 });
+
+test('normal and secret versions of the same physical SKU stay as separate cart lines', () => {
+  let cart = [];
+  cart = addCartItem(cart, { code: 'A', qty: 1, price: 100 });
+  cart = addCartItem(cart, { code: 'A', qty: 1, price: 100, messageMode: 'secret', secretTitle: 'Сумую' });
+  assert.equal(cart.length, 2);
+  assert.equal(cart[1].secretTitle, 'Сумую');
+});

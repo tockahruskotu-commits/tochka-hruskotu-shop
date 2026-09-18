@@ -4,7 +4,7 @@ import { filterProducts, sortProducts } from '../js/catalog-core.js';
 
 const products = [
   { code: 'A', name: 'Ванільна фрі', categoryCode: 'FRIES', effectivePrice: 120, available: true, searchWords: 'ваніль хрумке' },
-  { code: 'B', name: 'Шоколадна кицюня', categoryCode: 'PUZZLE', effectivePrice: 150, available: true, keywords: 'кіт шоколад' },
+  { code: 'B', name: 'Шоколадна кицюня', categoryCode: 'PUZZLE;GIFT-SETS', categoryCodes: ['PUZZLE','GIFT-SETS'], effectivePrice: 150, available: true, keywords: 'кіт шоколад' },
   { code: 'C', name: 'Недоступне', categoryCode: 'FRIES', effectivePrice: 90, available: false },
 ];
 
@@ -22,4 +22,8 @@ test('sortProducts sorts by price without mutating input', () => {
   const sorted = sortProducts(source, 'price-desc');
   assert.deepEqual(sorted.map((p) => p.code), ['B', 'A']);
   assert.deepEqual(source.map((p) => p.code), ['A', 'B']);
+});
+
+test('filterProducts supports multi-category products and customer-facing groups', () => {
+  assert.deepEqual(filterProducts(products, { category: 'GIFT-SETS' }).map((p) => p.code), ['B']);
 });

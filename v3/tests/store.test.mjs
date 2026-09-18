@@ -26,7 +26,7 @@ const rawStore = {
   categories: [{ code: ' edible-puzzles ', name: 'Пазли', active: 'Ні', order: '120', extra: 7 }],
   products: [{
     code: ' puzzle-kitties ',
-    categoryCode: ' edible-puzzles ',
+    categoryCode: ' edible-puzzles;gift-sets ',
     name: 'Кицюні',
     regularPrice: '129',
     effectivePrice: '119.50',
@@ -43,7 +43,8 @@ test('normalizeStore preserves unknown data and normalizes known IDs, arrays, nu
   assert.equal(store.customTopLevel, 'keep-me');
   assert.equal(store.products[0].unknownProductField, 'keep');
   assert.equal(store.products[0].code, 'PUZZLE-KITTIES');
-  assert.equal(store.products[0].categoryCode, 'EDIBLE-PUZZLES');
+  assert.equal(store.products[0].categoryCode, 'EDIBLE-PUZZLES;GIFT-SETS');
+  assert.deepEqual(store.products[0].categoryCodes, ['EDIBLE-PUZZLES','GIFT-SETS']);
   assert.equal(store.products[0].regularPrice, 129);
   assert.equal(store.products[0].effectivePrice, 119.5);
   assert.equal(store.products[0].available, true);
@@ -91,5 +92,6 @@ test('loadStore falls back to cached data when server fails', async () => {
   });
   assert.equal(result.source, 'cache');
   assert.equal(result.data.products[0].name, 'Кицюні');
-  assert.match(result.warning.message, /offline/);
+  assert.equal(result.warning, null);
+  assert.equal(result.revalidating, true);
 });

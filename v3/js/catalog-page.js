@@ -1,6 +1,6 @@
 import { initAnalytics, track } from './analytics.js';
 import { addProductToCart, initCartDrawer } from './cart-drawer.js';
-import { filterProducts, sortProducts } from './catalog-core.js';
+import { CATALOG_GROUPS, filterProducts, sortProducts } from './catalog-core.js';
 import { buildProductCard } from './products-ui.js';
 import { findProduct, loadStore } from './store.js';
 import { mountSiteShell } from './ui.js';
@@ -11,15 +11,17 @@ let category = new URLSearchParams(location.search).get('category')?.toUpperCase
 let query = new URLSearchParams(location.search).get('q') || '';
 let sortMode = 'default';
 
-function activeCategories() {
-  return (store?.categories || []).filter((item) => item.code && item.active !== false);
+function validCategory(code) {
+  if (code === 'ALL') return true;
+  return CATALOG_GROUPS.some((group) => group.code === code)
+    || (store?.categories || []).some((item) => item.code === code);
 }
 
 function renderFilters() {
   const node = document.querySelector('[data-category-filters]');
   if (!node) return;
-  const all = [{ code: 'ALL', name: 'Усе' }, ...activeCategories().filter((item) => item.code !== 'ALL')];
-  node.innerHTML = all.map((item) => `<button type="button" class="filter-chip${item.code === category ? ' is-active' : ''}" data-category="${escapeHtml(item.code)}">${escapeHtml(item.name || item.code)}</button>`).join('');
+  const all = [{ code: 'ALL', name: 'Усе' }, ...CATALOG_GROUPS];
+  node.innerHTML = all.map((item) => `<button type="button" class="filter-chip${item.code === category ? ' is-active' : ''}" data-category="${escapeHtml(item.code)}">${escapeHtml(item.name)}</button>`).join('');
 }
 
 function renderProducts() {
@@ -29,9 +31,14 @@ function renderProducts() {
   const filtered = sortProducts(filterProducts(store?.products || [], { category, query }), sortMode);
   const currency = store?.settings?.currency || 'грн';
   grid.innerHTML = filtered.length
-    ? filtered.map((product) => buildProductCard(product, { currency })).join('')
-    : '<div class="empty-state">За цим запитом нічого не знайшли. Спробуйте іншу категорію або слово.</div>';
+    ? filtered.map((product) => buildProductCard(product, { currency, reviews: store?.reviews || [] })).join('')
+    : '<div class="empty-state">Схоже, цей смак десь заховався… Спробуйте іншу категорію або слово.</div>';
   if (result) result.textContent = `Знайдено: ${filtered.length}`;
+}
+
+function updateSearchUi() {
+  const clear = document.querySelector('[data-search-clear]');
+  if (clear) clear.hidden = !query;
 }
 
 function updateUrl() {
@@ -46,9 +53,11 @@ function bindControls() {
   const sort = document.querySelector('[data-catalog-sort]');
   if (search) {
     search.value = query;
+    updateSearchUi();
     let timer = null;
     search.addEventListener('input', () => {
       query = search.value.trim();
+      updateSearchUi();
       clearTimeout(timer);
       timer = setTimeout(() => {
         updateUrl(); renderProducts();
@@ -56,6 +65,11 @@ function bindControls() {
       }, 180);
     });
   }
+  document.querySelector('[data-search-clear]')?.addEventListener('click', () => {
+    query = '';
+    if (search) { search.value = ''; search.focus(); }
+    updateSearchUi(); updateUrl(); renderProducts();
+  });
   sort?.addEventListener('change', () => { sortMode = sort.value; renderProducts(); });
   document.addEventListener('click', (event) => {
     const chip = event.target.closest('[data-category]');
@@ -82,11 +96,11 @@ async function boot() {
   try {
     const result = await loadStore();
     store = result.data;
-    if (!activeCategories().some((item) => item.code === category)) category = 'ALL';
+    if (!validCategory(category)) category = 'ALL';
     renderFilters();
     renderProducts();
     track('view_item_list', { item_list_id: category });
-    if (status && result.source === 'cache') { status.hidden = false; status.textContent = 'Показуємо останні збережені дані — оновлення тимчасово недоступне.'; }
+    if (status && result.warning) { status.hidden = false; status.textContent = 'Показуємо останні збережені дані — оновлення тимчасово недоступне.'; }
   } catch (error) {
     console.error(error);
     if (status) { status.hidden = false; status.textContent = 'Не вдалося завантажити каталог. Спробуйте оновити сторінку.'; }

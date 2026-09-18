@@ -14,12 +14,12 @@ const normalizeSauces = (value) => Array.isArray(value)
   ? value.map(text).filter(Boolean)
   : [];
 
-function lineKey({ code, variantValue, sauces }) {
+function lineKey({ code, variantValue, sauces, messageMode, secretTitle }) {
   const sauceKey = [...normalizeSauces(sauces)]
     .map((item) => item.toLocaleLowerCase('uk-UA'))
     .sort((a, b) => a.localeCompare(b, 'uk-UA'))
     .join('|');
-  return [upper(code), text(variantValue), sauceKey].join('::');
+  return [upper(code), text(variantValue), sauceKey, text(messageMode), text(secretTitle)].join('::');
 }
 
 export function cartStorageKey(pathname = globalThis?.location?.pathname ?? '') {
@@ -37,6 +37,10 @@ export function normalizeCartItem(raw = {}) {
     qty,
     price: Math.max(0, number(raw.price, 0)),
     photo: text(raw.photo),
+    messageMode: text(raw.messageMode),
+    secretTitle: text(raw.secretTitle),
+    secretSection: text(raw.secretSection),
+    scenarioId: text(raw.scenarioId),
   };
   item.key = lineKey(item);
   return item;

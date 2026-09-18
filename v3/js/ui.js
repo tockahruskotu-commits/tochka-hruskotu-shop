@@ -3,7 +3,7 @@ import { CONFIG, appUrl, rootUrl } from './config.js';
 const navItems = [
   ['catalog', 'Каталог', 'catalog.html'],
   ['gifts', 'Подарунки', 'gifts.html'],
-  ['reviews', 'Відгуки', 'reviews.html'],
+  ['about', 'Про нас', 'about.html'],
   ['delivery', 'Доставка й оплата', 'delivery.html'],
   ['contacts', 'Контакти', 'contacts.html'],
 ];
@@ -34,6 +34,7 @@ export function buildHeaderMarkup(active = '', pathname = globalThis?.location?.
       <div class="v3-mobile-menu" id="v3MobileMenu" data-mobile-menu hidden>
         <nav class="site-shell" aria-label="Мобільна навігація">
           ${navItems.map((item) => navLink(item, active, pathname)).join('')}
+          <a href="${appUrl('secret.html', pathname)}">Хочу сказати більше</a>
         </nav>
       </div>
     </header>`;
@@ -54,8 +55,17 @@ export function buildFooterMarkup(pathname = globalThis?.location?.pathname ?? '
         <div>
           <h2>Покупцям</h2>
           <a href="${appUrl('catalog.html', pathname)}">Каталог</a>
+          <a href="${appUrl('gifts.html', pathname)}">Подарунки</a>
+          <a href="${appUrl('certificates.html', pathname)}">Сертифікати</a>
+          <a href="${appUrl('reviews.html', pathname)}">Відгуки</a>
+          <a href="${appUrl('faq.html', pathname)}">FAQ</a>
+        </div>
+        <div>
+          <h2>Про магазин</h2>
+          <a href="${appUrl('about.html', pathname)}">Про нас</a>
           <a href="${appUrl('delivery.html', pathname)}">Доставка й оплата</a>
           <a href="${appUrl('contacts.html', pathname)}">Контакти</a>
+          <a href="${appUrl('secret.html', pathname)}">Хочу сказати більше</a>
         </div>
         <div>
           <h2>Документи</h2>

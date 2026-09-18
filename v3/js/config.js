@@ -22,6 +22,7 @@ export const CONFIG = Object.freeze({
     name: 'Точка Хрускоту',
     phone: '+380638330860',
     email: 'tockahruskotu@gmail.com',
+    freeDeliveryFrom: 2000,
     pickup: Object.freeze({
       locality: 'Млинів',
       region: 'Рівненська область',

@@ -1,4 +1,4 @@
-import { appUrl, mediaUrl } from './config.js';
+import { CONFIG, appUrl, mediaUrl } from './config.js';
 import {
   addCartItem,
   cartCount,
@@ -25,6 +25,7 @@ function cartMarkup() {
       </div>
       <div class="cart-drawer__items" data-cart-items></div>
       <div class="cart-drawer__foot">
+        <p class="cart-free-note" data-cart-free-note></p>
         <div class="cart-total"><span>Разом</span><strong data-cart-total>0 грн</strong></div>
         <a class="button button-primary button-block" data-cart-checkout href="${appUrl('checkout.html')}">Оформити замовлення</a>
         <button class="button button-secondary button-block" type="button" data-cart-close>Продовжити покупки</button>
@@ -51,7 +52,8 @@ function render() {
       <article class="cart-line" data-cart-line="${escapeHtml(item.key)}">
         <img src="${escapeHtml(mediaUrl(item.photo))}" alt="" width="76" height="76">
         <div class="cart-line__body">
-          <strong>${escapeHtml(item.name || item.code)}</strong>
+          <strong>${escapeHtml(item.secretTitle || item.name || item.code)}</strong>
+          ${item.secretTitle ? `<small>${escapeHtml(item.name || item.code)}</small>` : ''}
           ${item.variantValue ? `<small>${escapeHtml(item.variantValue)}</small>` : ''}
           ${item.sauces?.length ? `<small>Соус: ${escapeHtml(item.sauces.join(', '))}</small>` : ''}
           <span>${formatMoney(item.price)}</span>
@@ -64,7 +66,16 @@ function render() {
         </div>
       </article>`).join('');
   }
-  total.textContent = formatMoney(cartSubtotal(cart));
+  const subtotal = cartSubtotal(cart);
+  total.textContent = formatMoney(subtotal);
+  const freeNote = document.querySelector('[data-cart-free-note]');
+  const threshold = Number(CONFIG.business.freeDeliveryFrom || 0);
+  if (freeNote && threshold > 0) {
+    freeNote.textContent = subtotal >= threshold
+      ? 'Безкоштовна доставка активована для відділення, поштомату або погодженої передачі. Кур’єр — окремо.'
+      : `До безкоштовної доставки залишилося ${formatMoney(Math.max(0, threshold - subtotal))}.`;
+    freeNote.classList.toggle('is-ready', subtotal >= threshold);
+  }
   if (checkout) checkout.setAttribute('aria-disabled', cart.length ? 'false' : 'true');
   updateHeaderCount();
 }
@@ -97,9 +108,13 @@ export function addProductToCart(product, selection = {}) {
     sauces: selection.sauces || [],
     price: selection.price ?? product.effectivePrice ?? product.regularPrice,
     photo: product.photos?.[0] || '',
+    messageMode: selection.messageMode || '',
+    secretTitle: selection.secretTitle || '',
+    secretSection: selection.secretSection || '',
+    scenarioId: selection.scenarioId || '',
   });
   persist();
-  showToast(`${product.name} додано в кошик`);
+  showToast(`${selection.secretTitle || product.name} додано в кошик`);
   openCart();
 }
 

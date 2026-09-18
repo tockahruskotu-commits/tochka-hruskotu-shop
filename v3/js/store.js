@@ -22,6 +22,11 @@ function asBoolean(value, fallback = false) {
 
 const asArray = (value) => Array.isArray(value) ? value : [];
 
+function asCodeArray(value) {
+  const source = Array.isArray(value) ? value : String(value ?? '').split(';');
+  return [...new Set(source.map(asUpperCode).filter(Boolean))];
+}
+
 function normalizeVariant(raw = {}) {
   return {
     ...raw,
@@ -40,6 +45,7 @@ export function normalizeProduct(raw = {}) {
     ...raw,
     code: asUpperCode(raw.code),
     categoryCode: asUpperCode(raw.categoryCode),
+    categoryCodes: asCodeArray(raw.categoryCodes?.length ? raw.categoryCodes : raw.categoryCode),
     name: asText(raw.name),
     shortDescription: asText(raw.shortDescription),
     fullDescription: asText(raw.fullDescription),
@@ -153,13 +159,27 @@ export async function loadStore({
   fetchStoreImpl = fetchStore,
   storage = globalThis.localStorage,
   now = Date.now,
+  preferCache = true,
 } = {}) {
+  const cached = readStoreCache({ storage });
+  if (preferCache && cached) {
+    Promise.resolve()
+      .then(() => fetchStoreImpl())
+      .then((payload) => {
+        const fresh = normalizeStore(payload);
+        writeStoreCache(fresh, { storage, now });
+        try {
+          globalThis.dispatchEvent?.(new CustomEvent('v3:store-updated', { detail: { data: fresh } }));
+        } catch {}
+      })
+      .catch(() => {});
+    return { data: cached.data, source: 'cache', warning: null, savedAt: cached.savedAt, revalidating: true };
+  }
   try {
     const fresh = normalizeStore(await fetchStoreImpl());
     writeStoreCache(fresh, { storage, now });
     return { data: fresh, source: 'server', warning: null };
   } catch (error) {
-    const cached = readStoreCache({ storage });
     if (!cached) throw error;
     return { data: cached.data, source: 'cache', warning: error, savedAt: cached.savedAt };
   }
