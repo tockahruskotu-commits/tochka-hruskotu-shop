@@ -37,17 +37,26 @@ function renderCategories() {
 
 function diverseFeatured(products, limit = 8) {
   const chosen = [];
-  const seen = new Set();
-  const priority = [...products].sort((a, b) => Number(Boolean(b.isNew || b.badge)) - Number(Boolean(a.isNew || a.badge)) || Number(a.order || 0) - Number(b.order || 0));
-  for (const product of priority) {
-    const key = product.categoryCodes?.[0] || product.categoryCode || product.code;
-    if (!seen.has(key)) { chosen.push(product); seen.add(key); }
-    if (chosen.length >= limit) break;
-  }
-  for (const product of priority) {
-    if (!chosen.some((item) => item.code === product.code)) chosen.push(product);
-    if (chosen.length >= limit) break;
-  }
+  const categoryCount = new Map();
+  let certificateCount = 0;
+  const signal = (p) => Number(Boolean(p.isNew)) * 4 + Number(Boolean(p.badge)) * 2 + Number(Boolean(p.saleActive)) + Number(Boolean(p.isGift));
+  const priority = [...products].sort((a, b) => signal(b) - signal(a) || Number(a.order || 0) - Number(b.order || 0));
+  const canTake = (product, relaxed = false) => {
+    const codes = product.categoryCodes || [product.categoryCode].filter(Boolean);
+    const isCertificate = codes.includes('CERTIFICATES');
+    if (isCertificate && certificateCount >= 1) return false;
+    if (!relaxed && codes.some((code) => (categoryCount.get(code) || 0) >= 1)) return false;
+    if (relaxed && codes.some((code) => (categoryCount.get(code) || 0) >= 2)) return false;
+    return true;
+  };
+  const take = (product) => {
+    chosen.push(product);
+    const codes = product.categoryCodes || [product.categoryCode].filter(Boolean);
+    codes.forEach((code) => categoryCount.set(code, (categoryCount.get(code) || 0) + 1));
+    if (codes.includes('CERTIFICATES')) certificateCount += 1;
+  };
+  for (const product of priority) { if (canTake(product, false)) take(product); if (chosen.length >= limit) return chosen; }
+  for (const product of priority) { if (!chosen.some((x) => x.code === product.code) && canTake(product, true)) take(product); if (chosen.length >= limit) break; }
   return chosen;
 }
 
