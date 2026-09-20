@@ -14,11 +14,11 @@ test('reconcileCart refreshes current prices and preserves secret metadata', () 
 });
 
 test('splitFullName keeps surname separate and the rest in name field', () => {
-  assert.deepEqual(splitFullName('Твардовська Тетяна Миколаївна'), { surname: 'Твардовська', name: 'Тетяна Миколаївна' });
+  assert.deepEqual(splitFullName('Коваленко Олена Василівна'), { surname: 'Коваленко', name: 'Олена Василівна' });
 });
 
 test('validateCheckout requires full name, phone, recipient when needed, delivery/payment and terms', () => {
-  const form = { fullName: 'Твардовська Тетяна Миколаївна', phone: '+380631234567', email: '', recipientMode: 'self', deliveryCode: 'NOVA', paymentCode: 'IBAN', region: 'Рівненська', city: 'Млинів', branch: '1', termsAccepted: true, signatureMode: 'named' };
+  const form = { fullName: 'Коваленко Олена Василівна', phone: '+380631234567', email: '', recipientMode: 'self', deliveryCode: 'NOVA', paymentCode: 'IBAN', region: 'Рівненська', city: 'Млинів', branch: '1', termsAccepted: true, signatureMode: 'named' };
   const method = { code: 'NOVA', requireRegion: true, requireCity: true, requireBranch: true, branchLabel: 'Відділення' };
   assert.equal(validateCheckout({ form, cart: [{ code: 'A' }], deliveryMethod: method }), '');
   assert.match(validateCheckout({ form: { ...form, phone: '123' }, cart: [{ code: 'A' }], deliveryMethod: method }), /номер телефону/i);
@@ -27,6 +27,6 @@ test('validateCheckout requires full name, phone, recipient when needed, deliver
 });
 
 test('createOrderPayload keeps Apps Script fields and adds recipient/secret metadata', () => {
-  const payload = createOrderPayload({ requestId: 'R1', source: 'V3', form: { fullName: 'Твардовська Тетяна Миколаївна', phone: '+380631234567', email: 'x@example.com', recipientMode: 'other', recipientName: 'Іваненко Марія', recipientPhone: '+380671234567', region: 'Рівненська', city: 'Млинів', deliveryCode: 'PICKUP', branch: '', paymentCode: 'CASH_PICKUP', desiredDate: '', isGift: false, hasCertificate: false, certificateCode: '', signatureMode: 'anonymous', hint: '', comment: '', termsAccepted: true }, cart: [{ code: 'A', qty: 2, variantValue: '', sauces: ['X'], messageMode: 'secret', secretTitle: 'Сумую', secretSection: 'Сумую / думаю про тебе' }], attribution: { first: { source: 'instagram', medium: 'social' }, current: { source: 'google', medium: 'organic', campaign: 'x', content: '', term: '', landingPage: '/catalog', referrer: 'https://google.com', sessionId: 's1' } }, device: 'mobile' });
-  assert.equal(payload.requestId, 'R1'); assert.equal(payload.customer.name, 'Тетяна Миколаївна'); assert.equal(payload.customer.surname, 'Твардовська'); assert.equal(payload.recipient.name, 'Іваненко Марія'); assert.equal(payload.items[0].quantity, 2); assert.equal(payload.items[0].secretMeaning, 'Сумую'); assert.equal(payload.secretMessage.enabled, true); assert.equal(payload.utm_source, 'google'); assert.equal(payload.first_touch_source, 'instagram'); assert.equal(payload.device, 'mobile');
+  const payload = createOrderPayload({ requestId: 'R1', source: 'V3', form: { fullName: 'Коваленко Олена Василівна', phone: '+380631234567', email: 'x@example.com', recipientMode: 'other', recipientName: 'Іваненко Марія', recipientPhone: '+380671234567', region: 'Рівненська', city: 'Млинів', deliveryCode: 'PICKUP', branch: '', paymentCode: 'CASH_PICKUP', desiredDate: '', isGift: false, hasCertificate: false, certificateCode: '', signatureMode: 'anonymous', hint: '', comment: '', termsAccepted: true }, cart: [{ code: 'A', qty: 2, variantValue: '', sauces: ['X'], messageMode: 'secret', secretTitle: 'Сумую', secretSection: 'Сумую / думаю про тебе' }], attribution: { first: { source: 'instagram', medium: 'social' }, current: { source: 'google', medium: 'organic', campaign: 'x', content: '', term: '', landingPage: '/catalog', referrer: 'https://google.com', sessionId: 's1' } }, device: 'mobile' });
+  assert.equal(payload.requestId, 'R1'); assert.equal(payload.customer.name, 'Олена Василівна'); assert.equal(payload.customer.surname, 'Коваленко'); assert.equal(payload.recipient.name, 'Іваненко Марія'); assert.equal(payload.items[0].quantity, 2); assert.equal(payload.items[0].secretMeaning, 'Сумую'); assert.equal(payload.secretMessage.enabled, true); assert.equal(payload.utm_source, 'google'); assert.equal(payload.first_touch_source, 'instagram'); assert.equal(payload.device, 'mobile');
 });

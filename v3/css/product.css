@@ -49,3 +49,8 @@
 .product-accordions details:last-child { border-bottom: 1px solid var(--border); }
 .product-accordions summary { padding: 16px 0; cursor: pointer; font-weight: 850; }
 .product-accordions details > p, .product-accordions details > div, .product-accordions details > a { margin-top: 0; margin-bottom: 16px; }
+
+.secret-product-note--link { color: inherit; text-decoration: none; cursor: pointer; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+.secret-product-note--link:hover { transform: translateY(-1px); border-color: #dc9f8f; box-shadow: 0 10px 28px rgba(95, 54, 39, .08); }
+.secret-product-note__cta { margin-top: 6px; color: var(--accent-dark); font-size: .9rem; font-weight: 900; }
+.secret-product-note--link:focus-visible { outline: 3px solid rgba(221, 105, 53, .28); outline-offset: 3px; }

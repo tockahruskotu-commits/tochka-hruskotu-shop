@@ -1,4 +1,7 @@
 import { CONFIG, appUrl, mediaUrl } from './config.js';
+import { relatedProducts } from './product-core.js';
+import { secretFor } from './secret-language.js';
+import { findProduct, loadStore } from './store.js';
 import {
   addCartItem,
   cartCount,
@@ -14,6 +17,7 @@ import { escapeHtml } from './utils.js';
 
 let cart = [];
 let mounted = false;
+let store = null;
 
 function cartMarkup() {
   return `
@@ -24,6 +28,7 @@ function cartMarkup() {
         <button class="icon-button is-visible" type="button" data-cart-close aria-label="Закрити кошик">×</button>
       </div>
       <div class="cart-drawer__items" data-cart-items></div>
+      <div class="cart-drawer__suggestions" data-cart-suggestions hidden></div>
       <div class="cart-drawer__foot">
         <p class="cart-free-note" data-cart-free-note></p>
         <div class="cart-total"><span>Разом</span><strong data-cart-total>0 грн</strong></div>
@@ -31,6 +36,37 @@ function cartMarkup() {
         <button class="button button-secondary button-block" type="button" data-cart-close>Продовжити покупки</button>
       </div>
     </aside>`;
+}
+
+
+function recommendationItems(limit = 2) {
+  if (!store || !cart.length) return [];
+  const inCart = new Set(cart.map((item) => String(item.code || '').toUpperCase()));
+  const picked = [];
+  for (const line of cart) {
+    const base = findProduct(store, line.code);
+    if (!base) continue;
+    for (const candidate of relatedProducts(base, store.products || [], 6)) {
+      const code = String(candidate.code || '').toUpperCase();
+      if (!code || inCart.has(code) || picked.some((item) => item.code === candidate.code)) continue;
+      picked.push(candidate);
+      if (picked.length >= limit) return picked;
+    }
+  }
+  return picked;
+}
+
+function renderSuggestions() {
+  const node = document.querySelector('[data-cart-suggestions]');
+  if (!node) return;
+  const items = recommendationItems(2);
+  node.hidden = !items.length;
+  if (!items.length) { node.innerHTML = ''; return; }
+  const secretMode = cart.some((item) => item.messageMode === 'secret');
+  node.innerHTML = `<strong class="cart-suggest-title">Додайте до кошика в компанію</strong><div class="cart-suggest-list">${items.map((product) => {
+    const secret = secretMode ? secretFor(product.code) : null;
+    return `<article class="cart-suggest-card"><img src="${escapeHtml(mediaUrl(product.photos?.[0] || ''))}" alt="" width="54" height="54"><span><b>${escapeHtml(secret?.title || product.name || product.code)}</b>${secret ? `<small>${escapeHtml(product.name || '')}</small>` : ''}<em>${formatMoney(product.effectivePrice ?? product.regularPrice ?? 0)}</em></span><button type="button" data-cart-recommend="${escapeHtml(product.code)}">Додати</button></article>`;
+  }).join('')}</div>`;
 }
 
 function updateHeaderCount() {
@@ -77,6 +113,7 @@ function render() {
     freeNote.classList.toggle('is-ready', subtotal >= threshold);
   }
   if (checkout) checkout.setAttribute('aria-disabled', cart.length ? 'false' : 'true');
+  renderSuggestions();
   updateHeaderCount();
 }
 
@@ -135,6 +172,16 @@ export function initCartDrawer() {
     if (!target) return;
     if (target.matches('[data-cart-open]')) { event.preventDefault(); openCart(); return; }
     if (target.matches('[data-cart-close], [data-cart-overlay]')) { event.preventDefault(); closeCart(); return; }
+    const recommend = target.getAttribute('data-cart-recommend');
+    if (recommend && store) {
+      const product = findProduct(store, recommend);
+      if (product) {
+        const secretMode = cart.some((item) => item.messageMode === 'secret');
+        const entry = secretMode ? secretFor(product.code) : null;
+        addProductToCart(product, { messageMode: entry ? 'secret' : '', secretTitle: entry?.title || '', secretSection: entry?.section || '' });
+      }
+      return;
+    }
     const dec = target.getAttribute('data-cart-dec');
     const inc = target.getAttribute('data-cart-inc');
     const remove = target.getAttribute('data-cart-remove');
@@ -149,4 +196,5 @@ export function initCartDrawer() {
     }
   });
   render();
+  loadStore().then((result) => { store = result.data; render(); }).catch(() => {});
 }

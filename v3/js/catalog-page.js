@@ -1,6 +1,7 @@
 import { initAnalytics, track } from './analytics.js';
 import { addProductToCart, initCartDrawer } from './cart-drawer.js';
 import { CATALOG_GROUPS, filterProducts, sortProducts } from './catalog-core.js';
+import { CATEGORY_ICONS } from './category-art.js';
 import { buildProductCard } from './products-ui.js';
 import { findProduct, loadStore } from './store.js';
 import { mountSiteShell } from './ui.js';
@@ -15,6 +16,17 @@ function validCategory(code) {
   if (code === 'ALL') return true;
   return CATALOG_GROUPS.some((group) => group.code === code)
     || (store?.categories || []).some((item) => item.code === code);
+}
+
+
+function renderCategoryCards() {
+  const node = document.querySelector('[data-catalog-category-cards]');
+  if (!node) return;
+  node.innerHTML = CATALOG_GROUPS.map((group) => `
+    <a class="catalog-category-card${group.code === category ? ' is-active' : ''}" href="./catalog.html?category=${encodeURIComponent(group.code)}" data-category-card="${escapeHtml(group.code)}">
+      <span class="catalog-category-card__art">${CATEGORY_ICONS[group.code] || ''}</span>
+      <span><strong>${escapeHtml(group.name)}</strong><small>${escapeHtml(group.description || '')}</small></span>
+    </a>`).join('');
 }
 
 function renderFilters() {
@@ -72,10 +84,19 @@ function bindControls() {
   });
   sort?.addEventListener('change', () => { sortMode = sort.value; renderProducts(); });
   document.addEventListener('click', (event) => {
+    const card = event.target.closest('[data-category-card]');
+    if (card) {
+      event.preventDefault();
+      category = card.getAttribute('data-category-card') || 'ALL';
+      renderFilters(); renderCategoryCards(); updateUrl(); renderProducts();
+      document.querySelector('.catalog-toolbar')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      track('view_item_list', { item_list_id: category });
+      return;
+    }
     const chip = event.target.closest('[data-category]');
     if (chip) {
       category = chip.getAttribute('data-category') || 'ALL';
-      renderFilters(); updateUrl(); renderProducts();
+      renderFilters(); renderCategoryCards(); updateUrl(); renderProducts();
       track('view_item_list', { item_list_id: category });
       return;
     }
@@ -98,6 +119,7 @@ async function boot() {
     store = result.data;
     if (!validCategory(category)) category = 'ALL';
     renderFilters();
+    renderCategoryCards();
     renderProducts();
     track('view_item_list', { item_list_id: category });
     if (status && result.warning) { status.hidden = true; console.info('Using cached store data'); }
