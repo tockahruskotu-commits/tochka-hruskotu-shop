@@ -63,3 +63,7 @@
 .map-layout h2 { font-size: clamp(1.8rem,4vw,2.7rem); }
 .contact-map { width: 100%; min-height: 360px; border: 1px solid var(--border); border-radius: 22px; }
 @media (max-width:800px){.delivery-page-grid,.map-layout{grid-template-columns:1fr}.delivery-contact{align-items:flex-start;flex-direction:column}}
+
+.contact-intro { max-width: 70ch; margin: 0 0 22px; color: var(--text-soft); font-size: 1.04rem; line-height: 1.65; }
+.contact-card { grid-template-columns: 42px 1fr; align-items: center; }
+.contact-card__icon { grid-row: 1 / span 2; width: 42px; height: 42px; display: grid; place-items: center; border-radius: 13px; background: #fff4eb; color: var(--accent-dark); font-weight: 900; font-size: 1.05rem; }

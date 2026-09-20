@@ -33,7 +33,7 @@ function renderProducts() {
   grid.innerHTML = filtered.length
     ? filtered.map((product) => buildProductCard(product, { currency, reviews: store?.reviews || [] })).join('')
     : '<div class="empty-state">Схоже, цей смак десь заховався… Спробуйте іншу категорію або слово.</div>';
-  if (result) result.textContent = `Знайдено: ${filtered.length}`;
+  if (result) result.textContent = filtered.length ? `Смаколиків: ${filtered.length}` : '';
 }
 
 function updateSearchUi() {
@@ -100,10 +100,10 @@ async function boot() {
     renderFilters();
     renderProducts();
     track('view_item_list', { item_list_id: category });
-    if (status && result.warning) { status.hidden = false; status.textContent = 'Показуємо останні збережені дані — оновлення тимчасово недоступне.'; }
+    if (status && result.warning) { status.hidden = true; console.info('Using cached store data'); }
   } catch (error) {
     console.error(error);
-    if (status) { status.hidden = false; status.textContent = 'Не вдалося завантажити каталог. Спробуйте оновити сторінку.'; }
+    if (status) { status.hidden = false; status.textContent = 'Схоже, каталог на хвилинку замислився. Оновіть сторінку або загляньте трохи пізніше.'; }
   }
 }
 

@@ -111,12 +111,12 @@ async function boot() {
     renderFeatured();
     renderReviews();
     if (status && result.warning) {
-      status.textContent = 'Показуємо останні збережені дані — оновлення тимчасово недоступне.';
-      status.hidden = false;
+      status.hidden = true;
+      console.info('Using cached store data');
     }
   } catch (error) {
     console.error(error);
-    if (status) { status.textContent = 'Не вдалося завантажити каталог. Спробуйте оновити сторінку.'; status.hidden = false; }
+    if (status) { status.textContent = 'Схоже, каталог на хвилинку замислився. Оновіть сторінку або загляньте трохи пізніше.'; status.hidden = false; }
   }
 }
 

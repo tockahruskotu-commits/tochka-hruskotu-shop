@@ -23,3 +23,7 @@
 .secret-gateway em { color: var(--text-soft); font-style: normal; }
 .secret-gateway > b { color: var(--accent-dark); font-size: 2rem; }
 @media (max-width: 680px) { .secret-gateway { grid-template-columns: 82px 1fr; gap: 15px; padding: 18px; } .secret-gateway__art { width: 82px; height: 82px; } .secret-gateway__art svg { width: 72px; } .secret-gateway > b { display: none; } }
+
+.catalog-secret-switch { margin-top: 14px; display: inline-flex; gap: 8px; align-items: center; padding: 10px 15px; border-radius: 999px; background: #fff3ef; border: 1px solid #efd5cd; text-decoration: none; color: var(--text); }
+.catalog-secret-switch strong { color: var(--accent-dark); }
+.catalog-secret-switch:hover { border-color: var(--accent); }

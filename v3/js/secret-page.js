@@ -31,7 +31,7 @@ const SCENARIOS = Object.freeze({
     steps: [
       ['1', 'Оберіть те, що важко сказати', 'Не треба починати з ідеальної фрази — оберіть найближчий зміст.'],
       ['2', 'Залиште стільки підказок, скільки хочете', 'Можна не називати себе або дати маленький натяк.'],
-      ['3', 'Ми передамо послання', 'Картка-ключ пояснить сенс, а про відмову від доставки ми повідомимо вам.'],
+      ['3', 'Ми дбайливо все зберемо', 'Картка-ключ поїде разом із подарунком, а маленька інтрига залишиться до моменту відкриття.'],
     ],
   },
   remind: {
@@ -67,7 +67,7 @@ function renderScenarioGuide() {
   if (!node) return;
   node.innerHTML = `
     <div class="scenario-guide__intro">
-      <span class="section-kicker">Обраний формат</span>
+      <span class="section-kicker">Ваш шлях</span>
       <h2>${escapeHtml(cfg.title)}</h2>
       <p>${escapeHtml(cfg.copy)}</p>
       <div class="scenario-guide__tags">${cfg.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>
@@ -76,7 +76,7 @@ function renderScenarioGuide() {
   const title = document.querySelector('[data-secret-catalog-title]');
   const copy = document.querySelector('[data-secret-catalog-copy]');
   if (title) title.textContent = cfg.title;
-  if (copy) copy.textContent = `${cfg.copy} Фізична назва товару й смак завжди показані другим рядком.`;
+  if (copy) copy.textContent = `${cfg.copy} Під кожним посланням одразу видно, який саме смаколик ви обираєте.`;
   document.querySelectorAll('[data-scenario]').forEach((button) => button.classList.toggle('is-active', button.getAttribute('data-scenario') === scenario));
 }
 
@@ -109,7 +109,7 @@ function renderProducts() {
   grid.innerHTML = products.length
     ? products.map((product) => buildProductCard(product, { currency, reviews: store?.reviews || [], secret: true })).join('')
     : '<div class="empty-state">Схоже, ці слова десь заховалися… Спробуйте іншу фразу або розділ.</div>';
-  if (count) count.textContent = `Послань: ${products.length}`;
+  if (count) count.textContent = products.length ? `Знайшли для вас: ${products.length}` : '';
 }
 
 function setSection(value) { section = value || 'Усі послання'; renderFilters(); renderProducts(); document.querySelector('.secret-toolbar')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
@@ -147,10 +147,10 @@ async function boot() {
   const status = document.querySelector('[data-store-status]');
   try {
     const result = await loadStore(); store = result.data; renderProducts();
-    if (status && result.warning) { status.hidden = false; status.textContent = 'Показуємо останні збережені дані — оновлення тимчасово недоступне.'; }
+    if (status && result.warning) { status.hidden = true; console.info('Using cached store data'); }
   } catch (error) {
     console.error(error);
-    document.querySelector('[data-secret-grid]').innerHTML = '<div class="empty-state">Не вдалося завантажити каталог. Спробуйте оновити сторінку.</div>';
+    document.querySelector('[data-secret-grid]').innerHTML = '<div class="empty-state">Схоже, каталог на хвилинку замислився. Оновіть сторінку або загляньте трохи пізніше.</div>';
   }
 }
 boot();

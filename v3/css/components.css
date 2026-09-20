@@ -74,3 +74,7 @@
 }
 .cart-free-note { margin: 0; padding: 10px 12px; border-radius: 12px; background: var(--surface-soft); color: var(--text-soft); font-size: .82rem; }
 .cart-free-note.is-ready { background: #eef7ed; color: var(--green); font-weight: 750; }
+
+.filter-chip { min-height: 38px; padding: 0 13px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text-soft); font: inherit; font-weight: 700; cursor: pointer; transition: border-color .18s ease, background .18s ease, color .18s ease; }
+.filter-chip:hover { border-color: var(--accent); }
+.filter-chip.is-active { border-color: var(--accent); background: var(--accent); color: #fff; }
