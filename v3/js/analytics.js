@@ -76,18 +76,97 @@ export function readAttribution({ storage = globalThis.localStorage } = {}) {
   }
 }
 
-export function track(eventName, params = {}) {
-  if (!CONFIG.analytics.enabled || !CONFIG.analytics.measurementId) return false;
-  if (typeof globalThis.gtag !== 'function') return false;
-  globalThis.gtag('event', eventName, params);
+function metaPayload(params = {}) {
+  const items = Array.isArray(params.items) ? params.items : [];
+  const contents = items.map((item) => ({
+    id: clean(item.item_id || item.id),
+    quantity: Number(item.quantity || 1),
+    item_price: Number(item.price || 0),
+  })).filter((item) => item.id);
+
+  const payload = {};
+  if (params.currency) payload.currency = params.currency;
+  if (params.value != null && Number.isFinite(Number(params.value))) payload.value = Number(params.value);
+  if (contents.length) {
+    payload.content_ids = contents.map((item) => item.id);
+    payload.contents = contents;
+    payload.content_type = 'product';
+  }
+  if (params.search_term) payload.search_string = String(params.search_term);
+  return payload;
+}
+
+function trackMeta(eventName, params = {}) {
+  if (!CONFIG.analytics.metaPixelId || typeof globalThis.fbq !== 'function') return false;
+
+  const standardMap = {
+    view_item: 'ViewContent',
+    add_to_cart: 'AddToCart',
+    begin_checkout: 'InitiateCheckout',
+    add_payment_info: 'AddPaymentInfo',
+    purchase: 'Purchase',
+    search: 'Search',
+    click_phone: 'Contact',
+    click_viber: 'Contact',
+    click_whatsapp: 'Contact',
+    click_telegram: 'Contact',
+    click_messenger: 'Contact',
+    click_instagram_dm: 'Contact',
+  };
+
+  const standardName = standardMap[eventName];
+  if (standardName) {
+    globalThis.fbq('track', standardName, metaPayload(params));
+  } else {
+    globalThis.fbq('trackCustom', eventName, metaPayload(params));
+  }
   return true;
 }
 
-export function initAnalytics() {
-  captureAttribution();
-  if (!CONFIG.analytics.enabled || !CONFIG.analytics.measurementId || typeof document === 'undefined') {
-    return false;
+export function track(eventName, params = {}) {
+  let sent = false;
+
+  if (CONFIG.analytics.measurementId && typeof globalThis.gtag === 'function') {
+    globalThis.gtag('event', eventName, params);
+    sent = true;
   }
+
+  if (trackMeta(eventName, params)) sent = true;
+  return sent;
+}
+
+function initMetaPixel() {
+  if (!CONFIG.analytics.metaPixelId || typeof document === 'undefined') return false;
+  if (globalThis.fbq?.loaded) return true;
+
+  if (!globalThis.fbq) {
+    const fbq = function fbq() {
+      if (fbq.callMethod) fbq.callMethod.apply(fbq, arguments);
+      else fbq.queue.push(arguments);
+    };
+    fbq.push = fbq;
+    fbq.loaded = true;
+    fbq.version = '2.0';
+    fbq.queue = [];
+    globalThis.fbq = fbq;
+    globalThis._fbq = fbq;
+  }
+
+  if (!document.querySelector('script[data-v3-meta-pixel]')) {
+    const script = document.createElement('script');
+    script.async = true;
+    script.dataset.v3MetaPixel = 'true';
+    script.src = 'https://connect.facebook.net/en_US/fbevents.js';
+    document.head.append(script);
+  }
+
+  globalThis.fbq('init', CONFIG.analytics.metaPixelId);
+  globalThis.fbq('track', 'PageView');
+  return true;
+}
+
+function initGa4() {
+  if (!CONFIG.analytics.measurementId || typeof document === 'undefined') return false;
   if (document.querySelector('script[data-v3-gtag]')) return true;
 
   globalThis.dataLayer = globalThis.dataLayer || [];
@@ -101,4 +180,12 @@ export function initAnalytics() {
   script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(CONFIG.analytics.measurementId)}`;
   document.head.append(script);
   return true;
+}
+
+export function initAnalytics() {
+  captureAttribution();
+  if (!CONFIG.analytics.enabled) return false;
+  const meta = initMetaPixel();
+  const ga4 = initGa4();
+  return meta || ga4;
 }

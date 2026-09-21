@@ -27,11 +27,8 @@ function cartMarkup() {
         <div><p class="eyebrow">Ваш вибір</p><h2>Кошик</h2></div>
         <button class="icon-button is-visible" type="button" data-cart-close aria-label="Закрити кошик">×</button>
       </div>
-      <div class="cart-drawer__scroll">
-        <div class="cart-drawer__review" data-cart-review hidden><span>У кошику</span><strong data-cart-review-count></strong></div>
-        <div class="cart-drawer__items" data-cart-items></div>
-        <div class="cart-drawer__suggestions" data-cart-suggestions hidden></div>
-      </div>
+      <div class="cart-drawer__items" data-cart-items></div>
+      <div class="cart-drawer__suggestions" data-cart-suggestions hidden></div>
       <div class="cart-drawer__foot">
         <p class="cart-free-note" data-cart-free-note></p>
         <div class="cart-total"><span>Разом</span><strong data-cart-total>0 грн</strong></div>
@@ -116,13 +113,6 @@ function render() {
     freeNote.classList.toggle('is-ready', subtotal >= threshold);
   }
   if (checkout) checkout.setAttribute('aria-disabled', cart.length ? 'false' : 'true');
-  const review = document.querySelector('[data-cart-review]');
-  const reviewCount = document.querySelector('[data-cart-review-count]');
-  if (review) review.hidden = !cart.length;
-  if (reviewCount) {
-    const count = cartCount(cart);
-    reviewCount.textContent = `${count} ${count === 1 ? 'позиція' : (count >= 2 && count <= 4 ? 'позиції' : 'позицій')}`;
-  }
   renderSuggestions();
   updateHeaderCount();
 }

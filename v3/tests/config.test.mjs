@@ -48,11 +48,12 @@ test('rootUrl always targets stable repository root for assets and protected ser
   );
 });
 
-test('central config keeps stable public identity and deliberately disables analytics in foundation stage', () => {
+test('central config keeps stable public identity and enables Meta Pixel while GA4 remains unset', () => {
   assert.equal(CONFIG.business.name, 'Точка Хрускоту');
   assert.equal(CONFIG.business.pickup.locality, 'Млинів');
   assert.equal(CONFIG.api.store.includes('script.google.com/macros/s/'), true);
-  assert.equal(CONFIG.analytics.enabled, false);
+  assert.equal(CONFIG.analytics.enabled, true);
+  assert.equal(CONFIG.analytics.metaPixelId, '1644862923685859');
   assert.equal(CONFIG.analytics.measurementId, null);
   assert.equal(CONFIG.social.tiktok, 'https://www.tiktok.com/@tockahruskotu');
   assert.equal(CONFIG.social.youtube, 'https://www.youtube.com/@ТочкаХрускоту');

@@ -14,9 +14,10 @@ export const CONFIG = Object.freeze({
     previewSubmitEnabled: false,
   }),
   analytics: Object.freeze({
-    // Intentionally disabled until Task 5 reconciles the two GA4 IDs found in V1/V2.
-    enabled: false,
+    // Meta Pixel is active now. GA4 remains unset until the legacy IDs are reconciled.
+    enabled: true,
     measurementId: null,
+    metaPixelId: '1644862923685859',
   }),
   business: Object.freeze({
     name: 'Точка Хрускоту',

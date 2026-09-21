@@ -23,7 +23,6 @@
 }
 
 * { box-sizing: border-box; }
-[hidden] { display: none !important; }
 html { color-scheme: light; }
 body {
   margin: 0;
