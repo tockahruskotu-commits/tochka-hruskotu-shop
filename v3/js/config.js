@@ -11,7 +11,7 @@ export const CONFIG = Object.freeze({
     store: 'https://script.google.com/macros/s/AKfycbzCgvAMAmqrsK-KsGcPMfx60kvQbZVJII91WVZKIn-KF7bFIA3HKdKe0JmaBu4RZtX31Q/exec',
   }),
   checkout: Object.freeze({
-    previewSubmitEnabled: false,
+    previewSubmitEnabled: true,
   }),
   analytics: Object.freeze({
     // Meta Pixel is active now. GA4 remains unset until the legacy IDs are reconciled.
