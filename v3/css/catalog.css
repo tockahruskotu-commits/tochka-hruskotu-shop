@@ -42,3 +42,71 @@
 .catalog-category-card small { color: var(--text-soft); line-height: 1.3; font-size: .78rem; }
 @media (max-width: 900px) { .catalog-category-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .catalog-category-grid { grid-template-columns: 1fr 1fr; gap: 8px; } .catalog-category-card { min-height: 118px; grid-template-columns: 1fr; gap: 7px; align-content: start; padding: 12px; } .catalog-category-card__art { width: 48px; height: 48px; } .catalog-category-card svg { width: 34px; height: 34px; } .catalog-category-card small { font-size: .74rem; } }
+/* Активна категорія — особливо помітно на мобільному */
+
+.catalog-selected-category {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--accent);
+  border-radius: 16px;
+  background: var(--surface-soft);
+}
+
+.catalog-selected-category__copy {
+  display: grid;
+  gap: 3px;
+}
+
+.catalog-selected-category__copy span {
+  color: var(--text-soft);
+  font-size: .78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.catalog-selected-category__copy strong {
+  color: var(--brown);
+  font-size: 1.12rem;
+  line-height: 1.25;
+}
+
+.catalog-selected-category__change {
+  flex: 0 0 auto;
+  min-height: 38px;
+  padding: 0 13px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--accent-dark);
+  font: inherit;
+  font-size: .8rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.catalog-selected-category__change:hover {
+  background: var(--accent);
+  color: white;
+}
+
+@media (max-width: 680px) {
+  .catalog-selected-category {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+    padding: 13px 14px;
+  }
+
+  .catalog-selected-category__copy strong {
+    font-size: 1.2rem;
+  }
+
+  .catalog-selected-category__change {
+    width: 100%;
+  }
+}
