@@ -123,3 +123,6 @@ p { color: var(--text-soft); line-height: 1.65; }
   .cart-button > span:nth-child(2) { display: none; }
   .v3-footer__grid { grid-template-columns: 1fr; gap: 24px; }
 }
+[hidden] {
+  display: none !important;
+}
