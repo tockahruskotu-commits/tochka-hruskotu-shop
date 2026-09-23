@@ -108,7 +108,7 @@ function render() {
   const threshold = Number(CONFIG.business.freeDeliveryFrom || 0);
   if (freeNote && threshold > 0) {
     freeNote.textContent = subtotal >= threshold
-      ? 'Безкоштовна доставка активована для відділення, поштомату або погодженої передачі. Кур’єр — окремо.'
+      ? 'Безкоштовна доставка активована: Нова пошта — у відділення або поштомат; Укрпошта — у відділення. Кур’єрська доставка оплачується окремо.'
       : `До безкоштовної доставки залишилося ${formatMoney(Math.max(0, threshold - subtotal))}.`;
     freeNote.classList.toggle('is-ready', subtotal >= threshold);
   }
