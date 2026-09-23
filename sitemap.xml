@@ -1,9 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/</loc>
-    <lastmod>2026-07-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/catalog.html</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/gifts.html</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/about.html</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/delivery.html</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/contacts.html</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/faq.html</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/reviews.html</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/certificates.html</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/secret.html</loc></url>
+
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=FR-CLASSIC</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=FR-BERRY</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=FR-ESPRESSO</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=BURGER-HONEY</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=NUG-CLASSIC</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=POP-STANDARD</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=POP-COFFEE</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=POP-MIX</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=CUP-SNICKERS</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=CUP-LEMON</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=CUP-DOUBLE-CHOCO</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=BOX-TRIO</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=BOX-MEGA</loc></url>
+
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=SAUCE-CHOCO</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=SAUCE-STRAWBERRY</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=SAUCE-APRICOT</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=SAUCE-CHOCO-PLUM</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=SAUCE-CHERRY</loc></url>
+
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=DONUT-MAK</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=DONUT-CHOCO</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=DONUT-VANILLA</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=DONUT-MIX</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=DONUT-MAK-CHERRY</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=DONUT-CHOCO-CARAMEL</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=DONUT-VANILLA-STRAWBERRY</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=DONUT-FILLED-MIX</loc></url>
+
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=FORT-HER</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=FORT-HIM</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=FORT-18</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=FORT-CLASSIC</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=FORT-KIDS</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=FORT-BRAND</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=FORT-EVENT</loc></url>
+
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=GIFT-BOX-10</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=GIFT-BOX-6</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=GIFT-BOX-12</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=GIFT-BOX-11-SAUCE</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=GIFT-DONUT-COMPLIMENT</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=GIFT-DONUT-POP</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=GIFT-DONUT-BOUQUET</loc></url>
+
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=PUZZLE-KITTIES</loc></url>
+
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=WAFFLE-MIX-10</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=WAFFLE-CHOCO-MIX-5</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=WAFFLE-HEMI-40</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=WAFFLE-HEMI-CHOCO-45</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=WAFFLE-CUP-100</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=WAFFLE-SHOCO-BOOM</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=WAFFLE-BOX-24</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=WAFFLE-BOX-30</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=WAFFLE-BOX-56</loc></url>
+
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=CERT-500</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=CERT-1000</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=CERT-1500</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=CERT-2000</loc></url>
+  <url><loc>https://tockahruskotu-commits.github.io/tochka-hruskotu-shop/product.html?code=CERT-5000</loc></url>
 </urlset>
