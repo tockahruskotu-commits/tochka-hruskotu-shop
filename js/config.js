@@ -16,7 +16,7 @@ export const CONFIG = Object.freeze({
   analytics: Object.freeze({
     // Meta Pixel is active now. GA4 remains unset until the legacy IDs are reconciled.
     enabled: true,
-    measurementId: null,
+    measurementId: 'G-BMMFC6QXD5',
     metaPixelId: '1644862923685859',
   }),
   business: Object.freeze({
