@@ -32,7 +32,7 @@ function cartMarkup() {
       <div class="cart-drawer__foot">
         <p class="cart-free-note" data-cart-free-note></p>
         <div class="cart-total"><span>Разом</span><strong data-cart-total>0 грн</strong></div>
-        <a class="button button-primary button-block" data-cart-checkout href="${appUrl('checkout.html')}">Оформити замовлення</a>
+        <a class="button button-primary button-block" data-cart-checkout href="${appUrl('cart.html')}">Переглянути кошик</a>
         <button class="button button-secondary button-block" type="button" data-cart-close>Продовжити покупки</button>
       </div>
     </aside>`;
