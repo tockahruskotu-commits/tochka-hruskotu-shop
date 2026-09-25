@@ -3129,7 +3129,12 @@
 
   if(!returned){
 
-    restoreSession();
+    sessionStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem(CREATOR_KEY);
+
+    setLoginStatus(
+      'Підключіть TikTok, щоб отримати актуальні налаштування профілю.'
+    );
 
   }
 
